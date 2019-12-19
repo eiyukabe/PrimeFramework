@@ -64,3 +64,5 @@ Unassigned
 - Activator
 - Levels? What would it mean to have a generic "level"?
 - Item magnetizing
+_ Add READ ME to git
+_ Add license to git
