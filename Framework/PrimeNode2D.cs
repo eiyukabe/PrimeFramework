@@ -21,14 +21,14 @@ public class PrimeNode2D : Node2D
 
     public T GetAncestorOfType<T>() where T : Node
     {
-        var parent = GetParent();
-        if (parent is T)
+        var ancestor = GetParent();
+        while (ancestor != null)
         {
-            return (T)parent;
-        }
-        else if (parent is PrimeNode2D)
-        {
-            return ((PrimeNode2D)parent).GetAncestorOfType<T>();
+            if (ancestor is T)
+            {
+                return (T)ancestor;
+            }
+            ancestor = ancestor.GetParent();
         }
         return null;
     }
