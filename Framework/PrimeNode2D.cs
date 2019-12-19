@@ -6,7 +6,7 @@ public class PrimeNode2D : Node2D
 {
     public List<T> GetChildren<T>() where T : Node
     {
-        List<T> results = new List<T>();
+        var results = new List<T>();
 
         foreach (Node node in GetChildren())
         {
@@ -17,6 +17,20 @@ public class PrimeNode2D : Node2D
         }
 
         return results;
+    }
+
+    public T GetAncestorOfType<T>() where T : Node
+    {
+        var parent = GetParent();
+        if (parent is T)
+        {
+            return (T)parent;
+        }
+        else if (parent is PrimeNode2D)
+        {
+            return ((PrimeNode2D)parent).GetAncestorOfType<T>();
+        }
+        return null;
     }
 
 }
