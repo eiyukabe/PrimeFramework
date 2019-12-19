@@ -1,0 +1,66 @@
+Veluzy
+=============
+x GameStates
+x Launch
+x Program global for handling application level stuff like fullscreen and quitting
+x Troops (Actor)
+- Build dock
+- Batch scene editor
+- Scrolling background
+- Fonts - motion control bold, make a few ready to use
+- Audio
+- Debug display - level timer, god mode, no clip, game uptime timer
+- UI Templates
+	- Title Screen
+	- Options Screen
+	- Credits
+	- Level Complete screen
+- Paths
+? Player
+	- Temp invincible
+	- Cheats - (on Game) god mode, no clip, complete level
+? Collisions
+? Standard collision layers
+? Walls
+- Figure out how to debug
+
+
+Eiyukabe
+=============
+- Actor
+	- Enemy
+	- Item
+	- Volumes
+	- Level script actor (For merging activator script system with behavior system)
+- Behaviors
+	- Generic spawner using behavior logic
+	- Convert script execs to behaviors
+	- Durations (and/or events?) like "when_activated" (or whatever) default to behave like sequential_behaviors at the root
+	- Add behavior events for built in Godot callbacks _OnReady and _OnEnterTree
+	- (Request) Put behavior "managers" like "sequential_behavior" and "decorated_behavior" in their own folder
+	   or give them a special suffix, or otherwise make them easy to find among regular behaviors so it's easy
+	   to browse what the "manager" options are without having to remember it
+- Achievements
+- Trail after image behavior
+- Grow after image behavior
+- Explosions
+- Damage pulse (found here: Enemy.gd._process())
+- Game uptime timer (Will be part of the debug display that Brian is working on)
+- Devices
+- Generation
+- Music Player
+- Saving / Loading
+- VMath
+- Rooms
+- GamePad Deadzone, gamepad min speed (found in player.gd: lines 67-69)
+- Forces (in Player)
+- Shaders
+
+
+Unassigned
+=============
+- Playfield limits / draw playfield limits
+- Generic Arrow, Generic square from V
+- Activator
+- Levels? What would it mean to have a generic "level"?
+- Item magnetizing
