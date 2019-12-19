@@ -44,6 +44,7 @@ Eiyukabe
 	- (Request) Put behavior "managers" like "sequential_behavior" and "decorated_behavior" in their own folder
 	   or give them a special suffix, or otherwise make them easy to find among regular behaviors so it's easy
 	   to browse what the "manager" options are without having to remember it
+	- Behavior to call a script or a function on a script.
 - Achievements
 - Trail after image behavior
 - Grow after image behavior
