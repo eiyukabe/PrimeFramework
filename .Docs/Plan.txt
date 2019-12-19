@@ -23,6 +23,10 @@ x Troops (Actor)
 ? Standard collision layers
 ? Walls
 - Figure out how to debug
+- Add Prime Singleton
+	- pause()
+	- quit game
+	- toggle full screen
 
 
 Eiyukabe
@@ -64,5 +68,5 @@ Unassigned
 - Activator
 - Levels? What would it mean to have a generic "level"?
 - Item magnetizing
-_ Add READ ME to git
-_ Add license to git
+- Add READ ME to git
+- Add license to git
