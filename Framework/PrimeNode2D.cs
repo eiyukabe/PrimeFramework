@@ -1,0 +1,22 @@
+using Godot;
+using System;
+using System.Collections.Generic;
+
+public class PrimeNode2D : Node2D
+{
+    public List<T> GetChildren<T>() where T : Node
+    {
+        List<T> results = new List<T>();
+
+        foreach (Node node in GetChildren())
+        {
+            if (node is T)
+            {
+                results.Add((T)node);
+            }
+        }
+
+        return results;
+    }
+
+}
