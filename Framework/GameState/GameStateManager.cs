@@ -26,6 +26,11 @@ public static class GameStateManager
 
     public static void PopState()
     {
+        if (Stack.Count == 0)
+        {
+            return;
+        }
+
         GameState state = Stack.Pop();
         state.OnPopped();
         state.OnRemoved();
@@ -39,6 +44,11 @@ public static class GameStateManager
 
     public static void ClearStack()
     {
+        if (Stack.Count == 0)
+        {
+            return;
+        }
+        
         foreach(GameState state in Stack)
         {
             state.OnRemoved();
