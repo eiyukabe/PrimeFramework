@@ -27,8 +27,8 @@ public static class GameStateManager
     public static void PopState()
     {
         GameState state = Stack.Pop();
-        state.OnPop();
-        state.OnRemove();
+        state.OnPopped();
+        state.OnRemoved();
         state.QueueFree();
 
         if (Stack.Count > 0)
@@ -41,7 +41,7 @@ public static class GameStateManager
     {
         foreach(GameState state in Stack)
         {
-            state.OnRemove();
+            state.OnRemoved();
             state.QueueFree();
         }
 
@@ -68,7 +68,7 @@ public static class GameStateManager
         state.SetProcess(true);
         state.SetProcessInput(true);
         state.SetPhysicsProcess(true);
-        state.OnActivate();
+        state.OnActivated();
     }
 
     private static void Deactivate(GameState state)
@@ -78,6 +78,6 @@ public static class GameStateManager
         state.SetProcess(state.ProcessWhileDeactivated);
         state.SetPhysicsProcess(state.ProcessWhileDeactivated);
         state.SetProcessInput(state.ProcessInputWhileDeactivated);
-        state.OnDeactivate();
+        state.OnDeactivated();
     }
 }
