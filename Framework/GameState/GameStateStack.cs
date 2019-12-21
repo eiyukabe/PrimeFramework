@@ -2,29 +2,25 @@ using Godot;
 using System;
 using System.Collections.Generic;
 
-public static class GameStateManager
+/// <summary>
+/// GameStateStack is meant to be managed by the Prime class, not used directly. See also GameState and Prime classes.
+/// </summary>
+public class GameStateStack
 {
-    private static Stack<GameState> Stack = new Stack<GameState>();
+    private Stack<GameState> Stack = new Stack<GameState>();
 
-    public static void PushState(GameState newState, Node stateParent)
+    public void Push(GameState newState)
     {
-        /* Note: stateParent can be null if pushing a state that's already in the SceneTree. */
-
         if (Stack.Count > 0)
         {
             Deactivate(Stack.Peek());
-        }
-        
-        if (stateParent != null)
-        {
-            stateParent.AddChild(newState);
         }
 
         Stack.Push(newState);
         Activate(newState);
     }
 
-    public static void PopState()
+    public void Pop()
     {
         if (Stack.Count == 0)
         {
@@ -42,7 +38,7 @@ public static class GameStateManager
         }
     }
 
-    public static void ClearStack()
+    public void Clear()
     {
         if (Stack.Count == 0)
         {
@@ -58,13 +54,7 @@ public static class GameStateManager
         Stack.Clear();
     }
 
-    public static void ClearAndPush(GameState newState, Node stateParent)
-    {
-        ClearStack();
-        PushState(newState, stateParent);
-    }
-
-    private static void Activate(GameState state)
+    private void Activate(GameState state)
     {
         /* For GameStateManager's internal use only. This is called every time a state becomes the active state */
         
@@ -81,7 +71,7 @@ public static class GameStateManager
         state.OnActivated();
     }
 
-    private static void Deactivate(GameState state)
+    private void Deactivate(GameState state)
     {
         /* For GameStateManager's internal use only. This is called every time another state is pushed on top of this state */
         state.SetVisible(state.ShowWhileDeactivated);
