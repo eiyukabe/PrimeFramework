@@ -12,7 +12,6 @@ public static class SceneManager
     public static object ChangeScene(string scenePath, SceneTree sceneTree)
     {
         var scene = ResourceLoader.Load(scenePath);
-
         if (!(scene is PackedScene))
         {
             return null;
@@ -41,5 +40,26 @@ public static class SceneManager
         }
 
         return sceneInstance;
+    }
+
+    public static object ChangeGameState(string scenePath, Node parent)
+    {
+        var scene = ResourceLoader.Load(scenePath);
+        if (!(scene is PackedScene))
+        {
+            return null;
+        }
+
+        var packedScene = (PackedScene) scene;
+        var sceneInstance = packedScene.Instance();
+
+        if (!(sceneInstance is GameState))
+        {
+            return null;
+        }
+        
+        var state = (GameState) sceneInstance;
+        GameStateManager.PushState(state, parent);
+        return state;
     }
 }
