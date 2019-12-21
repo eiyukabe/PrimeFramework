@@ -12,7 +12,7 @@ public class PauseMenu : GameState
     {
         if (Input.IsActionJustPressed(InputActions.CANCEL))
         {
-            GameStateManager.PopState();
+            Prime.PopGameState();
         }
     }
 
@@ -21,17 +21,18 @@ public class PauseMenu : GameState
 
     private void OnResumeButtonPressed()
     {
-        GameStateManager.PopState();
+        Prime.PopGameState();
     }
     
     private void OnTitleScreenButtonPressed()
     {
-        SceneManager.ChangeScene("res://Game/GameStates/TitleScreen/TitleScreen.tscn", GetTree());
+        Prime.ChangeScene("res://Game/GameStates/TitleScreen/TitleScreen.tscn", GetTree());
     }
 
     private void OnQuitButtonPressed()
     {
         GetTree().Quit();
+        // Prime.Quit();    // TODO
     }
 
     #endregion
@@ -42,11 +43,13 @@ public class PauseMenu : GameState
     public override void OnActivated()
     {
         GetTree().Paused = true;
+        // Prime.Pause();   // TODO
     }
 
     public override void OnRemoved()
     {
         GetTree().Paused = false;
+        // Prime.Unpause(); // TODO
     }
 
     #endregion
