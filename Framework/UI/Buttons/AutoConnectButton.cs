@@ -15,6 +15,9 @@ using System;
 ///
 /// This button also helps reduce boilerplate code because you no longer need to write GetNode("buttonPath") and Button.Connect() for every
 /// button in a scene.
+///
+/// Note: this button relies on its Owner reference being set. If you instantiate an AutoConnectButton in code it will not work unless you
+/// set the Owner manually. If you place the button in the scene in the editor everything should work normally.
 /// </summary>
 public class AutoConnectButton : Button
 {
@@ -25,6 +28,7 @@ public class AutoConnectButton : Button
 
     public override void _EnterTree()
     {
+        if (Owner == null)  { return; }
         if (OnPressed)      { Connect("pressed", Owner, $"On{Name}ButtonPressed"); }
         if (OnButtonDown)   { Connect("button_down", Owner, $"On{Name}ButtonDown"); }
         if (OnButtonUp)     { Connect("button_up", Owner, $"On{Name}ButtonUp"); }
