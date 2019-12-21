@@ -26,7 +26,7 @@ public class PauseMenu : GameState
     
     private void OnTitleScreenButtonPressed()
     {
-        Prime.ChangeScene("res://Game/GameStates/TitleScreen/TitleScreen.tscn", GetTree());
+        Prime.ChangeScene("res://Game/GameStates/TitleScreen/TitleScreen.tscn");
     }
 
     private void OnQuitButtonPressed()
@@ -42,14 +42,12 @@ public class PauseMenu : GameState
 
     public override void OnActivated()
     {
-        GetTree().Paused = true;
-        // Prime.Pause();   // TODO
+        Prime.Pause();
     }
 
     public override void OnRemoved()
     {
-        GetTree().Paused = false;
-        // Prime.Unpause(); // TODO
+        Prime.UnPause();
     }
 
     #endregion
