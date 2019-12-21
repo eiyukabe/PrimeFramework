@@ -6,8 +6,10 @@ using System;
 /// </summary>
 public static class Prime
 {
-    private static GameStateStack GameStateStack = new GameStateStack();
-    // private static SceneTree Tree;  // TODO
+    private static GameStateStack GameStates = new GameStateStack();
+    
+    public static SceneTree Tree;   // Set by autoloaded TreeMonitor
+    public static Node GameRoot;    // Set by autoloaded GameRoot
 
 
     #region Scene Management
@@ -19,7 +21,7 @@ public static class Prime
     /// Specifically: removes everything from the SceneTree up to the root and adds a new instance of the given scene. If the new
     /// scene is a GameState the GameStateStack will be cleared and the new state will be pushed onto the stack.
     /// </summary>
-    public static object ChangeScene(string scenePath, SceneTree sceneTree)
+    public static object ChangeScene(string scenePath)
     {
         var packedScene = GetPackedScene(scenePath);
         if (packedScene == null)
@@ -27,25 +29,22 @@ public static class Prime
             return null;
         }
         
-        var root = sceneTree.GetRoot();
-        
-        /* Remove all scenes up to the root */
-        var rootChildren = root.GetChildren();
-        if (rootChildren.Count > 0)
+        /* Remove all scenes up to the GameRoot */
+        var rootChildren = GameRoot.GetChildren();
+        for (int i = rootChildren.Count - 1; i >= 0 ; i--)
         {
-            var node = (Node) rootChildren[0];     // The root node can only have one child.
-            node.QueueFree();
+            var child = (Node) rootChildren[i];
+            child.QueueFree();
         }
 
         /* Set up new scene */
         var sceneInstance = packedScene.Instance();
-        root.AddChild(sceneInstance);
-        sceneTree.CurrentScene = sceneInstance;     // This is used by Godot's ReloadCurrentScene() function
+        GameRoot.AddChild(sceneInstance);
 
         if (sceneInstance is GameState)
         {
-            GameStateStack.Clear();
-            GameStateStack.Push((GameState) sceneInstance);
+            GameStates.Clear();
+            GameStates.Push((GameState) sceneInstance);
         }
 
         return sceneInstance;
@@ -75,7 +74,7 @@ public static class Prime
         
         var state = (GameState) sceneInstance;
         stateParent.AddChild(state);
-        GameStateStack.Push(state);
+        GameStates.Push(state);
 
         return state;
     }
@@ -83,7 +82,7 @@ public static class Prime
     /// <summary> Pop the current GameState from the GameStateStack. </summary>
     public static void PopGameState()
     {
-        GameStateStack.Pop();
+        GameStates.Pop();
     }
 
     #endregion
@@ -115,4 +114,10 @@ public static class Prime
     }
 
     #endregion
+
+
+    public static void Pause()  { Tree.Paused = true; }
+    public static void UnPause() { Tree.Paused = false; }
+    public static void SetPause(bool pause) { Tree.Paused = pause; }
+
 }
