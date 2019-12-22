@@ -2,20 +2,22 @@ using Godot;
 using System;
 
 /// <summary>
-/// Manages application level operations like changing scenes, changing game states, quitting, and loading PackedScenes.
+/// Manages application level operations like changing scenes, changing game states, pausing, quitting, and loading resources.
+///
+/// See also Game/Prime
 /// </summary>
-public static class Prime
+public static partial class Prime
 {
     private static GameStateStack GameStates = new GameStateStack();
     
-    public static SceneTree Tree;   // Set by autoloaded TreeMonitor
-    public static Node GameRoot;    // Set by autoloaded GameRoot
+    public static SceneTree Tree;   // Set by PrimeRoot
+    public static Node PrimeRoot;   // Set by PrimeRoot
 
 
     #region Scene Management
 
     /// <summary>
-    /// Changes to a new scene and returns that scene as an object. Similar to Godot's ChangeScene() but also manages game states. 
+    /// Changes to a new scene and returns that scene as an object. Similar to Godot's ChangeScene() but also handles game states. 
     /// Aborts and returns null if a PackedScene cannot be found from the given scenePath.
     ///
     /// Specifically: removes everything from the SceneTree up to the root and adds a new instance of the given scene. If the new
@@ -29,8 +31,8 @@ public static class Prime
             return null;
         }
         
-        /* Remove all scenes up to the GameRoot */
-        var rootChildren = GameRoot.GetChildren();
+        /* Remove all of PrimeRoot's children */
+        var rootChildren = PrimeRoot.GetChildren();
         for (int i = rootChildren.Count - 1; i >= 0 ; i--)
         {
             var child = (Node) rootChildren[i];
@@ -39,8 +41,9 @@ public static class Prime
 
         /* Set up new scene */
         var sceneInstance = packedScene.Instance();
-        GameRoot.AddChild(sceneInstance);
+        PrimeRoot.AddChild(sceneInstance);
 
+        /* Handle GameStates */
         if (sceneInstance is GameState)
         {
             GameStates.Clear();
@@ -58,7 +61,7 @@ public static class Prime
     /// <summary>
     /// Push a new GameState onto the stack. Aborts and returns null if a GameState cannot be found from the given scenePath.
     /// </summary>
-    public static GameState PushGameState(string scenePath, Node stateParent)
+    public static GameState PushGameState(string scenePath, Node stateParent = null)
     {
         var packedScene = GetPackedScene(scenePath);
         if (packedScene == null)
@@ -73,7 +76,16 @@ public static class Prime
         }
         
         var state = (GameState) sceneInstance;
-        stateParent.AddChild(state);
+
+        if (stateParent == null)
+        {
+            PrimeRoot.AddChild(state);
+        }
+        else
+        {
+            stateParent.AddChild(state);
+        }
+        
         GameStates.Push(state);
 
         return state;
@@ -115,9 +127,8 @@ public static class Prime
 
     #endregion
 
-
     public static void Pause()  { Tree.Paused = true; }
-    public static void UnPause() { Tree.Paused = false; }
+    public static void Unpause() { Tree.Paused = false; }
     public static void SetPause(bool pause) { Tree.Paused = pause; }
 
 }
