@@ -31,8 +31,7 @@ public class PauseMenu : GameState
 
     private void OnQuitButtonPressed()
     {
-        GetTree().Quit();
-        // Prime.Quit();    // TODO
+        Prime.Quit();
     }
 
     #endregion
@@ -47,7 +46,7 @@ public class PauseMenu : GameState
 
     public override void OnRemoved()
     {
-        Prime.UnPause();
+        Prime.Unpause();
     }
 
     #endregion

@@ -7,7 +7,7 @@ public class Play : GameState
     {
         if (Input.IsActionJustPressed(InputActions.CANCEL))
         {
-            Prime.PushGameState("res://Game/GameStates/PauseMenu/PauseMenu.tscn", GetParent());
+            Prime.PushGameState("res://Game/GameStates/PauseMenu/PauseMenu.tscn");
         }
     }
 }

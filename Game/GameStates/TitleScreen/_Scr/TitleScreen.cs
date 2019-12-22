@@ -7,7 +7,7 @@ public class TitleScreen : GameState
     {
         if (Input.IsActionJustPressed(InputActions.CANCEL))
         {
-            GetTree().Quit();
+            Prime.Quit();
         }
     }
 
@@ -21,8 +21,9 @@ public class TitleScreen : GameState
 
     private void OnQuitButtonPressed()
     {
-        GetTree().Quit();
+        Prime.Quit();
     }
 
     #endregion
+    
 }
