@@ -31,22 +31,24 @@ public static partial class Prime
             return null;
         }
         
-        /* Remove all of PrimeRoot's children */
-        var rootChildren = PrimeRoot.GetChildren();
-        for (int i = rootChildren.Count - 1; i >= 0 ; i--)
-        {
-            var child = (Node) rootChildren[i];
-            child.QueueFree();
-        }
-
-        /* Set up new scene */
         var sceneInstance = packedScene.Instance();
-        PrimeRoot.AddChild(sceneInstance);
 
-        /* Handle GameStates */
+        /* If the new scene is a GameState we need to clear the stack; the new scene will then be pushed later. */
         if (sceneInstance is GameState)
         {
             GameStates.Clear();
+        }
+
+        /* Remove all of PrimeRoot's children */
+        foreach (Node child in PrimeRoot.GetChildren())
+        {
+            child.QueueFree();
+        }
+
+        /* Add and push new scene */
+        PrimeRoot.AddChild(sceneInstance);
+        if (sceneInstance is GameState)
+        {
             GameStates.Push((GameState) sceneInstance);
         }
 
