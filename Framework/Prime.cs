@@ -20,7 +20,7 @@ public static partial class Prime
     /// Changes to a new scene and returns that scene as an object. Similar to Godot's ChangeScene() but also handles game states. 
     /// Aborts and returns null if a PackedScene cannot be found from the given scenePath.
     ///
-    /// Specifically: removes everything from the SceneTree up to the root and adds a new instance of the given scene. If the new
+    /// Specifically: removes everything from PrimeRoot in the scene tree and adds a new instance of the given scene. If the new
     /// scene is a GameState the GameStateStack will be cleared and the new state will be pushed onto the stack.
     /// </summary>
     public static object ChangeScene(string scenePath)
