@@ -9,11 +9,7 @@ using System;
 /// to connect its "OnPressed" signal to a method in the scene's root script called "OnTitleScreenButtonPressed()". Be sure the button's
 /// name in the scene tree does not have spaces in it; the corresponding method name obviously cannot have spaces and the names must match.
 ///
-/// This way of connecting signals is more optimal than doing it from the scene's root script because the buttons already have a reference
-/// to their root (where the callback is), whereas the scene's root node needs to loop through all of it's children to find each button to
-/// connect their signals, and that's per button.
-///
-/// This button also helps reduce boilerplate code because you no longer need to write GetNode("buttonPath") and Button.Connect() for every
+/// This button helps reduce boilerplate code because you no longer need to write GetNode("buttonPath") and Button.Connect() for every
 /// button in a scene.
 ///
 /// Note: this button relies on its Owner reference being set. If you instantiate an AutoConnectButton in code it will not work unless you
@@ -29,9 +25,10 @@ public class AutoConnectButton : Button
     public override void _EnterTree()
     {
         if (Owner == null)  { return; }
-        if (OnPressed)      { Connect("pressed", Owner, $"On{Name}ButtonPressed"); }
-        if (OnButtonDown)   { Connect("button_down", Owner, $"On{Name}ButtonDown"); }
-        if (OnButtonUp)     { Connect("button_up", Owner, $"On{Name}ButtonUp"); }
-        if (OnToggled)      { Connect("toggled", Owner, $"On{Name}ButtonToggled"); }
+        if (OnPressed    && Owner.HasMethod($"On{Name}ButtonPressed"))  { Connect("pressed", Owner, $"On{Name}ButtonPressed"); }
+        if (OnButtonDown && Owner.HasMethod($"On{Name}ButtonDown"))     { Connect("button_down", Owner, $"On{Name}ButtonDown"); }
+        if (OnButtonUp   && Owner.HasMethod($"On{Name}ButtonUp"))       { Connect("button_up", Owner, $"On{Name}ButtonUp"); }
+        if (OnToggled    && Owner.HasMethod($"On{Name}ButtonToggled"))  { Connect("toggled", Owner, $"On{Name}ButtonToggled"); }    // Requires one bool parameter about toggled state
     }
+
 }
