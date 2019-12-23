@@ -7,10 +7,10 @@ public static partial class Bind
     /// <summary> Bind WASD keys to fire up/left/down/right input events; same as the arrow keys do by default. </summary>
     public static void BindWASDKeys()
     {
-        BindKey(KeyList.W, InputActions.UP);
-        BindKey(KeyList.A, InputActions.LEFT);
-        BindKey(KeyList.S, InputActions.DOWN);
-        BindKey(KeyList.D, InputActions.RIGHT);
+        BindKey(KeyList.W, InputActions.UI_UP);
+        BindKey(KeyList.A, InputActions.UI_LEFT);
+        BindKey(KeyList.S, InputActions.UI_DOWN);
+        BindKey(KeyList.D, InputActions.UI_RIGHT);
     }
 
     /// <summary> Bind a key to fire an action. </summary>

@@ -10,7 +10,7 @@ public class PauseMenu : GameState
 
     public override void _Input(InputEvent ev)
     {
-        if (Input.IsActionJustPressed(InputActions.CANCEL))
+        if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
         {
             Prime.PopGameState();
         }
