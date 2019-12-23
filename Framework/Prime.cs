@@ -105,8 +105,8 @@ public static partial class Prime
     #region Resource Loading
 
     /// <summary>
-    /// Loads and returns a PackedScene. You must then call myScene.Instance() to instance the scene. Alternatively you
-    /// can use Prime.GetSceneInstance<>(). Returns null if a PackedScene cannot be found from the given scenePath.
+    /// Loads and returns a PackedScene. Returns null if a PackedScene cannot be found from the given scenePath.
+    /// See also GetSceneInstance() to get an instance of a PackedScene.
     ///</summary>
     public static PackedScene GetPackedScene(string scenePath)
     {
@@ -119,8 +119,8 @@ public static partial class Prime
     }
 
     /// <summary>
-    /// Loads and instances a scene and returns the instance. Returns null if a scene of the correct type cannot be found
-    /// from the given path. See also Prime.GetPackedScene() to load a scene without instancing it yet.
+    /// Loads a PackedScene and then returns an instance of it. Returns null if an instance of the specified type cannot be found
+    /// from the given scenePath. See also Prime.GetPackedScene() to load a scene without instancing it yet.
     /// </summary>
     public static T GetSceneInstance<T>(string scenePath) where T : Node
     {
@@ -135,7 +135,7 @@ public static partial class Prime
 
     #endregion
 
-    public static void Pause()  { Tree.Paused = true; }
+    public static void Pause() { Tree.Paused = true; }
     public static void Unpause() { Tree.Paused = false; }
     public static void SetPause(bool pause) { Tree.Paused = pause; }
 
