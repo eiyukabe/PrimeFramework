@@ -4,8 +4,10 @@ using System;
 /// <summary> Contains methods for binding keys to input actions. See InputActions for a list of actions you can bind to. </summary>
 public static partial class Bind
 {
-    /// <summary> Bind WASD keys to fire up/left/down/right input events; same as the arrow keys do by default. </summary>
-    public static void BindWASDKeys()
+    /// <summary>
+    /// Bind WASD keys to fire Godot's default UI up/down/left/right actions, so WASD can be used to navigate Godot's UI controls.
+    ///</summary>
+    public static void BindUIWASD()
     {
         BindKey(KeyList.W, InputActions.UI_UP);
         BindKey(KeyList.A, InputActions.UI_LEFT);
