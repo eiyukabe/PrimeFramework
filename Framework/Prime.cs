@@ -124,7 +124,13 @@ public static partial class Prime
     /// </summary>
     public static T GetSceneInstance<T>(string scenePath) where T : Node
     {
-        return ResourceLoader.Load(scenePath) as T;
+        var scene = ResourceLoader.Load(scenePath);
+        if (scene is PackedScene)
+        {
+            var packedScene = (PackedScene) scene;
+            return packedScene.Instance() as T;
+        }
+        return null;
     }
 
     #endregion
