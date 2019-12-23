@@ -2,8 +2,7 @@ using Godot;
 using System;
 
 /// <summary>
-/// Manages application level operations like changing scenes, changing game states, pausing, quitting, and loading resources.
-///
+/// Manages higher level scene tree operations like changing game states, pausing, quitting, and loading resources.
 /// See also Framework/Prime
 /// </summary>
 public static partial class Prime

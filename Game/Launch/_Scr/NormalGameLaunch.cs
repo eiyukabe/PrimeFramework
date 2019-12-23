@@ -17,6 +17,6 @@ public class NormalGameLaunch : Node
 
    private void GoToTitleScreen()
    {
-       Prime.ChangeScene("res://Game/GameStates/TitleScreen/TitleScreen.tscn");
+       Prime.ChangeGameState("res://Game/GameStates/TitleScreen/TitleScreen.tscn");
    }
 }

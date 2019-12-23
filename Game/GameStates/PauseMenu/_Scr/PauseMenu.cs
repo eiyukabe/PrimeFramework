@@ -26,7 +26,7 @@ public class PauseMenu : GameState
     
     private void OnTitleScreenButtonPressed()
     {
-        Prime.ChangeScene("res://Game/GameStates/TitleScreen/TitleScreen.tscn");
+        Prime.ChangeGameState("res://Game/GameStates/TitleScreen/TitleScreen.tscn");
     }
 
     private void OnQuitButtonPressed()

@@ -1,20 +1,20 @@
 using Godot;
 using System;
+using System.Collections.Generic;
 
 /// <summary>
-/// Manages application level operations like changing scenes, changing game states, pausing, quitting, and loading resources.
-///
+/// Manages higher level scene tree operations like changing game states, pausing, quitting, and loading resources.
 /// See also Game/Prime
 /// </summary>
 public static partial class Prime
 {
-    private static GameStateStack GameStates = new GameStateStack();
-    
-    public static SceneTree Tree;   // Set by PrimeRoot
-    public static Node PrimeRoot;   // Set by PrimeRoot
+    public static SceneTree Tree;   // Set by TreeMonitor
+    public static Node TreeRoot;    // Set by TreeMonitor
+
+    private static GameStateStack StateStack = new GameStateStack();
 
 
-    #region Scene Management
+    #region Game State Management
 
     /// <summary>
     /// Changes to a new scene and returns that scene as an object. Similar to Godot's ChangeScene() but also handles game states. 
@@ -23,80 +23,46 @@ public static partial class Prime
     /// Specifically: removes everything from PrimeRoot in the scene tree and adds a new instance of the given scene. If the new
     /// scene is a GameState the GameStateStack will be cleared and the new state will be pushed onto the stack.
     /// </summary>
-    public static object ChangeScene(string scenePath)
+    public static object ChangeGameState(string scenePath)
     {
-        var packedScene = GetPackedScene(scenePath);
-        if (packedScene == null)
+        var gameState = GetSceneInstance<GameState>(scenePath);
+        if (gameState == null)
         {
             return null;
         }
-        
-        var sceneInstance = packedScene.Instance();
 
-        /* If the new scene is a GameState we need to clear the stack; the new scene will then be pushed later. */
-        if (sceneInstance is GameState)
-        {
-            GameStates.Clear();
-        }
-
-        /* Remove all of PrimeRoot's children */
-        foreach (Node child in PrimeRoot.GetChildren())
-        {
-            child.QueueFree();
-        }
+        /* Clear all previous states */
+        StateStack.Clear();
 
         /* Add and push new scene */
-        PrimeRoot.AddChild(sceneInstance);
-        if (sceneInstance is GameState)
-        {
-            GameStates.Push((GameState) sceneInstance);
-        }
+        TreeRoot.AddChild(gameState);
+        StateStack.Push(gameState);
 
-        return sceneInstance;
+        return gameState;
     }
-
-    #endregion
-
-
-    #region GameState Management
 
     /// <summary>
     /// Push a new GameState onto the stack. Aborts and returns null if a GameState cannot be found from the given scenePath.
     /// </summary>
-    public static GameState PushGameState(string scenePath, Node stateParent = null)
+    public static GameState PushGameState(string scenePath)
     {
-        var packedScene = GetPackedScene(scenePath);
-        if (packedScene == null)
+        var gameState = GetSceneInstance<GameState>(scenePath);
+        if (gameState == null)
         {
             return null;
         }
 
-        var sceneInstance = packedScene.Instance();
-        if (!(sceneInstance is GameState))
-        {
-            return null;
-        }
+        /* Add and push new scene */
+        TreeRoot.AddChild(gameState);
+        StateStack.Push(gameState);
         
-        var state = (GameState) sceneInstance;
-
-        if (stateParent == null)
-        {
-            PrimeRoot.AddChild(state);
-        }
-        else
-        {
-            stateParent.AddChild(state);
-        }
-        
-        GameStates.Push(state);
-
-        return state;
+        return gameState;
     }
 
     /// <summary> Pop the current GameState from the GameStateStack. </summary>
     public static void PopGameState()
     {
-        GameStates.Pop();
+        StateStack.Pop();
     }
 
     #endregion
