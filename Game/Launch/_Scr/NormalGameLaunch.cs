@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 /// <summary>
-/// NormalGameLaunch is for initialization code that only runs when the game is launched normally using f5, like it will when it ships.
+/// NormalGameLaunch is for initialization code that only runs when the game is launched normally or by using f5.
 /// See also GlobalGameLaunch.
 /// Note: GlobalGameLaunch runs before NormalGameLaunch because GlobalGameLaunch is autoloaded.
 /// </summary>
