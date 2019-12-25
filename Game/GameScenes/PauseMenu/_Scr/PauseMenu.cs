@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class PauseMenu : GameState
+public class PauseMenu : GameScene
 {
     public override void _EnterTree()
     {
@@ -26,7 +26,7 @@ public class PauseMenu : GameState
     
     private void OnTitleScreenButtonPressed()
     {
-        Prime.ChangeGameState("res://Game/GameStates/TitleScreen/TitleScreen.tscn");
+        Prime.ChangeGameState("res://Game/GameScenes/TitleScreen/TitleScreen.tscn");
     }
 
     private void OnQuitButtonPressed()
@@ -37,7 +37,7 @@ public class PauseMenu : GameState
     #endregion
 
 
-    #region GameState Callbacks
+    #region GameScene Callbacks
 
     public override void OnActivated()
     {

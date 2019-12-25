@@ -11,7 +11,7 @@ public static partial class Prime
     public static SceneTree Tree;   // Set by TreeMonitor
     public static Node TreeRoot;    // Set by TreeMonitor
 
-    private static GameStateStack StateStack = new GameStateStack();
+    private static SceneStack StateStack = new SceneStack();
 
 
     #region Game State Management
@@ -25,7 +25,7 @@ public static partial class Prime
     /// </summary>
     public static object ChangeGameState(string scenePath)
     {
-        var gameState = GetSceneInstance<GameState>(scenePath);
+        var gameState = GetSceneInstance<GameScene>(scenePath);
         if (gameState == null)
         {
             return null;
@@ -44,9 +44,9 @@ public static partial class Prime
     /// <summary>
     /// Push a new GameState onto the stack. Aborts and returns null if a GameState cannot be found from the given scenePath.
     /// </summary>
-    public static GameState PushGameState(string scenePath)
+    public static GameScene PushGameState(string scenePath)
     {
-        var gameState = GetSceneInstance<GameState>(scenePath);
+        var gameState = GetSceneInstance<GameScene>(scenePath);
         if (gameState == null)
         {
             return null;

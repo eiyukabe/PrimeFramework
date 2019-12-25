@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class GameState : PrimeNode2D
+public class GameScene : PrimeNode2D
 {
     public bool ShowWhileDeactivated = false;
     public bool ProcessWhileDeactivated = false;

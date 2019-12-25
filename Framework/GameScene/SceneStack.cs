@@ -3,13 +3,13 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// GameStateStack is meant to be managed by the Prime class, not used directly. See also GameState and Prime classes.
+/// A stack of GameScenes; meant to be managed by the Prime class, not used directly. See also GameScene and Prime classes.
 /// </summary>
-public class GameStateStack
+public class SceneStack
 {
-    private Stack<GameState> Stack = new Stack<GameState>();
+    private Stack<GameScene> Stack = new Stack<GameScene>();
 
-    public void Push(GameState newState)
+    public void Push(GameScene newState)
     {
         if (Stack.Count > 0)
         {
@@ -27,7 +27,7 @@ public class GameStateStack
             return;
         }
 
-        GameState state = Stack.Pop();
+        GameScene state = Stack.Pop();
         state.OnPopped();
         state.OnRemoved();
         state.QueueFree();
@@ -45,7 +45,7 @@ public class GameStateStack
             return;
         }
         
-        foreach(GameState state in Stack)
+        foreach(GameScene state in Stack)
         {
             state.OnRemoved();
             state.QueueFree();
@@ -54,7 +54,7 @@ public class GameStateStack
         Stack.Clear();
     }
 
-    private void Activate(GameState state)
+    private void Activate(GameScene state)
     {
         /* For GameStateManager's internal use only. This is called every time a state becomes the active state */
         
@@ -71,7 +71,7 @@ public class GameStateStack
         state.OnActivated();
     }
 
-    private void Deactivate(GameState state)
+    private void Deactivate(GameScene state)
     {
         /* For GameStateManager's internal use only. This is called every time another state is pushed on top of this state */
         state.SetVisible(state.ShowWhileDeactivated);

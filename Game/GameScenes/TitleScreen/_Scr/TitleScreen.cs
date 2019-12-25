@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class TitleScreen : GameState
+public class TitleScreen : GameScene
 {
     public override void _Input(InputEvent ev)
     {
@@ -16,7 +16,7 @@ public class TitleScreen : GameState
 
     private void OnPlayButtonPressed()
     {
-        Prime.ChangeGameState("res://Game/GameStates/Play/Play.tscn");
+        Prime.ChangeGameState("res://Game/GameScenes/Play/Play.tscn");
     }
 
     private void OnQuitButtonPressed()
