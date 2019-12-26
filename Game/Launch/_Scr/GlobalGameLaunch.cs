@@ -11,6 +11,15 @@ public class GlobalGameLaunch : Node
     public override void _EnterTree()
     {
         /* Global init game */
-        QueueFree();
+        PauseMode = PauseModeEnum.Process;
+        Bind.BindDebugControls();
+    }
+
+    public override void _Input(InputEvent ev)
+    {
+        if (ev.IsActionPressed(InputActions.PRINT_SCENE_STACK))
+        {
+            Prime.PrintSceneStack();
+        }
     }
 }
