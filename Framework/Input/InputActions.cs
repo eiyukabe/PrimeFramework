@@ -1,8 +1,10 @@
 using Godot;
 using System;
 
-/// <summary> A list of constant strings to be used as action names. Use these constants when binding keys to actions and when checking for player input,
-///           such as with Input.IsActionPressed(). See also Bind class. </summary>
+/// <summary>
+/// A list of constant strings to be used as action names. Use these constants when binding keys to actions and when checking
+/// for player input, such as with Input.IsActionPressed(). See also Bind class.
+/// </summary>
 public static partial class InputActions
 {
      /* Note: for the Godot default actions it might be important to keep using snake_case in the strings to make sure they
@@ -31,6 +33,7 @@ public static partial class InputActions
     public const string RELOAD_CURRENT_SCENE = "reload_current_scene";
     public const string TOGGLE_GOD_MODE = "toggle_god_mode";
     public const string TOGGLE_NO_CLIP = "toggle_no_clip";
+    public const string PRINT_SCENE_STACK = "print_scene_stack";
 
     /* Camera debug controls */
     public const string ZOOM_IN_DEBUG_CAMERA = "zoom_in_debug_cam";
