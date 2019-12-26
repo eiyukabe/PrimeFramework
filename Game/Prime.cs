@@ -13,6 +13,7 @@ public static partial class Prime
         Quit();
     }
 
+    /// <summary> Quit the game. </summary>
     public static void Quit()
     {
         Tree.Quit();
