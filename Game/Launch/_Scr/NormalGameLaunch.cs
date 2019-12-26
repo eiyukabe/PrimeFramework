@@ -11,12 +11,13 @@ public class NormalGameLaunch : Node
    public override void _Ready()
    {
        /* Init game */
-       CallDeferred("GoToTitleScreen");
+       CallDeferred("GoToFirstScene");
        QueueFree();
    }
 
-   private void GoToTitleScreen()
+   private void GoToFirstScene()
    {
-       Prime.ChangeGameState("res://Game/GameScenes/TitleScreen/TitleScreen.tscn");
+       // Prime.ChangeScene(Scenes.TITLE_SCREEN);
+       Prime.ChangeScene(Scenes.PLAY);
    }
 }
