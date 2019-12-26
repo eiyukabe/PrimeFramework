@@ -12,7 +12,7 @@ public class PauseMenu : GameScene
     {
         if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
         {
-            Prime.PopGameState();
+            Prime.PopTop();
         }
     }
 
@@ -21,12 +21,12 @@ public class PauseMenu : GameScene
 
     private void OnResumeButtonPressed()
     {
-        Prime.PopGameState();
+        Prime.PopTop();
     }
     
     private void OnTitleScreenButtonPressed()
     {
-        Prime.ChangeGameState("res://Game/GameScenes/TitleScreen/TitleScreen.tscn");
+        Prime.ChangeScene(Scenes.TITLE_SCREEN);
     }
 
     private void OnQuitButtonPressed()
@@ -37,11 +37,16 @@ public class PauseMenu : GameScene
     #endregion
 
 
-    #region GameScene Callbacks
+    #region Game Scene Callbacks
 
     public override void OnActivated()
     {
         Prime.Pause();
+    }
+
+    public override void OnPopped()
+    {
+        // TODO: Play "go back" sound
     }
 
     public override void OnRemoved()
