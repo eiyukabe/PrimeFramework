@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Manages higher level scene tree operations like changing game states, pausing, quitting, and loading resources.
+/// Manages higher level scene tree operations like changing game scenes, pausing, quitting, and loading resources.
 /// See also Game/Prime
 /// </summary>
 public static partial class Prime
@@ -11,58 +11,205 @@ public static partial class Prime
     public static SceneTree Tree;   // Set by TreeMonitor
     public static Node TreeRoot;    // Set by TreeMonitor
 
-    private static SceneStack StateStack = new SceneStack();
 
+    #region Game Scene Management - Private
 
-    #region Game State Management
+    private static List<GameScene> Stack = new List<GameScene>();
 
-    /// <summary>
-    /// Changes to a new scene and returns that scene as an object. Similar to Godot's ChangeScene() but also handles game states. 
-    /// Aborts and returns null if a PackedScene cannot be found from the given scenePath.
-    ///
-    /// Specifically: removes everything from PrimeRoot in the scene tree and adds a new instance of the given scene. If the new
-    /// scene is a GameState the GameStateStack will be cleared and the new state will be pushed onto the stack.
-    /// </summary>
-    public static object ChangeGameState(string scenePath)
+    /// <summary> Get the scene at the top of the stack; returns null if the stack is empty. </summary>
+    private static GameScene TopScene
     {
-        var gameState = GetSceneInstance<GameScene>(scenePath);
-        if (gameState == null)
+        get
         {
+            if (Stack.Count > 0) { return Stack[Stack.Count - 1]; }
             return null;
         }
-
-        /* Clear all previous states */
-        StateStack.Clear();
-
-        /* Add and push new scene */
-        TreeRoot.AddChild(gameState);
-        StateStack.Push(gameState);
-
-        return gameState;
     }
 
-    /// <summary>
-    /// Push a new GameState onto the stack. Aborts and returns null if a GameState cannot be found from the given scenePath.
-    /// </summary>
-    public static GameScene PushGameState(string scenePath)
+    /// <summary> Get the index of the top most main scene in the stack. Returns -1 if there is no main scene in the stack. </summary>
+    private static int TopMainSceneIndex
     {
-        var gameState = GetSceneInstance<GameScene>(scenePath);
-        if (gameState == null)
+        get
         {
-            return null;
+            for (int i = Stack.Count - 1; i >= 0; i--)
+            {
+                if (Stack[i].IsMain) { return i; }
+            }
+            return -1;
+        }
+    }
+
+    /// <summary> The basics for pushing a scene onto the stack. </summary>
+    private static void _Push(GameScene scene)
+    {
+        TopScene?.Deactivate();
+        Stack.Add(scene);
+        TreeRoot.AddChild(scene);
+        scene.Activate();
+    }
+
+    /// <summary> The basics for popping a scene off the stack. </summary>
+    public static void _Pop()
+    {
+        var scene = TopScene;
+        if (scene == null) { return; }
+        Stack.RemoveAt(Stack.Count - 1);
+        scene.OnPopped();
+        scene.OnRemoved();
+        scene.QueueFree();
+    }
+
+    /// <summary> The basics for popping the top most main scene on the stack. </summary>
+    private static void _PopScene()
+    {
+        int j = TopMainSceneIndex;
+        if (j == -1)
+        {
+            return;         // No main scene to pop
         }
 
-        /* Add and push new scene */
-        TreeRoot.AddChild(gameState);
-        StateStack.Push(gameState);
+        for (int i = Stack.Count - 1; i > j; i--)
+        {
+            _RemoveTop();   // Remove all subscenes above the main scene
+        }
         
-        return gameState;
+        _Pop();          // Pop main scene
     }
 
-    /// <summary> Pop the current GameState from the GameStateStack. </summary>
-    public static void PopGameState()
+    /// <summary> The basics for removing the top most main scene on the stack. </summary>
+    private static void _RemoveTop()
     {
-        StateStack.Pop();
+        var scene = TopScene;
+        Stack.RemoveAt(Stack.Count - 1);
+        scene.OnRemoved();
+        scene.QueueFree();
+    }
+
+    #endregion
+
+
+    #region Game Scene Management - Public
+
+    /// <summary> Push a main scene onto the stack. OnActivated() will be called on the new scene. </summary>
+    public static void PushScene(GameScene scene)
+    {
+        if (scene == null) { return; }
+        scene.IsMain = true;
+        _Push(scene);
+    }
+
+    /// <summary> Push a main scene onto the stack. OnActivated() will be called on the new scene. </summary>
+    public static void PushScene(string filepath)
+    {
+        PushScene(GetSceneInstance<GameScene>(filepath));
+    }
+
+    /// <summary> Push a subscene onto the stack. OnActivated() will be called on the new scene. </summary>
+    public static void PushSubScene(GameScene scene)
+    {
+        if (scene == null) { return; }
+        scene.IsMain = false;
+        _Push(scene);
+    }
+
+    /// <summary> Push a subscene onto the stack. OnActivated() will be called on the new scene. </summary>
+    public static void PushSubScene(string filepath)
+    {
+        PushSubScene(GetSceneInstance<GameScene>(filepath));
+    }
+
+    /// <summary> Pop the top most scene on the stack. OnPopped() and OnRemoved() will be called. OnActivated() will be called on the new top most scene. </summary>
+    public static void PopTop()
+    {
+        _Pop();
+        TopScene?.Activate();
+    }
+
+    /// <summary>
+    /// Remove all subscenes until reaching a main scene then pop the main scene. Noop if there's no main scene in the stack.
+    /// OnRemoved() will be called on the subscenes but not OnPopped(); OnPopped and OnRemoved() will be called on the main scene.
+    /// </summary>
+    public static void PopScene()
+    {
+        _PopScene();
+        TopScene?.Activate();
+    }
+
+    /// <summary>
+    /// Pop the top most subscene from the stack; it doesn't matter if there's a main scene or not. Noop if the top scene is a main scene.
+    /// OnPopped() and OnRemoved() will be called on the subscene.
+    /// </summary>
+    public static void PopSubScene()
+    {
+        if (TopScene == null) { return; }
+        if (!TopScene.IsMain) { PopTop(); }
+        TopScene?.Activate();
+    }
+
+    /// <summary> Clear all scenes from the stack. OnRemoved() will be called on all scenes but not OnPopped(). </summary>
+    public static void ClearScenes()
+    {
+        while(TopScene != null)
+        {
+            _RemoveTop();
+        }
+    }
+
+    /// <summary>
+    /// Clear all subscenes in the stack until reaching a main scene or the stack is empty. OnRemoved() will be called on the
+    /// subscenes but not OnPopped(). OnActivated() will be called on the main scene if there is one.
+    /// </summary>
+    public static void ClearSubScenes()
+    {
+        while(TopScene != null && !TopScene.IsMain)
+        {
+            _RemoveTop();
+        }
+        TopScene?.Activate();
+    }
+
+    /// <summary>
+    /// Change main scenes.  
+    /// Remove all subscenes until reaching a main scene, then pop that main scene, then push a new main scene. OnRemoved() will be
+    /// called on the subscenes but not OnPopped(); OnPopped() and OnRemoved() will be called on the old main scene and OnActivated()
+    /// on the new main scene.
+    /// </summary>
+    public static void ChangeScene(GameScene scene)
+    {
+        _PopScene();
+        PushScene(scene);
+    }
+
+    /// <summary> Change main scenes. </summary>
+    public static void ChangeScene(string filepath)
+    {
+        ChangeScene(GetSceneInstance<GameScene>(filepath));
+    }
+
+    /// <summary>
+    /// Change subscenes.  
+    /// Pop the top most subscene and push a new one on the stack. OnPopped() and OnRemoved() is called on the old subscene and OnActivated() on the new one.
+    /// </summary>
+    public static void ChangeSubScene(GameScene scene)
+    {
+        PopSubScene();
+        PushSubScene(scene);
+    }
+
+    /// <summary> Change subscenes. </summary>
+    public static void ChangeSubScene(string filepath)
+    {
+        ChangeSubScene(GetSceneInstance<GameScene>(filepath));
+    }
+
+    /// <summary> Print the names of all the scenes on the stack for debugging. </summary>
+    public static void PrintSceneStack()
+    {
+        GD.Print("-------");
+        foreach (var scene in Stack)
+        {
+            GD.Print(scene.SceneName);
+        }
     }
 
     #endregion
@@ -71,12 +218,12 @@ public static partial class Prime
     #region Resource Loading
 
     /// <summary>
-    /// Loads and returns a PackedScene. Returns null if a PackedScene cannot be found from the given scenePath.
+    /// Loads and returns a PackedScene. Returns null if a PackedScene cannot be found from the given filepath.
     /// See also GetSceneInstance() to get an instance of a PackedScene.
     ///</summary>
-    public static PackedScene GetPackedScene(string scenePath)
+    public static PackedScene GetPackedScene(string filepath)
     {
-        var scene = ResourceLoader.Load(scenePath);
+        var scene = ResourceLoader.Load(filepath);
         if (scene is PackedScene)
         {
             return (PackedScene) scene;
@@ -86,23 +233,46 @@ public static partial class Prime
 
     /// <summary>
     /// Loads a PackedScene and then returns an instance of it. Returns null if an instance of the specified type cannot be found
-    /// from the given scenePath. See also Prime.GetPackedScene() to load a scene without instancing it yet.
+    /// from the given filepath. See also Prime.GetPackedScene() to load a scene without instancing it yet.
     /// </summary>
-    public static T GetSceneInstance<T>(string scenePath) where T : Node
+    public static T GetSceneInstance<T>(string filepath) where T : Node
     {
-        var scene = ResourceLoader.Load(scenePath);
+        var scene = ResourceLoader.Load(filepath);
         if (scene is PackedScene)
         {
             var packedScene = (PackedScene) scene;
-            return packedScene.Instance() as T;
+            var instance = packedScene.Instance();
+            if (instance is T)
+            {
+                return (T) instance;
+            }
         }
         return null;
     }
 
     #endregion
 
+
+    #region Pausing
+
+    /// <summary>
+    /// Pause the game.  
+    /// Set 'PauseMode' to change if an object processes or not while the game is paused.
+    /// </summary>
     public static void Pause() { Tree.Paused = true; }
+
+    /// <summary>
+    /// Unpause the game.  
+    /// Set 'PauseMode' to change if an object processes or not while the game is paused.
+    /// </summary>
     public static void Unpause() { Tree.Paused = false; }
+
+    /// <summary>
+    /// Set the game to paused or unpaused.  
+    /// Set 'PauseMode' to change if an object processes or not while the game is paused.
+    /// </summary>
     public static void SetPause(bool pause) { Tree.Paused = pause; }
+
+    #endregion
 
 }
