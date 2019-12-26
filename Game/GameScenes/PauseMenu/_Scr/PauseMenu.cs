@@ -12,7 +12,7 @@ public class PauseMenu : GameScene
     {
         if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
         {
-            Prime.PopTop();
+            Prime.PopTopScene();
         }
     }
 
@@ -21,7 +21,7 @@ public class PauseMenu : GameScene
 
     private void OnResumeButtonPressed()
     {
-        Prime.PopTop();
+        Prime.PopTopScene();
     }
     
     private void OnTitleScreenButtonPressed()

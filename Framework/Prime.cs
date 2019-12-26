@@ -60,7 +60,7 @@ public static partial class Prime
     }
 
     /// <summary> The basics for popping the top most main scene on the stack. </summary>
-    private static void _PopScene()
+    private static void _PopMain()
     {
         int j = TopMainSceneIndex;
         if (j == -1)
@@ -118,8 +118,11 @@ public static partial class Prime
         PushSubScene(GetSceneInstance<GameScene>(filepath));
     }
 
-    /// <summary> Pop the top most scene on the stack. OnPopped() and OnRemoved() will be called. OnActivated() will be called on the new top most scene. </summary>
-    public static void PopTop()
+    /// <summary>
+    /// Pop the top most scene on the stack, main or subscene. OnPopped() and OnRemoved() will be called. OnActivated() will be called on the new
+    /// top most scene.
+    /// </summary>
+    public static void PopTopScene()
     {
         _Pop();
         TopScene?.Activate();
@@ -131,7 +134,7 @@ public static partial class Prime
     /// </summary>
     public static void PopScene()
     {
-        _PopScene();
+        _PopMain();
         TopScene?.Activate();
     }
 
@@ -142,7 +145,7 @@ public static partial class Prime
     public static void PopSubScene()
     {
         if (TopScene == null) { return; }
-        if (!TopScene.IsMain) { PopTop(); }
+        if (!TopScene.IsMain) { PopTopScene(); }
         TopScene?.Activate();
     }
 
@@ -176,7 +179,7 @@ public static partial class Prime
     /// </summary>
     public static void ChangeScene(GameScene scene)
     {
-        _PopScene();
+        _PopMain();
         PushScene(scene);
     }
 
