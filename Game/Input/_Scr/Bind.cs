@@ -10,6 +10,7 @@ public static partial class Bind
         BindKey(KeyList.F1, InputActions.RELOAD_CURRENT_SCENE);
         BindKey(KeyList.F2, InputActions.TOGGLE_GOD_MODE);
         BindKey(KeyList.F3, InputActions.TOGGLE_NO_CLIP);
+        BindKey(KeyList.Slash, InputActions.PRINT_SCENE_STACK);
     }
 
     /// <summary> Bind camera debug controls. A debug camera must be in the scene for this to do anything. </summary>
