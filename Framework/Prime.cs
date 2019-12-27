@@ -149,7 +149,7 @@ public static partial class Prime
     /// - scene.OnFirstVisit()
     /// - scene.OnVisit()
     /// </summary>
-    public static void ChangeScene(GameScene scene)
+    public static void SwapScene(GameScene scene)
     {
         Stack.PopMain();
         PushScene(scene);
@@ -164,9 +164,9 @@ public static partial class Prime
     /// - scene.OnFirstVisit()
     /// - scene.OnVisit()
     /// </summary>
-    public static void ChangeScene(string filepath)
+    public static void SwapScene(string filepath)
     {
-        ChangeScene(GetSceneInstance<GameScene>(filepath));
+        SwapScene(GetSceneInstance<GameScene>(filepath));
     }
 
     /// <summary>
@@ -177,7 +177,7 @@ public static partial class Prime
     /// - scene.OnFirstVisit()
     /// - scene.OnVisit()
     /// </summary>
-    public static void ChangeSubScene(GameScene scene)
+    public static void SwapSubScene(GameScene scene)
     {
         PopSubScene();
         PushSubScene(scene);
@@ -191,9 +191,9 @@ public static partial class Prime
     /// - scene.OnFirstVisit()
     /// - scene.OnVisit()
     /// </summary>
-    public static void ChangeSubScene(string filepath)
+    public static void SwapSubScene(string filepath)
     {
-        ChangeSubScene(GetSceneInstance<GameScene>(filepath));
+        SwapSubScene(GetSceneInstance<GameScene>(filepath));
     }
 
     /// <summary> Print the name of all scenes on the stack for debugging. </summary>

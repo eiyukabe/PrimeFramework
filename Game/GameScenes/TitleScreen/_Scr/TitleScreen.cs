@@ -16,7 +16,7 @@ public class TitleScreen : GameScene
 
     private void OnPlayButtonPressed()
     {
-        Prime.ChangeScene(Scenes.PLAY);
+        Prime.SwapScene(Scenes.PLAY);
     }
 
     private void OnQuitButtonPressed()
