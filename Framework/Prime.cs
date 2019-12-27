@@ -19,9 +19,9 @@ public static partial class Prime
     /// <summary>
     /// Push a main scene onto the stack.  
     /// Callbacks:
-    /// - oldScene.OnDeactivated()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldScene.OnSuspend()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void PushScene(GameScene scene)
     {
@@ -33,9 +33,9 @@ public static partial class Prime
     /// <summary>
     /// Push a main scene onto the stack.  
     /// Callbacks:
-    /// - oldScene.OnDeactivated()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldScene.OnSuspend()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void PushScene(string filepath)
     {
@@ -45,9 +45,9 @@ public static partial class Prime
     /// <summary>
     /// Push a subscene onto the stack.  
     /// Callbacks:
-    /// - oldScene.OnDeactivated()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldScene.OnSuspend()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void PushSubScene(GameScene scene)
     {
@@ -59,9 +59,9 @@ public static partial class Prime
     /// <summary>
     /// Push a subscene onto the stack.  
     /// Callbacks:
-    /// - oldScene.OnDeactivated()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldScene.OnSuspend()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void PushSubScene(string filepath)
     {
@@ -71,47 +71,50 @@ public static partial class Prime
     /// <summary>
     /// Pop the topmost main scene or subscene off the stack.  
     /// Callbacks:
-    /// - scene.OnPopped()
-    /// - scene.OnRemoved()
-    /// - newTopScene.OnActivated()
+    /// - scene.OnPop()
+    /// - scene.OnRemove()
+    /// - newTopScene.OnRevisit()
+    /// - newTopScene.OnVisit()
     /// </summary>
     public static void PopTopScene()
     {
         Stack.Pop();
-        Stack.TopScene?.Activate();
+        Stack.TopScene?.Visit();
     }
 
     /// <summary>
     /// Pop the topmost main scene off the stack and any subscenes above it. Noop if there's no main scene on the stack.  
     /// Callbacks:
-    /// - oldSub.OnRemoved()
-    /// - oldMain.OnPopped()
-    /// - oldMain.OnRemoved()
-    /// - newTopScene.OnActivated()
+    /// - oldSub.OnRemove()
+    /// - oldMain.OnPop()
+    /// - oldMain.OnRemove()
+    /// - newTopScene.OnRevisit()
+    /// - newTopScene.OnVisit()
     /// </summary>
     public static void PopScene()
     {
         Stack.PopMain();
-        Stack.TopScene?.Activate();
+        Stack.TopScene?.Visit();
     }
 
     /// <summary>
     /// Pop the topmost subscene from the stack. Noop if the top scene is a main scene.  
     /// Callbacks:
-    /// - sub.OnPopped()
-    /// - sub.OnRemoved()
-    /// - newTopScene.OnActivated()
+    /// - sub.OnPop()
+    /// - sub.OnRemove()
+    /// - newTopScene.OnRevisit()
+    /// - newTopScene.OnVisit()
     /// </summary>
     public static void PopSubScene()
     {
         if (!Stack.TopScene.IsMain) { Stack.Pop(); }
-        Stack.TopScene?.Activate();
+        Stack.TopScene?.Visit();
     }
 
     /// <summary>
     /// Clear all scenes on the stack.  
     /// Callbacks:
-    /// - scene.OnRemoved()
+    /// - scenes.OnRemove()
     /// </summary>
     public static void ClearScenes()
     {
@@ -124,8 +127,9 @@ public static partial class Prime
     /// <summary>
     /// Clear all subscenes on the stack until reaching a main scene or the stack is empty.  
     /// Callbacks:
-    /// - sub.OnRemoved()
-    /// - newTopMain.OnActivated()
+    /// - subs.OnRemove()
+    /// - newTopMain.OnRevisit()
+    /// - newTopMain.OnVisit()
     /// </summary>
     public static void ClearSubScenes()
     {
@@ -133,17 +137,17 @@ public static partial class Prime
         {
             Stack.RemoveTop();
         }
-        Stack.TopScene?.Activate();
+        Stack.TopScene?.Visit();
     }
 
     /// <summary>
     /// Swap topmost main scene for a new one. (Shortcut for PopScene(); PushScene())  
     /// Callbacks:
-    /// - oldSubs.OnRemoved()
-    /// - oldMain.OnPopped()
-    /// - oldMain.OnRemoved()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldSubs.OnRemove()
+    /// - oldMain.OnPop()
+    /// - oldMain.OnRemove()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void ChangeScene(GameScene scene)
     {
@@ -154,11 +158,11 @@ public static partial class Prime
     /// <summary>
     /// Swap topmost main scene for a new one. (Shortcut for PopScene(); PushScene())  
     /// Callbacks:
-    /// - oldSubs.OnRemoved()
-    /// - oldMain.OnPopped()
-    /// - oldMain.OnRemoved()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldSubs.OnRemove()
+    /// - oldMain.OnPop()
+    /// - oldMain.OnRemove()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void ChangeScene(string filepath)
     {
@@ -168,10 +172,10 @@ public static partial class Prime
     /// <summary>
     /// Swap topmost subscene for a new one. (Shortcut for PopSubScene(); PushSubScene())  
     /// Callbacks:
-    /// - oldSub.OnPopped()
-    /// - oldSub.OnRemoved()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldSub.OnPop()
+    /// - oldSub.OnRemove()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void ChangeSubScene(GameScene scene)
     {
@@ -182,10 +186,10 @@ public static partial class Prime
     /// <summary>
     /// Swap topmost subscene for a new one. (Shortcut for PopSubScene(); PushSubScene())  
     /// Callbacks:
-    /// - oldSub.OnPopped()
-    /// - oldSub.OnRemoved()
-    /// - scene.OnFirstActivated()
-    /// - scene.OnActivated()
+    /// - oldSub.OnPop()
+    /// - oldSub.OnRemove()
+    /// - scene.OnFirstVisit()
+    /// - scene.OnVisit()
     /// </summary>
     public static void ChangeSubScene(string filepath)
     {

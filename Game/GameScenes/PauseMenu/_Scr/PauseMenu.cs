@@ -39,17 +39,17 @@ public class PauseMenu : GameScene
 
     #region Game Scene Callbacks
 
-    public override void OnActivated()
+    public override void OnVisit()
     {
         Prime.Pause();
     }
 
-    public override void OnPopped()
+    public override void OnPop()
     {
         // TODO: Play "go back" sound
     }
 
-    public override void OnRemoved()
+    public override void OnRemove()
     {
         Prime.Unpause();
     }

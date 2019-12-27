@@ -32,10 +32,10 @@ public class SceneStack
     /// <summary> Push a scene onto the stack. </summary>
     public void Push(GameScene scene, Node parent)
     {
-        TopScene?.Deactivate();
+        TopScene?.Suspend();
         Stack.Add(scene);
         parent.AddChild(scene);
-        scene.Activate(justPushed: true);
+        scene.Visit(justPushed: true);
     }
 
     /// <summary> Pop the topmost scene off the stack. </summary>
@@ -44,8 +44,8 @@ public class SceneStack
         var scene = TopScene;
         if (scene == null) { return; }
         Stack.RemoveAt(Stack.Count - 1);
-        scene.OnPopped();
-        scene.OnRemoved();
+        scene.OnPop();
+        scene.OnRemove();
         scene.QueueFree();
     }
 
@@ -71,7 +71,7 @@ public class SceneStack
     {
         var scene = TopScene;
         Stack.RemoveAt(Stack.Count - 1);
-        scene.OnRemoved();
+        scene.OnRemove();
         scene.QueueFree();
     }
 
