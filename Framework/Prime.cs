@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 
 /// <summary>
-/// Manages higher level scene tree operations like changing game scenes, pausing, quitting, and loading resources.
+/// Manages higher level scene tree operations like changing game scenes, pausing, quitting, and loading resources.  
 /// See also Game/Prime
 /// </summary>
 public static partial class Prime
@@ -11,187 +11,167 @@ public static partial class Prime
     public static SceneTree Tree;   // Set by TreeMonitor
     public static Node TreeRoot;    // Set by TreeMonitor
 
-
-    #region Game Scene Management - Private
-
-    private static List<GameScene> Stack = new List<GameScene>();
-
-    /// <summary> Get the scene at the top of the stack; returns null if the stack is empty. </summary>
-    private static GameScene TopScene
-    {
-        get
-        {
-            if (Stack.Count > 0) { return Stack[Stack.Count - 1]; }
-            return null;
-        }
-    }
-
-    /// <summary> Get the index of the top most main scene in the stack. Returns -1 if there is no main scene in the stack. </summary>
-    private static int TopMainSceneIndex
-    {
-        get
-        {
-            for (int i = Stack.Count - 1; i >= 0; i--)
-            {
-                if (Stack[i].IsMain) { return i; }
-            }
-            return -1;
-        }
-    }
-
-    /// <summary> The basics for pushing a scene onto the stack. </summary>
-    private static void _Push(GameScene scene)
-    {
-        TopScene?.Deactivate();
-        Stack.Add(scene);
-        TreeRoot.AddChild(scene);
-        scene.Activate();
-    }
-
-    /// <summary> The basics for popping a scene off the stack. </summary>
-    public static void _Pop()
-    {
-        var scene = TopScene;
-        if (scene == null) { return; }
-        Stack.RemoveAt(Stack.Count - 1);
-        scene.OnPopped();
-        scene.OnRemoved();
-        scene.QueueFree();
-    }
-
-    /// <summary> The basics for popping the top most main scene on the stack. </summary>
-    private static void _PopMain()
-    {
-        int j = TopMainSceneIndex;
-        if (j == -1)
-        {
-            return;         // No main scene to pop
-        }
-
-        for (int i = Stack.Count - 1; i > j; i--)
-        {
-            _RemoveTop();   // Remove all subscenes above the main scene
-        }
-        
-        _Pop();          // Pop main scene
-    }
-
-    /// <summary> The basics for removing the top most main scene on the stack. </summary>
-    private static void _RemoveTop()
-    {
-        var scene = TopScene;
-        Stack.RemoveAt(Stack.Count - 1);
-        scene.OnRemoved();
-        scene.QueueFree();
-    }
-
-    #endregion
+    private static SceneStack Stack = new SceneStack();
 
 
-    #region Game Scene Management - Public
+    #region Game Scene Management
 
-    /// <summary> Push a main scene onto the stack. OnActivated() will be called on the new scene. </summary>
+    /// <summary>
+    /// Push a main scene onto the stack.  
+    /// Callbacks:
+    /// - oldScene.OnDeactivated()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
+    /// </summary>
     public static void PushScene(GameScene scene)
     {
         if (scene == null) { return; }
         scene.IsMain = true;
-        _Push(scene);
+        Stack.Push(scene, TreeRoot);
     }
 
-    /// <summary> Push a main scene onto the stack. OnActivated() will be called on the new scene. </summary>
+    /// <summary>
+    /// Push a main scene onto the stack.  
+    /// Callbacks:
+    /// - oldScene.OnDeactivated()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
+    /// </summary>
     public static void PushScene(string filepath)
     {
         PushScene(GetSceneInstance<GameScene>(filepath));
     }
 
-    /// <summary> Push a subscene onto the stack. OnActivated() will be called on the new scene. </summary>
+    /// <summary>
+    /// Push a subscene onto the stack.  
+    /// Callbacks:
+    /// - oldScene.OnDeactivated()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
+    /// </summary>
     public static void PushSubScene(GameScene scene)
     {
         if (scene == null) { return; }
         scene.IsMain = false;
-        _Push(scene);
+        Stack.Push(scene, TreeRoot);
     }
 
-    /// <summary> Push a subscene onto the stack. OnActivated() will be called on the new scene. </summary>
+    /// <summary>
+    /// Push a subscene onto the stack.  
+    /// Callbacks:
+    /// - oldScene.OnDeactivated()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
+    /// </summary>
     public static void PushSubScene(string filepath)
     {
         PushSubScene(GetSceneInstance<GameScene>(filepath));
     }
 
     /// <summary>
-    /// Pop the top most scene on the stack, main or subscene. OnPopped() and OnRemoved() will be called. OnActivated() will be called on the new
-    /// top most scene.
+    /// Pop the topmost main scene or subscene off the stack.  
+    /// Callbacks:
+    /// - scene.OnPopped()
+    /// - scene.OnRemoved()
+    /// - newTopScene.OnActivated()
     /// </summary>
     public static void PopTopScene()
     {
-        _Pop();
-        TopScene?.Activate();
+        Stack.Pop();
+        Stack.TopScene?.Activate();
     }
 
     /// <summary>
-    /// Remove all subscenes until reaching a main scene then pop the main scene. Noop if there's no main scene in the stack.
-    /// OnRemoved() will be called on the subscenes but not OnPopped(); OnPopped and OnRemoved() will be called on the main scene.
+    /// Pop the topmost main scene off the stack and any subscenes above it. Noop if there's no main scene on the stack.  
+    /// Callbacks:
+    /// - oldSub.OnRemoved()
+    /// - oldMain.OnPopped()
+    /// - oldMain.OnRemoved()
+    /// - newTopScene.OnActivated()
     /// </summary>
     public static void PopScene()
     {
-        _PopMain();
-        TopScene?.Activate();
+        Stack.PopMain();
+        Stack.TopScene?.Activate();
     }
 
     /// <summary>
-    /// Pop the top most subscene from the stack; it doesn't matter if there's a main scene or not. Noop if the top scene is a main scene.
-    /// OnPopped() and OnRemoved() will be called on the subscene.
+    /// Pop the topmost subscene from the stack. Noop if the top scene is a main scene.  
+    /// Callbacks:
+    /// - sub.OnPopped()
+    /// - sub.OnRemoved()
+    /// - newTopScene.OnActivated()
     /// </summary>
     public static void PopSubScene()
     {
-        if (TopScene == null) { return; }
-        if (!TopScene.IsMain) { PopTopScene(); }
-        TopScene?.Activate();
+        if (!Stack.TopScene.IsMain) { Stack.Pop(); }
+        Stack.TopScene?.Activate();
     }
 
-    /// <summary> Clear all scenes from the stack. OnRemoved() will be called on all scenes but not OnPopped(). </summary>
+    /// <summary>
+    /// Clear all scenes on the stack.  
+    /// Callbacks:
+    /// - scene.OnRemoved()
+    /// </summary>
     public static void ClearScenes()
     {
-        while(TopScene != null)
+        while(Stack.TopScene != null)
         {
-            _RemoveTop();
+            Stack.RemoveTop();
         }
     }
 
     /// <summary>
-    /// Clear all subscenes in the stack until reaching a main scene or the stack is empty. OnRemoved() will be called on the
-    /// subscenes but not OnPopped(). OnActivated() will be called on the main scene if there is one.
+    /// Clear all subscenes on the stack until reaching a main scene or the stack is empty.  
+    /// Callbacks:
+    /// - sub.OnRemoved()
+    /// - newTopMain.OnActivated()
     /// </summary>
     public static void ClearSubScenes()
     {
-        while(TopScene != null && !TopScene.IsMain)
+        while(Stack.TopScene != null && !Stack.TopScene.IsMain)
         {
-            _RemoveTop();
+            Stack.RemoveTop();
         }
-        TopScene?.Activate();
+        Stack.TopScene?.Activate();
     }
 
     /// <summary>
-    /// Change main scenes.  
-    /// Remove all subscenes until reaching a main scene, then pop that main scene, then push a new main scene. OnRemoved() will be
-    /// called on the subscenes but not OnPopped(); OnPopped() and OnRemoved() will be called on the old main scene and OnActivated()
-    /// on the new main scene.
+    /// Swap topmost main scene for a new one. (Shortcut for PopScene(); PushScene())  
+    /// Callbacks:
+    /// - oldSubs.OnRemoved()
+    /// - oldMain.OnPopped()
+    /// - oldMain.OnRemoved()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
     /// </summary>
     public static void ChangeScene(GameScene scene)
     {
-        _PopMain();
+        Stack.PopMain();
         PushScene(scene);
     }
 
-    /// <summary> Change main scenes. </summary>
+    /// <summary>
+    /// Swap topmost main scene for a new one. (Shortcut for PopScene(); PushScene())  
+    /// Callbacks:
+    /// - oldSubs.OnRemoved()
+    /// - oldMain.OnPopped()
+    /// - oldMain.OnRemoved()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
+    /// </summary>
     public static void ChangeScene(string filepath)
     {
         ChangeScene(GetSceneInstance<GameScene>(filepath));
     }
 
     /// <summary>
-    /// Change subscenes.  
-    /// Pop the top most subscene and push a new one on the stack. OnPopped() and OnRemoved() is called on the old subscene and OnActivated() on the new one.
+    /// Swap topmost subscene for a new one. (Shortcut for PopSubScene(); PushSubScene())  
+    /// Callbacks:
+    /// - oldSub.OnPopped()
+    /// - oldSub.OnRemoved()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
     /// </summary>
     public static void ChangeSubScene(GameScene scene)
     {
@@ -199,20 +179,23 @@ public static partial class Prime
         PushSubScene(scene);
     }
 
-    /// <summary> Change subscenes. </summary>
+    /// <summary>
+    /// Swap topmost subscene for a new one. (Shortcut for PopSubScene(); PushSubScene())  
+    /// Callbacks:
+    /// - oldSub.OnPopped()
+    /// - oldSub.OnRemoved()
+    /// - scene.OnFirstActivated()
+    /// - scene.OnActivated()
+    /// </summary>
     public static void ChangeSubScene(string filepath)
     {
         ChangeSubScene(GetSceneInstance<GameScene>(filepath));
     }
 
-    /// <summary> Print the names of all the scenes on the stack for debugging. </summary>
+    /// <summary> Print the name of all scenes on the stack for debugging. </summary>
     public static void PrintSceneStack()
     {
-        GD.Print("-------");
-        foreach (var scene in Stack)
-        {
-            GD.Print(scene.SceneName);
-        }
+        Stack.PrintSceneStack();
     }
 
     #endregion
