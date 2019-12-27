@@ -17,8 +17,7 @@ public class NormalGameLaunch : Node
 
    private void GoToFirstScene()
    {
-       // Prime.ChangeScene(Scenes.TITLE_SCREEN);
-       Prime.SwapScene(Scenes.PLAY);
-       Prime.PushScene(Scenes.PLAY);
+       // Prime.SetScene(Scenes.TITLE_SCREEN);
+       Prime.SetScene(Scenes.PLAY);
    }
 }

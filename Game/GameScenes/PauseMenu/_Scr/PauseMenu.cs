@@ -12,7 +12,7 @@ public class PauseMenu : GameScene
     {
         if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
         {
-            Prime.PopTopScene();
+            Prime.PopTop();
         }
     }
 
@@ -21,12 +21,12 @@ public class PauseMenu : GameScene
 
     private void OnResumeButtonPressed()
     {
-        Prime.PopTopScene();
+        Prime.PopTop();
     }
     
     private void OnTitleScreenButtonPressed()
     {
-        Prime.SwapScene(Scenes.TITLE_SCREEN);
+        Prime.SetScene(Scenes.TITLE_SCREEN);
     }
 
     private void OnQuitButtonPressed()
