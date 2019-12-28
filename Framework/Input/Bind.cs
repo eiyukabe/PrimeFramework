@@ -7,7 +7,7 @@ public static partial class Bind
     /// <summary>
     /// Bind WASD keys to fire Godot's default UI up/down/left/right actions, so WASD can be used to navigate Godot's UI controls.
     ///</summary>
-    public static void BindUIWASD()
+    public static void BindUIWASDKeys()
     {
         BindKey(KeyList.W, InputActions.UI_UP);
         BindKey(KeyList.A, InputActions.UI_LEFT);

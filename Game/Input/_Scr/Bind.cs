@@ -4,8 +4,8 @@ using System;
 /// <summary> Contains methods for binding keys to input actions. See InputActions for a list of actions you can bind to. </summary>
 public static partial class Bind
 {
-    /// <summary> Bind common debug controls. </summary>
-    public static void BindDebugControls()
+    /// <summary> Bind common debug keys. </summary>
+    public static void BindCommonDebugKeys()
     {
         BindKey(KeyList.F1, InputActions.RELOAD_CURRENT_SCENE);
         BindKey(KeyList.F2, InputActions.TOGGLE_GOD_MODE);
@@ -13,8 +13,8 @@ public static partial class Bind
         BindKey(KeyList.Slash, InputActions.PRINT_SCENE_STACK);
     }
 
-    /// <summary> Bind camera debug controls. A debug camera must be in the scene for this to do anything. </summary>
-    public static void BindCameraDebugControls()
+    /// <summary> Bind camera debug keys. A debug camera must be in the scene for this to do anything. </summary>
+    public static void BindCameraDebugKeys()
     {
         BindKey(KeyList.KpAdd, InputActions.ZOOM_IN_DEBUG_CAMERA);
         BindKey(KeyList.KpSubtract, InputActions.ZOOM_OUT_DEBUG_CAMERA);
