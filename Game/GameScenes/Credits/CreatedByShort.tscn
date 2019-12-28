@@ -1,0 +1,31 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_40.tres" type="DynamicFont" id=1]
+[ext_resource path="res://PrimeFramework/UI/Buttons/Hyperlink.cs" type="Script" id=2]
+
+[node name="CreatedByShort" type="Control"]
+
+[node name="CreatedBy" type="Label" parent="."]
+margin_left = -83.0
+margin_top = -20.0
+margin_right = 92.0
+margin_bottom = -6.0
+text = "Created by:"
+align = 1
+
+[node name="PrimeChaos" type="RichTextLabel" parent="."]
+margin_left = -84.0
+margin_top = -8.0
+margin_right = 92.0
+margin_bottom = 32.0
+rect_min_size = Vector2( 176, 40 )
+custom_fonts/normal_font = ExtResource( 1 )
+custom_colors/default_color = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 2
+text = "Prime Chaos"
+scroll_active = false
+script = ExtResource( 2 )
+URL = "http://www.primechaos.com"
+LinkText = "Prime Chaos"
