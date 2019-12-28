@@ -11,9 +11,9 @@ Veluzy
 - Debug display - level timer, god mode, no clip, game uptime timer
 - UI Templates
 	✓ Title Screen
-	- Options Screen
-	- Credits
-	- Level Complete screen
+	✓ Credits
+	? Options Screen
+	? Level Complete screen
 - Paths
 ? Player
 	- Temp invincible
