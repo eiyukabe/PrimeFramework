@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_32.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Game/UI/Buttons/DefaultButton.cs" type="Script" id=2]
+
+
+[node name="Button" type="Button"]
+margin_right = 200.0
+margin_bottom = 50.0
+rect_min_size = Vector2( 200, 50 )
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color_disabled = Color( 0.403922, 0.403922, 0.403922, 1 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+custom_colors/font_color_hover = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_pressed = Color( 0, 0.670588, 1, 1 )
+script = ExtResource( 2 )
