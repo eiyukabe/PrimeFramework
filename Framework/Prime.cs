@@ -40,7 +40,7 @@ public static partial class Prime
     }
     
     /// <summary> Push a scene onto the stack. </summary>
-    public static void BasePush(GameScene scene)
+    private static void BasePush(GameScene scene)
     {
         TopScene?.Suspend();
         Stack.Add(scene);
@@ -49,7 +49,7 @@ public static partial class Prime
     }
 
     /// <summary> Pop the topmost scene off the stack. </summary>
-    public static void BasePop()
+    private static void BasePop()
     {
         var scene = TopScene;
         if (scene == null) { return; }
@@ -60,7 +60,7 @@ public static partial class Prime
     }
 
     /// <summary> Pop the topmost main scene off the stack and any subscenes above it. Noop if there's no main scene on the stack. </summary>
-    public static void BasePopMain()
+    private static void BasePopMain()
     {
         int j = TopMainSceneIndex;
         if (j == -1)
@@ -77,7 +77,7 @@ public static partial class Prime
     }
 
     /// <summary> Remove the topmost scene on the stack. </summary>
-    public static void BaseRemoveTop()
+    private static void BaseRemoveTop()
     {
         var scene = TopScene;
         Stack.RemoveAt(Stack.Count - 1);
