@@ -6,7 +6,7 @@ Veluzy
 - Build dock
 - Batch scene editor
 - Scrolling background
-- Fonts - motion control bold, make a few ready to use
+✓ Fonts - motion control bold, make a few ready to use
 - Audio
 - Debug display - level timer, god mode, no clip, game uptime timer
 - UI Templates
