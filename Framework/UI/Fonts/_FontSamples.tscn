@@ -1,0 +1,112 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_48.tres" type="DynamicFont" id=1]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_16.tres" type="DynamicFont" id=2]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_24.tres" type="DynamicFont" id=3]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_34.tres" type="DynamicFont" id=4]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_48.tres" type="DynamicFont" id=5]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_64.tres" type="DynamicFont" id=6]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_24.tres" type="DynamicFont" id=7]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_32.tres" type="DynamicFont" id=8]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_64.tres" type="DynamicFont" id=9]
+
+[node name="Courier Samples Scene" type="Node"]
+
+[node name="Center1" type="CenterContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 64.0
+
+[node name="Label" type="Label" parent="Center1"]
+margin_left = 393.0
+margin_top = 7.0
+margin_right = 631.0
+margin_bottom = 56.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 2
+custom_constants/shadow_offset_y = 2
+text = "Font Samples:"
+
+[node name="Center2" type="CenterContainer" parent="."]
+margin_right = 1024.0
+margin_bottom = 600.0
+
+[node name="VBox" type="VBoxContainer" parent="Center2"]
+margin_left = 170.0
+margin_top = 79.0
+margin_right = 854.0
+margin_bottom = 520.0
+custom_constants/separation = 40
+
+[node name="VBox" type="VBoxContainer" parent="Center2/VBox"]
+margin_right = 684.0
+margin_bottom = 199.0
+custom_constants/separation = 10
+
+[node name="Courier_16" type="Label" parent="Center2/VBox/VBox"]
+margin_right = 684.0
+margin_bottom = 14.0
+custom_fonts/font = ExtResource( 2 )
+text = "This is Courier_16"
+
+[node name="Courier_24" type="Label" parent="Center2/VBox/VBox"]
+margin_top = 24.0
+margin_right = 684.0
+margin_bottom = 45.0
+custom_fonts/font = ExtResource( 3 )
+text = "This is Courier_24"
+
+[node name="Courier_34" type="Label" parent="Center2/VBox/VBox"]
+margin_top = 55.0
+margin_right = 684.0
+margin_bottom = 84.0
+custom_fonts/font = ExtResource( 4 )
+text = "This is Courier_34"
+
+[node name="Courier_48" type="Label" parent="Center2/VBox/VBox"]
+margin_top = 94.0
+margin_right = 684.0
+margin_bottom = 135.0
+custom_fonts/font = ExtResource( 5 )
+text = "This is Courier_48"
+
+[node name="Courier_64" type="Label" parent="Center2/VBox/VBox"]
+margin_top = 145.0
+margin_right = 684.0
+margin_bottom = 199.0
+custom_fonts/font = ExtResource( 6 )
+text = "This is Courier_64"
+
+[node name="VBox2" type="VBoxContainer" parent="Center2/VBox"]
+margin_top = 239.0
+margin_right = 684.0
+margin_bottom = 441.0
+custom_constants/separation = 10
+
+[node name="Motion_24" type="Label" parent="Center2/VBox/VBox2"]
+margin_right = 684.0
+margin_bottom = 25.0
+custom_fonts/font = ExtResource( 7 )
+text = "This is Motion_24"
+
+[node name="Motion_32" type="Label" parent="Center2/VBox/VBox2"]
+margin_top = 35.0
+margin_right = 684.0
+margin_bottom = 68.0
+custom_fonts/font = ExtResource( 8 )
+text = "This is Motion_32"
+
+[node name="Motion_48" type="Label" parent="Center2/VBox/VBox2"]
+margin_top = 78.0
+margin_right = 684.0
+margin_bottom = 127.0
+custom_fonts/font = ExtResource( 1 )
+text = "This is Motion_48"
+
+[node name="Motion_64" type="Label" parent="Center2/VBox/VBox2"]
+margin_top = 137.0
+margin_right = 684.0
+margin_bottom = 202.0
+custom_fonts/font = ExtResource( 9 )
+text = "This is Motion_64"
