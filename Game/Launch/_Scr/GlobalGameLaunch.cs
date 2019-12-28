@@ -12,7 +12,8 @@ public class GlobalGameLaunch : Node
     {
         /* Global init game */
         PauseMode = PauseModeEnum.Process;
-        Bind.BindDebugControls();
+        Bind.BindCommonDebugKeys();
+        Bind.BindUIWASDKeys();
     }
 
     public override void _Input(InputEvent ev)
