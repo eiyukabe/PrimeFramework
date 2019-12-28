@@ -1,9 +1,8 @@
 Veluzy
 =============
-x GameStates
-x Launch
-x Program global for handling application level stuff like fullscreen and quitting
-x Troops (Actor)
+✓ GameScenes
+✓ Launch
+- Troops (Actor)
 - Build dock
 - Batch scene editor
 - Scrolling background
@@ -11,7 +10,7 @@ x Troops (Actor)
 - Audio
 - Debug display - level timer, god mode, no clip, game uptime timer
 - UI Templates
-	- Title Screen
+	✓ Title Screen
 	- Options Screen
 	- Credits
 	- Level Complete screen
@@ -23,10 +22,11 @@ x Troops (Actor)
 ? Standard collision layers
 ? Walls
 - Figure out how to debug
-- Add Prime Singleton
-	- pause()
-	- quit game
-	- toggle full screen
+✓ Add Prime Singleton
+	✓ pause
+	✓ quit game
+	✓ toggle full screen
+	✓ change game scenes
 
 
 Eiyukabe
