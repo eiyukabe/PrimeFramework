@@ -16,7 +16,7 @@ public class GameScene : PrimeNode2D
     public virtual void OnPop() {}          // Called right before this scene is popped from the stack. Will not be called when this scene is cleared from the stack.
     public virtual void OnRemove() {}       // Called every time this scene is removed from the stack, either from being popped or cleared.
 
-    /// <summary> Called externally by the SceneStack class when this scene becomes the topmost scene on the stack. </summary>
+    /// <summary> Called externally by the Prime class when this scene becomes the topmost scene on the stack. </summary>
     public void Visit(bool justPushed = false)
     {
         if (Active) { return; }
@@ -33,7 +33,7 @@ public class GameScene : PrimeNode2D
         OnVisit();
     }
 
-    /// <summary> Called externally by the SceneStack class when another game scene is pushed on top of this one. </summary>
+    /// <summary> Called externally by the Prime class when another game scene is pushed on top of this one. </summary>
     public void Suspend()
     {
         if (!Active) { return; }
