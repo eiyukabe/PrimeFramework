@@ -1,0 +1,69 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_35.tres" type="DynamicFont" id=1]
+[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_48.tres" type="DynamicFont" id=2]
+[ext_resource path="res://PrimeFramework/UI/Buttons/Hyperlink.cs" type="Script" id=3]
+
+[node name="CreatedByLong" type="Control"]
+margin_right = 40.0
+margin_bottom = 40.0
+__meta__ = {
+"_edit_vertical_guides_": [  ]
+}
+
+[node name="CreatedBy" type="Label" parent="."]
+margin_left = -100.0
+margin_top = -82.0
+margin_right = 112.0
+margin_bottom = -41.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 2
+text = "Created by:"
+align = 1
+
+[node name="PrimeChaos" type="RichTextLabel" parent="."]
+margin_left = -100.0
+margin_top = -54.0
+margin_right = 112.0
+margin_bottom = -6.0
+custom_fonts/normal_font = ExtResource( 2 )
+custom_colors/default_color = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 2
+bbcode_enabled = true
+bbcode_text = "[url=http://www.primechaos.com]Prime Chaos[/url]"
+text = "Prime Chaos"
+scroll_active = false
+script = ExtResource( 3 )
+URL = "http://www.primechaos.com"
+LinkText = "Prime Chaos"
+
+[node name="Jeffrey" type="Label" parent="."]
+margin_left = -100.0
+margin_top = 6.0
+margin_right = 114.0
+margin_bottom = 42.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 2
+text = "Jeffrey Crenshaw"
+align = 1
+
+[node name="Brian" type="Label" parent="."]
+margin_left = -100.0
+margin_top = 42.0
+margin_right = 112.0
+margin_bottom = 78.0
+custom_fonts/font = ExtResource( 1 )
+custom_colors/font_color = Color( 0.882353, 0.882353, 0.882353, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+custom_constants/shadow_offset_x = 1
+custom_constants/shadow_offset_y = 2
+text = "Brian Waters"
+align = 1
