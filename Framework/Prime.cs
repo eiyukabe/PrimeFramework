@@ -91,7 +91,7 @@ public static partial class Prime
     #region Game Scene Management - Public
 
     /// <summary>
-    /// Clear all scenes from the stack (if any) and push a new main scene.  
+    /// Clear all scenes off the stack (if any) and push a new main scene.  
     /// Callbacks:
     /// - oldScenes.OnRemoved()
     /// - scene.OnFirstVisit()
@@ -104,7 +104,7 @@ public static partial class Prime
     }
 
     /// <summary>
-    /// Clear all scenes from the stack (if any) and push a new main scene.  
+    /// Clear all scenes off the stack (if any) and push a new main scene.  
     /// Callbacks:
     /// - oldScenes.OnRemoved()
     /// - scene.OnFirstVisit()
@@ -197,7 +197,7 @@ public static partial class Prime
     }
 
     /// <summary>
-    /// Pop the topmost subscene from the stack. Noop if the top scene is a main scene.  
+    /// Pop the topmost subscene off the stack. Noop if the top scene is a main scene.  
     /// Callbacks:
     /// - sub.OnPop()
     /// - sub.OnRemove()
