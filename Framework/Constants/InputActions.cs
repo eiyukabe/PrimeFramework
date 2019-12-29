@@ -30,18 +30,19 @@ public static partial class InputActions
     public const string QUIT = "quit";
 
     /* Common debug commands */
-    public const string RELOAD_CURRENT_SCENE = "reload_current_scene";
+    public const string PRINT_SCENE_STACK = "print_scene_stack";
+    public const string RELOAD_SCENE = "reload_scene";
+    public const string RELOAD_SCENE_STACK = "reload_scene_stack";
     public const string TOGGLE_GOD_MODE = "toggle_god_mode";
     public const string TOGGLE_NO_CLIP = "toggle_no_clip";
-    public const string PRINT_SCENE_STACK = "print_scene_stack";
 
     /* Camera debug controls */
-    public const string ZOOM_IN_DEBUG_CAMERA = "zoom_in_debug_cam";
-    public const string ZOOM_OUT_DEBUG_CAMERA = "zoom_out_debug_cam";
     public const string MOVE_DEBUG_CAMERA_UP = "move_debug_camera_up";
     public const string MOVE_DEBUG_CAMERA_DOWN = "move_debug_camera_down";
     public const string MOVE_DEBUG_CAMERA_LEFT = "move_debug_camera_left";
     public const string MOVE_DEBUG_CAMERA_RIGHT = "move_debug_camera_right";
     public const string RESET_DEBUG_CAMERA = "reset_debug_camera";
+    public const string ZOOM_IN_DEBUG_CAMERA = "zoom_in_debug_cam";
+    public const string ZOOM_OUT_DEBUG_CAMERA = "zoom_out_debug_cam";
 
 }
