@@ -22,5 +22,10 @@ public class GlobalGameLaunch : Node
         {
             Prime.PrintSceneStack();
         }
+
+        if (ev.IsActionPressed(InputActions.RELOAD_SCENE))
+        {
+            Prime.ReloadScene();
+        }
     }
 }
