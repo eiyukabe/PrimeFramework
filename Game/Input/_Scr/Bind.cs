@@ -7,7 +7,7 @@ public static partial class Bind
     /// <summary> Bind common debug keys. </summary>
     public static void BindCommonDebugKeys()
     {
-        BindKey(KeyList.F1, InputActions.RELOAD_CURRENT_SCENE);
+        BindKey(KeyList.F1, InputActions.RELOAD_SCENE);
         BindKey(KeyList.F2, InputActions.TOGGLE_GOD_MODE);
         BindKey(KeyList.F3, InputActions.TOGGLE_NO_CLIP);
         BindKey(KeyList.Slash, InputActions.PRINT_SCENE_STACK);
