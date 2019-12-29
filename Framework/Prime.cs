@@ -31,14 +31,23 @@ public static partial class Prime
     {
         get
         {
-            for (int i = Stack.Count - 1; i >= 0; i--)
+            if (Stack.Count > 0)
             {
-                if (Stack[i].IsMain) { return i; }
+                for (int i = Stack.Count - 1; i >= 0; i--)
+                {
+                    if (Stack[i].IsMain) { return i; }
+                }
             }
             return -1;
         }
     }
     
+    /// <summary> Returns true if the stack is empty. </summary>
+    private static bool StackIsEmpty
+    {
+        get { return Stack.Count == 0; }
+    }
+
     /// <summary> Push a scene onto the stack. </summary>
     private static void BasePush(GameScene scene)
     {
@@ -48,11 +57,11 @@ public static partial class Prime
         scene.Visit(justPushed: true);
     }
 
-    /// <summary> Pop the topmost scene off the stack. </summary>
+    /// <summary> Pop the topmost scene off the stack. Noop if the stack is empty. </summary>
     private static void BasePop()
     {
+        if (StackIsEmpty) { return; }
         var scene = TopScene;
-        if (scene == null) { return; }
         Stack.RemoveAt(Stack.Count - 1);
         scene.OnPop();
         scene.OnRemove();
@@ -63,17 +72,26 @@ public static partial class Prime
     private static void BasePopMain()
     {
         int j = TopMainSceneIndex;
-        if (j == -1)
-        {
-            return;             // No main scene to pop
-        }
+        if (j == -1) { return; }    // No main scene to pop
 
         for (int i = Stack.Count - 1; i > j; i--)
         {
-            BaseRemoveTop();    // Remove all subscenes above the main scene
+            BaseRemoveTop();        // Remove all subscenes above the main scene
         }
-        
-        BasePop();              // Pop main scene
+
+        BasePop();                  // Pop main scene
+    }
+
+    /// <summary> Remove the topmost main scene off the stack and any subscenes above it. Noop if there's no main scene on the stack. </summary>
+    private static void BaseRemoveMain()
+    {
+        int j = TopMainSceneIndex;
+        if (j == -1) { return; }    // No main scene to remove
+
+        for (int i = Stack.Count - 1; i >= j; i--)
+        {
+            BaseRemoveTop();        // Remove all subscenes and then the main scene
+        }
     }
 
     /// <summary> Remove the topmost scene on the stack. </summary>
@@ -99,7 +117,11 @@ public static partial class Prime
     /// </summary>
     public static void SetScene(GameScene scene)
     {
-        ClearScenes();
+        if (!StackIsEmpty)
+        {
+            ClearScenes();
+        }
+
         PushScene(scene);
     }
 
@@ -206,7 +228,7 @@ public static partial class Prime
     /// </summary>
     public static void PopSubScene()
     {
-        if (!TopScene.IsMain) { BasePop(); }
+        if (!StackIsEmpty && !TopScene.IsMain) { BasePop(); }
         TopScene?.Visit();
     }
 
@@ -232,7 +254,7 @@ public static partial class Prime
     /// </summary>
     public static void ClearSubScenes()
     {
-        while(TopScene != null && !TopScene.IsMain)
+        while(!StackIsEmpty && !TopScene.IsMain)
         {
             BaseRemoveTop();
         }
@@ -295,6 +317,75 @@ public static partial class Prime
         SwapSubScene(GetSceneInstance<GameScene>(filepath));
     }
 
+    /// <summary>
+    /// Reload the topmost main scene on the stack.  
+    /// Good for reloading a level (push the level as a main scene first).  
+    /// Specifically: remove and QueueFree() the topmost main scene from the stack and any subscenes above it, then push a
+    /// new instance of the removed main scene onto the stack. Noop if there's no main scene on the stack.  
+    /// Callbacks:
+    /// - oldSubs.OnRemove()
+    /// - oldMain.OnRemove()
+    /// - newMain.OnFirstVisit()
+    /// - newMain.OnVisit()
+    /// </summary>
+    public static void ReloadScene()
+    {
+        var i = TopMainSceneIndex;
+        if (i == -1) { return; }    // No main scene to reload.
+        
+        var mainFilepath = Stack[i].Filename;
+        BaseRemoveMain();
+        PushScene(GetSceneInstance<GameScene>(mainFilepath));
+    }
+
+    /// <summary>
+    /// Reload the topmost subscene on the stack. Noop if the topmost scene is a main scene.  
+    /// Callbacks:
+    /// - oldSub.OnRemove()
+    /// - newSub.OnFirstVisit()
+    /// - newSub.OnVisit()
+    /// </summary>
+    public static void ReloadSubScene()
+    {
+        if (!StackIsEmpty && !TopScene.IsMain)
+        {
+            var filepath = TopScene.Filename;
+            BaseRemoveTop();
+            PushSubScene(GetSceneInstance<GameScene>(filepath));
+        }
+    }
+
+    /// <summary>
+    /// Reload the entire scene stack.  
+    /// Specifically: remove and QueueFree() all scenes on the stack, then push a new instance of each scene back onto the stack.  
+    /// Callbacks:
+    /// - allOldScenes.OnRemove()
+    /// - allNewScenes.OnFirstVisit()
+    /// - allNewScenes.OnVisit()
+    /// </summary>
+    public static void ReloadSceneStack()
+    {
+        if (StackIsEmpty) { return; }
+
+        var sceneFilepaths = new List<string>();
+        var sceneTypes = new List<bool>();
+
+        foreach (var scene in Stack)
+        {
+            sceneFilepaths.Add(scene.Filename);
+            sceneTypes.Add(scene.IsMain);
+        }
+
+        ClearScenes();
+
+        for (int i = 0; i < sceneFilepaths.Count; i++)
+        {
+            var scene = GetSceneInstance<GameScene>(sceneFilepaths[i]);
+            if (sceneTypes[i]) { PushScene(scene); }
+            else               { PushSubScene(scene); }
+        }
+    }
+
     /// <summary> Print the name of all scenes on the stack for debugging. </summary>
     public static void PrintSceneStack()
     {
@@ -317,6 +408,8 @@ public static partial class Prime
     public static PackedScene GetPackedScene(string filepath)
     {
         var scene = ResourceLoader.Load(filepath);
+        if (scene == null) { return null; }
+        
         if (scene is PackedScene)
         {
             return (PackedScene) scene;
@@ -331,6 +424,8 @@ public static partial class Prime
     public static T GetSceneInstance<T>(string filepath) where T : Node
     {
         var scene = ResourceLoader.Load(filepath);
+        if (scene == null) { return null; }
+
         if (scene is PackedScene)
         {
             var packedScene = (PackedScene) scene;
