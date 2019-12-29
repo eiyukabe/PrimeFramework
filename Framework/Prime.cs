@@ -41,12 +41,6 @@ public static partial class Prime
             return -1;
         }
     }
-    
-    /// <summary> Returns true if the stack is empty. </summary>
-    private static bool StackIsEmpty
-    {
-        get { return Stack.Count == 0; }
-    }
 
     /// <summary> Push a scene onto the stack. </summary>
     private static void BasePush(GameScene scene)
@@ -107,6 +101,12 @@ public static partial class Prime
 
 
     #region Game Scene Management - Public
+
+    /// <summary> Returns true if the scene stack is empty. </summary>
+    public static bool StackIsEmpty
+    {
+        get { return Stack.Count == 0; }
+    }
 
     /// <summary>
     /// Clear all scenes off the stack (if any) and push a new main scene.  
@@ -187,6 +187,16 @@ public static partial class Prime
     public static void PushSubScene(string filepath)
     {
         PushSubScene(GetSceneInstance<GameScene>(filepath));
+    }
+
+    /// <summary>
+    /// Push a scene that's already in the scenetree onto the stack as a main scene.  
+    /// This should only be required when launching the game with F6 for debugging.
+    /// </summary>
+    public static void F6LaunchPushScene(GameScene scene)
+    {
+        Stack.Add(scene);
+        scene.Visit(justPushed: true);
     }
 
     /// <summary>
