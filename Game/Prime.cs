@@ -7,7 +7,7 @@ using System;
 /// </summary>
 public static partial class Prime
 {
-    /// <summary> PrimeRoot will call this when the X is pressed to close the game. </summary>
+    /// <summary> TreeMonitor will call this when the X is pressed to close the game. </summary>
     public static void OnXClicked()
     {
         Quit();
