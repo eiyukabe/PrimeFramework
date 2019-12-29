@@ -1,6 +1,18 @@
 using Godot;
 using System;
 
+/// <summary>
+/// GameScenes represent the different states a game can be in -- states such as being on the title screen, playing a level, pausing, being on the overworld map, etc.  
+/// GameScenes can be stacked on top of each other, swapped, reloaded, and removed. They are managed by the Prime class; Prime will execute different callbacks
+/// depending on what it's doing with a GameScene.  
+/// GameScenes can be classified as a main scene or a subscene. The idea is to classify your important base GameScenes as main scenes and scenes that belong to those as
+/// subscenes.  
+/// GameScenes should not be nested in the scenetree; the nested scenes would not have their callbacks executed. Use a combination of main and subscenes instead of nesting.  
+/// Note the difference between OnPop() and OnRemove(): OnPop() is called when a scene is removed from the stack IF the scene under it is going to be visited. OnPop() is
+/// for code that should only run when returning to a previous scene, like playing a sound when closing a menu. OnRemove() is called every time a scene is removed from the
+/// stack. Any time OnPop() is called OnRemoved() is also called (but not the other way around).  
+/// See Framework/Prime class to see where GameScenes are managed.
+/// </summary>
 public class GameScene : PrimeNode2D
 {
     public bool Active = false;
