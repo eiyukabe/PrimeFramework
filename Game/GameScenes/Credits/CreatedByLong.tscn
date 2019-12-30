@@ -1,8 +1,9 @@
 [gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_35.tres" type="DynamicFont" id=1]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_48.tres" type="DynamicFont" id=2]
-[ext_resource path="res://PrimeFramework/UI/Buttons/Hyperlink.cs" type="Script" id=3]
+[ext_resource path="res://Framework/UI/Fonts/Motion_35.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Framework/UI/Fonts/Motion_48.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Framework/UI/Buttons/Hyperlink.cs" type="Script" id=3]
+
 
 [node name="CreatedByLong" type="Control"]
 margin_right = 40.0

@@ -1,13 +1,14 @@
 [gd_scene load_steps=9 format=2]
 
-[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_48.tres" type="DynamicFont" id=1]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_16.tres" type="DynamicFont" id=2]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_24.tres" type="DynamicFont" id=3]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_34.tres" type="DynamicFont" id=4]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Courier_48.tres" type="DynamicFont" id=5]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_35.tres" type="DynamicFont" id=6]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_40.tres" type="DynamicFont" id=7]
-[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_64.tres" type="DynamicFont" id=8]
+[ext_resource path="res://Framework/UI/Fonts/Motion_48.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Framework/UI/Fonts/Courier_16.tres" type="DynamicFont" id=2]
+[ext_resource path="res://Framework/UI/Fonts/Courier_24.tres" type="DynamicFont" id=3]
+[ext_resource path="res://Framework/UI/Fonts/Courier_34.tres" type="DynamicFont" id=4]
+[ext_resource path="res://Framework/UI/Fonts/Courier_48.tres" type="DynamicFont" id=5]
+[ext_resource path="res://Framework/UI/Fonts/Motion_35.tres" type="DynamicFont" id=6]
+[ext_resource path="res://Framework/UI/Fonts/Motion_40.tres" type="DynamicFont" id=7]
+[ext_resource path="res://Framework/UI/Fonts/Motion_64.tres" type="DynamicFont" id=8]
+
 
 [node name="Courier Samples Scene" type="Node"]
 

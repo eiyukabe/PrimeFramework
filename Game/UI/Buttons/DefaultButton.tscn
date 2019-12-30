@@ -1,7 +1,8 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://PrimeFramework/UI/Fonts/Motion_35.tres" type="DynamicFont" id=1]
+[ext_resource path="res://Framework/UI/Fonts/Motion_35.tres" type="DynamicFont" id=1]
 [ext_resource path="res://Game/UI/Buttons/_Scr/DefaultButton.cs" type="Script" id=2]
+
 
 [node name="Button" type="Button"]
 margin_right = 256.0
