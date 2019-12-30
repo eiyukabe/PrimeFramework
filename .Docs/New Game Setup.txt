@@ -1,0 +1,34 @@
+To set up a new Prime Framework game:
+
+Option 1:
+ 1: Copy ".New Game" from Prime Framework to wherever you want your new game's root folder to be.
+ 2: Rename the copied ".New Game" folder to your game's name.
+ 3: Copy "Game" folder from Prime Framework to your game's root folder.
+ 4: Run command prompt as administrator (from search bar type "cmd" then ctrl+shift+enter)
+ 5: In command prompt: mklink /J "path to a folder in your game's root" "path to Framework" 
+	For example: mklink /J "D:/Projects/Prime Game/Framework" "D:/Projects/Prime Framework/Framework"
+	Note: You must call it "Framework" in your new game's folder or references will break in Godot scenes.
+ 6: Open Godot, click "Scan", navigate to your new game's root folder and open.
+ 7: The game will be called "Prime Game" in Godot; rename it in the Project Manager or Project Settings in Godot.
+ 8: Open the new game project to generate .csproj file.
+ 9: <still writing this step>
+10: Create repo
+
+
+Option 2:
+ 1: Create a new project in Godot. Close Godot.
+ 2: Copy .gitignore from ".New Game" in Prime Framework to your game's root folder.
+ 3: Copy "Game" folder from Prime Framework to your game's root folder.
+ 4: Run command prompt as administrator (from search bar type "cmd" then ctrl+shift+enter)
+ 5: In command prompt: mklink /J "path to a folder in your game's root" "path to Framework" 
+	For example: mklink /J "D:/Projects/Prime Game/Framework" "D:/Projects/Prime Framework/Framework"
+	Note: You must call it "Framework" in your new game's folder or references will break in Godot scenes.
+ 6: Open Godot. Set main scene to "res://Game/Launch/Launch.tscn"
+ 7: Set "res://Framework/Launch/TreeMonitor.cs" to autoload first.
+ 8: Set "res://Game/Launch/_Scr/GlobalGameLaunch.cs" to autoload second.
+ 9: Open the new game project to generate .csproj file.
+10: <still writing this step>
+11: Create repo
+
+
+mklink /J "D:/Projects/Prime Game/Framework" "D:/Projects/Prime Framework/Framework"
