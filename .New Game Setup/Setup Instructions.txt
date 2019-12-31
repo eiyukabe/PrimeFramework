@@ -5,5 +5,5 @@ To set up a new Prime Framework game:
 3: A new project folder will be created in the same folder that contains your Prime Framework folder with the name of your new game
 4: Open Godot; click 'scan' and navigate to the new game project folder.
 5: Open the new game project; Godot will generate a csproj file automatically.
-6: Run 'Fix CSProj'.
+6: Run 'Fix CSProj.exe'.
 7: Create git repo
