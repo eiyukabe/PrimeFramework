@@ -16,8 +16,15 @@ _global_script_class_icons={
 [application]
 
 config/name="Prime Framework"
+run/main_scene="res://Game/Launch/Launch.tscn"
 config/icon="res://icon.png"
+
+[autoload]
+
+TreeMonitor="*res://Framework/Launch/TreeMonitor.cs"
+GlobalGameLaunch="*res://Game/Launch/_Scr/GlobalGameLaunch.cs"
 
 [rendering]
 
+environment/default_clear_color=Color( 0, 0, 0, 1 )
 environment/default_environment="res://default_env.tres"
