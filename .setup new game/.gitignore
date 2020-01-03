@@ -7,8 +7,10 @@ export_presets.cfg
 .mono/
 
 # System/tools
+.vs/
 .directory
 *~
 
 # Prime Framework
 Framework
+Fix csproj.exe
