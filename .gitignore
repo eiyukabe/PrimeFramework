@@ -10,3 +10,9 @@ export_presets.cfg
 .vs/
 .directory
 *~
+
+# Prime Tools
+.tools/Fix CSProj/bin
+.tools/Fix CSProj/obj
+.tools/Setup/bin
+.tools/Setup/obj
