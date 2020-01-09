@@ -8,7 +8,7 @@ Long:
 3: A new project folder will be created in Prime Framework's parent folder.
 4: Option A: Right-click project.godot in your new game folder and select 'open with Godot Engine Editor'.
    Option B: Open Godot; click 'scan' and navigate to the new game project folder, then click open.
-5: Open the new game project; Godot will generate a csproj file automatically.
+5: Godot will generate a csproj file automatically when your new project is opened.
 6: Run 'Fix CSProj.exe'.
 7: Create repo.
 
