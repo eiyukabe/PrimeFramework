@@ -1,0 +1,19 @@
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Prime Framework", "Prime Framework.csproj", "{64252B9E-81FA-464F-922A-5552EE668EAD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	Release|Any CPU = Release|Any CPU
+	Tools|Any CPU = Tools|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{64252B9E-81FA-464F-922A-5552EE668EAD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{64252B9E-81FA-464F-922A-5552EE668EAD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{64252B9E-81FA-464F-922A-5552EE668EAD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{64252B9E-81FA-464F-922A-5552EE668EAD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{64252B9E-81FA-464F-922A-5552EE668EAD}.Tools|Any CPU.ActiveCfg = Tools|Any CPU
+		{64252B9E-81FA-464F-922A-5552EE668EAD}.Tools|Any CPU.Build.0 = Tools|Any CPU
+	EndGlobalSection
+EndGlobal
