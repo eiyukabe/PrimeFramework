@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://Framework/Camera/Addons/CameraShakeAddon.cs" type="Script" id=1]
+
+[node name="CameraShakeAddon" type="Node"]
+script = ExtResource( 1 )

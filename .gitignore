@@ -1,0 +1,18 @@
+# Godot
+.import/
+export.cfg
+export_presets.cfg
+
+# Mono
+.mono/
+
+# System/tools
+.vs/
+.directory
+*~
+
+# Prime Tools
+.tools/Fix CSProj/bin
+.tools/Fix CSProj/obj
+.tools/Setup/bin
+.tools/Setup/obj

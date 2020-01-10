@@ -1,0 +1,140 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://Game/GameScenes/Credits/_Scr/Credits.cs" type="Script" id=1]
+[ext_resource path="res://Game/UI/Buttons/DefaultButton.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game/GameScenes/Credits/CreatedByLong.tscn" type="PackedScene" id=3]
+
+[node name="Credits" type="Node2D"]
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_vertical_guides_": [  ]
+}
+
+[node name="Back" parent="." instance=ExtResource( 2 )]
+margin_left = 224.0
+margin_top = 464.0
+margin_right = 352.0
+margin_bottom = 528.0
+rect_min_size = Vector2( 128, 64 )
+text = "Back"
+
+[node name="Center" type="CenterContainer" parent="."]
+margin_left = 96.0
+margin_top = 32.0
+margin_right = 480.0
+margin_bottom = 256.0
+
+[node name="CreatedByLong" parent="Center" instance=ExtResource( 3 )]
+margin_left = 192.0
+margin_top = 112.0
+margin_right = 192.0
+margin_bottom = 112.0
+
+[node name="ScrollContainer" type="ScrollContainer" parent="."]
+margin_left = 480.0
+margin_top = 26.0
+margin_right = 928.0
+margin_bottom = 562.0
+scroll_horizontal_enabled = false
+
+[node name="CenterContainer" type="CenterContainer" parent="ScrollContainer"]
+margin_right = 448.0
+margin_bottom = 536.0
+rect_min_size = Vector2( 448, 536 )
+
+[node name="VBox" type="VBoxContainer" parent="ScrollContainer/CenterContainer"]
+margin_left = 109.0
+margin_top = 117.0
+margin_right = 339.0
+margin_bottom = 418.0
+custom_constants/separation = 50
+
+[node name="Art" type="VBoxContainer" parent="ScrollContainer/CenterContainer/VBox"]
+margin_right = 230.0
+margin_bottom = 33.0
+custom_constants/separation = 5
+
+[node name="Art" type="Label" parent="ScrollContainer/CenterContainer/VBox/Art"]
+margin_right = 230.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Art:"
+align = 1
+
+[node name="Name1" type="Label" parent="ScrollContainer/CenterContainer/VBox/Art"]
+margin_top = 19.0
+margin_right = 230.0
+margin_bottom = 33.0
+text = "Bad"
+align = 1
+
+[node name="Music" type="VBoxContainer" parent="ScrollContainer/CenterContainer/VBox"]
+margin_top = 83.0
+margin_right = 230.0
+margin_bottom = 135.0
+custom_constants/separation = 5
+
+[node name="Music" type="Label" parent="ScrollContainer/CenterContainer/VBox/Music"]
+margin_right = 230.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Music:"
+align = 1
+
+[node name="Name1" type="Label" parent="ScrollContainer/CenterContainer/VBox/Music"]
+margin_top = 19.0
+margin_right = 230.0
+margin_bottom = 33.0
+text = "Music Guy"
+align = 1
+
+[node name="Name2" type="Label" parent="ScrollContainer/CenterContainer/VBox/Music"]
+margin_top = 38.0
+margin_right = 230.0
+margin_bottom = 52.0
+text = "Music Guy 2"
+align = 1
+
+[node name="Sfx" type="VBoxContainer" parent="ScrollContainer/CenterContainer/VBox"]
+margin_top = 185.0
+margin_right = 230.0
+margin_bottom = 218.0
+custom_constants/separation = 5
+
+[node name="Sfx" type="Label" parent="ScrollContainer/CenterContainer/VBox/Sfx"]
+margin_right = 230.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "SFX:"
+align = 1
+
+[node name="Name1" type="Label" parent="ScrollContainer/CenterContainer/VBox/Sfx"]
+margin_top = 19.0
+margin_right = 230.0
+margin_bottom = 33.0
+text = "Stolen from other games"
+align = 1
+
+[node name="Fonts" type="VBoxContainer" parent="ScrollContainer/CenterContainer/VBox"]
+margin_top = 268.0
+margin_right = 230.0
+margin_bottom = 301.0
+custom_constants/separation = 5
+
+[node name="Fonts" type="Label" parent="ScrollContainer/CenterContainer/VBox/Fonts"]
+margin_right = 230.0
+margin_bottom = 14.0
+custom_colors/font_color = Color( 0, 0.670588, 1, 1 )
+custom_colors/font_color_shadow = Color( 0, 0, 0, 1 )
+text = "Fonts:"
+align = 1
+
+[node name="Name1" type="Label" parent="ScrollContainer/CenterContainer/VBox/Fonts"]
+margin_top = 19.0
+margin_right = 230.0
+margin_bottom = 33.0
+text = "Motion Control by Harry Wakamatsu"
+align = 1
