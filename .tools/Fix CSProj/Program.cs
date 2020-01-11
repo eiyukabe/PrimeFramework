@@ -18,6 +18,7 @@ namespace Fix_CSProj
             if (gameName == string.Empty)
             {
                 EditFailed();
+                return;
             }
             else
             {
