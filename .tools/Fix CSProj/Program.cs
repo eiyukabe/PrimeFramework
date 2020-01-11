@@ -8,12 +8,10 @@ namespace Fix_CSProj
 {
     public class Program
     {
-        private static List<string> ScriptFilepaths = new List<string>();   // A list of filepaths to each script in the game.
-        private static List<string> ScriptIncludes = new List<string>();    // Script includes that will be written to the csproj file based on the ScriptFilepaths.
-
         private static void Main(string[] args)
         {
             var pathToCurrentDir = Directory.GetCurrentDirectory();
+
 
             /* Get game name from project.godot */
             var gameName = GetGameName(pathToCurrentDir);
@@ -23,40 +21,50 @@ namespace Fix_CSProj
             }
             else
             {
-                Console.WriteLine($"Fix csproj thinks the name of your game is: {gameName}");
+                Console.WriteLine($"Game name: {gameName}");
             }
+
 
             /* Get filepaths to all scripts in the game */
-            Console.WriteLine($"Searching for script files at {pathToCurrentDir}");
+            Console.WriteLine($"Searching for .cs files here: {pathToCurrentDir}");
             var pathToCurrentDirRegexPattern = pathToCurrentDir.Replace(@"\", @"\\") + @"\\";       // Result example: D:\\Projects\\My Game\\
-            var success = SetScriptFilepaths(pathToCurrentDir, pathToCurrentDirRegexPattern);
+            var scriptFilepaths = GetScriptFilepaths(pathToCurrentDir, pathToCurrentDirRegexPattern);
 
-            if (!success)
+            if(scriptFilepaths.Count == 0)
             {
+                Console.WriteLine("No .cs files found.");
                 EditFailed();
                 return;
             }
-
-            if (ScriptFilepaths.Count == 0)
+            else
             {
-                EditFailed();
-                return;
+                Console.WriteLine($"{scriptFilepaths.Count} .cs files found.");
             }
 
-            /* Create lines to write to csproj file */
-            for (int i = 0; i < ScriptFilepaths.Count; i++)
+            
+            /* Create CSProj text */
+            StringBuilder csprojText = new StringBuilder();
+            csprojText.Append(GetCSProjPart1(gameName));
+            foreach(var script in scriptFilepaths)
             {
-                ScriptIncludes.Add($"\t<Compile Include=\"{ScriptFilepaths[i]}\" />");
+                csprojText.AppendLine($"\t<Compile Include=\"{script}\" />");
             }
+            csprojText.Append(GetCSProjPart2());
 
-            /* Edit the csproj file */
-            Console.WriteLine(pathToCurrentDir);
 
+            /* Create CSProj file */
             var pathToCSProjFile = Path.Combine(pathToCurrentDir, $"{gameName}.csproj");
-            success = EditProjFile(pathToCSProjFile);
-            if (!success)
+            Console.WriteLine($"Creating a new csproj file here: {pathToCSProjFile}");
+
+            try
             {
+                File.WriteAllText(pathToCSProjFile, csprojText.ToString());
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
                 EditFailed();
+                return;
             }
         }
 
@@ -93,8 +101,16 @@ namespace Fix_CSProj
             return string.Empty;
         }
 
-        /// <summary> Iterate through the game's folders looking for .cs files and record their paths in ScriptFilepaths. Returns true if successful. </summary>
-        private static bool SetScriptFilepaths(string path, string rootPathPattern)
+        /// <summary> Returns a list of filepaths to all the .cs files in the game's folders. </summary>
+        private static List<string> GetScriptFilepaths(string path, string rootPathPattern)
+        {
+            List<string> results = new List<string>();
+            GetScriptFilepaths(path, rootPathPattern, results);
+            return results;
+        }
+
+        /// <summary> Returns a list of filepaths to all the .cs files in the game's folders. </summary>
+        private static List<string> GetScriptFilepaths(string path, string rootPathPattern, List<string> returnList)
         {
             try
             {
@@ -105,61 +121,83 @@ namespace Fix_CSProj
                         if (file.EndsWith(".cs"))
                         {
                             string fileNameWithoutRootPath = Regex.Replace(file, rootPathPattern, string.Empty);
-                            ScriptFilepaths.Add(fileNameWithoutRootPath);
+                            returnList.Add(fileNameWithoutRootPath);
                         }
                     }
-                    SetScriptFilepaths(dir, rootPathPattern);
+                    GetScriptFilepaths(dir, rootPathPattern, returnList);
                 }
             }
             catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
-                return false;
             }
 
-            return true;
+            return returnList;
         }
 
-        /// <summary> Attempt to edit csproj file. Returns true if successful. </summary>
-        private static bool EditProjFile(string csprojPath)
+        private static string GetCSProjPart1(string gameName)
         {
-            /* Read csproj line by line. */
-            string line;
-            var lines = new List<string>();
-            bool insertDone = false;
-            StreamReader file = new StreamReader(csprojPath);
+            var gameNameNoSpace = gameName.Replace(" ", "");
 
-            while ((line = file.ReadLine()) != null)
-            {
-                if (line.Contains("<Compile Include="))
-                {
-                    if (!insertDone)
-                    {
-                        /* Insert script includes here */
-                        for (int j = 0; j < ScriptIncludes.Count; j++)
-                        {
-                            lines.Add(ScriptIncludes[j]);
-                        }
-                        insertDone = true;
-                    }
-                }
-                else
-                {
-                    lines.Add(line);    // Add csproj file lines to 'lines' list if it doesn't start with "<Compile Include="
-                }
-            }
-            file.Close();
-
-            /* Convert list to string builder */
-            var sb = new StringBuilder();
-            foreach (var l in lines)
-            {
-                sb.AppendLine(l);
-            }
-
-            File.WriteAllText(csprojPath, sb.ToString());
-            return true;
+            return $@"<?xml version=""1.0"" encoding=""utf-8""?>
+<Project ToolsVersion=""4.0"" DefaultTargets=""Build"" xmlns=""http://schemas.microsoft.com/developer/msbuild/2003"">
+  <PropertyGroup>
+    <Configuration Condition="" '$(Configuration)' == '' "">Debug</Configuration>
+    <Platform Condition="" '$(Platform)' == '' "">AnyCPU</Platform>
+    <ProjectGuid></ProjectGuid>
+    <OutputType>Library</OutputType>
+    <OutputPath>.mono\temp\bin\$(Configuration)</OutputPath>
+    <RootNamespace>{gameNameNoSpace}</RootNamespace>
+    <AssemblyName>{gameName}</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <BaseIntermediateOutputPath>.mono\temp\obj</BaseIntermediateOutputPath>
+    <IntermediateOutputPath>$(BaseIntermediateOutputPath)\$(Configuration)</IntermediateOutputPath>
+  </PropertyGroup>
+  <PropertyGroup Condition="" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' "">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition="" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' "">
+    <DebugType>portable</DebugType>
+    <Optimize>true</Optimize>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition="" '$(Configuration)|$(Platform)' == 'Tools|AnyCPU' "">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>portable</DebugType>
+    <Optimize>false</Optimize>
+    <DefineConstants>DEBUG;TOOLS;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include=""GodotSharp"">
+      <HintPath>$(ProjectDir)\.mono\assemblies\GodotSharp.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include=""GodotSharpEditor"" Condition="" '$(Configuration)' == 'Tools' "">
+      <HintPath>$(ProjectDir)\.mono\assemblies\GodotSharpEditor.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include=""System"" />
+  </ItemGroup>
+  <ItemGroup>
+";
         }
 
+        private static string GetCSProjPart2()
+        {
+            return @"  </ItemGroup>
+  <Import Project=""$(MSBuildBinPath)\Microsoft.CSharp.targets"" />
+</Project>";
+        }
     }
 }
