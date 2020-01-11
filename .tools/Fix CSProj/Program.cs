@@ -22,16 +22,13 @@ namespace Fix_CSProj
 
             if (!success)
             {
-                Console.WriteLine("Edit failed");
-                Console.ReadKey();
+                EditFailed();
                 return;
             }
 
             if (ScriptFilepaths.Count == 0)
             {
-                Console.WriteLine("No scripts found.");
-                Console.WriteLine("Edit failed");
-                Console.ReadKey();
+                EditFailed();
                 return;
             }
 
@@ -45,11 +42,15 @@ namespace Fix_CSProj
             success = EditProjFile();
             if (!success)
             {
-                Console.WriteLine("Edit failed");
-                Console.ReadKey();
+                EditFailed();
             }
+        }
 
-            // Console.ReadKey();
+        private static void EditFailed()
+        {
+            Console.WriteLine("Edit failed.");
+            Console.WriteLine("Press any key to exit.");
+            Console.ReadKey();
         }
 
         /// <summary> Iterate through the game's folders looking for .cs files and record their paths in ScriptFilepaths. Returns true if successful. </summary>
