@@ -12,9 +12,9 @@ namespace Fix_CSProj
         {
             var pathToCurrentDir = Directory.GetCurrentDirectory();
 
-
             /* Get game name from project.godot */
             var gameName = GetGameName(pathToCurrentDir);
+
             if (gameName == string.Empty)
             {
                 EditFailed();
@@ -23,7 +23,6 @@ namespace Fix_CSProj
             {
                 Console.WriteLine($"Game name: {gameName}");
             }
-
 
             /* Get filepaths to all scripts in the game */
             Console.WriteLine($"Searching for .cs files here: {pathToCurrentDir}");
@@ -41,7 +40,6 @@ namespace Fix_CSProj
                 Console.WriteLine($"{scriptFilepaths.Count} .cs files found.");
             }
 
-            
             /* Create CSProj text */
             StringBuilder csprojText = new StringBuilder();
             csprojText.Append(GetCSProjPart1(gameName));
@@ -50,7 +48,6 @@ namespace Fix_CSProj
                 csprojText.AppendLine($"\t<Compile Include=\"{script}\" />");
             }
             csprojText.Append(GetCSProjPart2());
-
 
             /* Create CSProj file */
             var pathToCSProjFile = Path.Combine(pathToCurrentDir, $"{gameName}.csproj");
