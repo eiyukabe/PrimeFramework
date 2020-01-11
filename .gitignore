@@ -11,7 +11,7 @@ export_presets.cfg
 .directory
 *~
 
-# Prime Tools
+# Prime Framework
 .tools/Fix CSProj/bin
 .tools/Fix CSProj/obj
 .tools/Setup/bin
