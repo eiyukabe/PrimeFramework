@@ -13,12 +13,23 @@ namespace Fix_CSProj
 
         private static void Main(string[] args)
         {
-            var currentDir = Directory.GetCurrentDirectory();
+            var pathToCurrentDir = Directory.GetCurrentDirectory();
+
+            /* Get game name from project.godot */
+            var gameName = GetGameName(pathToCurrentDir);
+            if (gameName == string.Empty)
+            {
+                EditFailed();
+            }
+            else
+            {
+                Console.WriteLine($"Fix csproj thinks the name of your game is: {gameName}");
+            }
 
             /* Get filepaths to all scripts in the game */
-            Console.WriteLine($"Searching for script files at {currentDir}");
-            string rootPathPattern = currentDir.Replace(@"\", @"\\") + @"\\";   // Regular expression for the path to the root folder
-            var success = SetScriptFilepaths(currentDir, rootPathPattern);
+            Console.WriteLine($"Searching for script files at {pathToCurrentDir}");
+            var pathToCurrentDirRegexPattern = pathToCurrentDir.Replace(@"\", @"\\") + @"\\";       // Result example: D:\\Projects\\My Game\\
+            var success = SetScriptFilepaths(pathToCurrentDir, pathToCurrentDirRegexPattern);
 
             if (!success)
             {
@@ -39,7 +50,10 @@ namespace Fix_CSProj
             }
 
             /* Edit the csproj file */
-            success = EditProjFile();
+            Console.WriteLine(pathToCurrentDir);
+
+            var pathToCSProjFile = Path.Combine(pathToCurrentDir, $"{gameName}.csproj");
+            success = EditProjFile(pathToCSProjFile);
             if (!success)
             {
                 EditFailed();
@@ -51,6 +65,32 @@ namespace Fix_CSProj
             Console.WriteLine("Edit failed.");
             Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
+        }
+
+        /// <summary> Returns the name of the game that is set in project.godot. </summary>
+        private static string GetGameName(string pathToCurrentDir)
+        {
+            var pathToGodotProjectFile = Path.Combine(pathToCurrentDir, "project.godot");
+            if (File.Exists(pathToGodotProjectFile))
+            {
+                var text = File.ReadAllText(pathToGodotProjectFile);
+                var pattern = @"config/name=""(.*)""";
+                var match = Regex.Match(text, pattern);
+                if (match.Success)
+                {
+                    return match.Groups[1].Value;
+                }
+                else
+                {
+                    Console.WriteLine("The name of your game could not be determined from your project.godot file.");
+                    Console.WriteLine(@"Open project.godot in a text editor and make sure it has a line that says this (including quotes): config/name=""Your Game Name""");
+                }
+            }
+            else
+            {
+                Console.WriteLine("project.godot file not found. This file is required to generate a new .csproj file.");
+            }
+            return string.Empty;
         }
 
         /// <summary> Iterate through the game's folders looking for .cs files and record their paths in ScriptFilepaths. Returns true if successful. </summary>
@@ -81,22 +121,9 @@ namespace Fix_CSProj
         }
 
         /// <summary> Attempt to edit csproj file. Returns true if successful. </summary>
-        private static bool EditProjFile()
+        private static bool EditProjFile(string csprojPath)
         {
-            var gameFullPath = Directory.GetCurrentDirectory();
-            var gameName = new DirectoryInfo(gameFullPath).Name;
-            var csprojPath = $"{gameFullPath}\\{gameName}.csproj";
-
-            /* Make sure csproj file exists */
-            Console.WriteLine($"Looking for csproj file at {csprojPath}.");
-            if (!File.Exists(csprojPath))
-            {
-                Console.WriteLine("csproj file not found.");
-                return false;
-            }
-
             /* Read csproj line by line. */
-
             string line;
             var lines = new List<string>();
             bool insertDone = false;
@@ -133,6 +160,6 @@ namespace Fix_CSProj
             File.WriteAllText(csprojPath, sb.ToString());
             return true;
         }
-    }
 
+    }
 }
