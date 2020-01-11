@@ -25,10 +25,20 @@ namespace Fix_CSProj
                 Console.WriteLine($"Game name: {gameName}");
             }
 
+            /* These folders will be ignored when looking for scripts that should go in the csproj file */
+            var blacklist = new List<string>();
+            blacklist.Add($"{pathToCurrentDir}\\.git");
+            blacklist.Add($"{pathToCurrentDir}\\.docs");
+            blacklist.Add($"{pathToCurrentDir}\\.import");
+            blacklist.Add($"{pathToCurrentDir}\\.mono");
+            blacklist.Add($"{pathToCurrentDir}\\.setup new game");
+            blacklist.Add($"{pathToCurrentDir}\\.tools");
+            blacklist.Add($"{pathToCurrentDir}\\mono");
+
             /* Get filepaths to all scripts in the game */
             Console.WriteLine($"Searching for .cs files here: {pathToCurrentDir}");
             var pathToCurrentDirRegexPattern = pathToCurrentDir.Replace(@"\", @"\\") + @"\\";       // Result example: D:\\Projects\\My Game\\
-            var scriptFilepaths = GetScriptFilepaths(pathToCurrentDir, pathToCurrentDirRegexPattern);
+            var scriptFilepaths = GetScriptFilepaths(pathToCurrentDir, pathToCurrentDirRegexPattern, blacklist);
 
             if(scriptFilepaths.Count == 0)
             {
@@ -64,6 +74,7 @@ namespace Fix_CSProj
                 EditFailed();
                 return;
             }
+
         }
 
         private static void EditFailed()
@@ -100,29 +111,32 @@ namespace Fix_CSProj
         }
 
         /// <summary> Returns a list of filepaths to all the .cs files in the game's folders. </summary>
-        private static List<string> GetScriptFilepaths(string path, string rootPathPattern)
+        private static List<string> GetScriptFilepaths(string path, string rootPathPattern, List<string> blacklist)
         {
             List<string> results = new List<string>();
-            GetScriptFilepaths(path, rootPathPattern, results);
+            GetScriptFilepaths(path, rootPathPattern, blacklist, results);
             return results;
         }
 
         /// <summary> Returns a list of filepaths to all the .cs files in the game's folders. </summary>
-        private static List<string> GetScriptFilepaths(string path, string rootPathPattern, List<string> returnList)
+        private static List<string> GetScriptFilepaths(string path, string rootPathPattern, List<string> blacklist, List<string> returnList)
         {
             try
             {
                 foreach (string dir in Directory.GetDirectories(path))
                 {
-                    foreach (string file in Directory.GetFiles(dir))
+                    if (!IsFolderBlacklisted(dir, blacklist))
                     {
-                        if (file.EndsWith(".cs"))
+                        foreach (string file in Directory.GetFiles(dir))
                         {
-                            string fileNameWithoutRootPath = Regex.Replace(file, rootPathPattern, string.Empty);
-                            returnList.Add(fileNameWithoutRootPath);
+                            if (file.EndsWith(".cs"))
+                            {
+                                string fileNameWithoutRootPath = Regex.Replace(file, rootPathPattern, string.Empty);
+                                returnList.Add(fileNameWithoutRootPath);
+                            }
                         }
+                        GetScriptFilepaths(dir, rootPathPattern, blacklist, returnList);
                     }
-                    GetScriptFilepaths(dir, rootPathPattern, returnList);
                 }
             }
             catch (Exception exception)
@@ -131,6 +145,18 @@ namespace Fix_CSProj
             }
 
             return returnList;
+        }
+
+        private static bool IsFolderBlacklisted(string folderName, List<string> blacklist)
+        {
+            foreach (var blacklistedFolder in blacklist)
+            {
+                if (folderName.Equals(blacklistedFolder))
+                {
+                    return true;
+                }
+            }
+            return false;
         }
 
         private static string GetCSProjPart1(string gameName)
