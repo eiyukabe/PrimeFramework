@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.IO;
 
 namespace Setup
@@ -19,7 +20,16 @@ namespace Setup
             string newGameDir = $"{Directory.GetParent(primeDir).FullName}\\{gameName}\\";      // <path>\New Game Name\
 
             /* Create new game directory */
-            Directory.CreateDirectory(newGameDir);
+            try
+            {
+                Directory.CreateDirectory(newGameDir);
+            }
+            catch(Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                SetupFailed();
+                return;
+            }
 
             /* Set filepaths to the project files */
             string gitignore        = $"{newGameSetupDir}\\.gitignore";
@@ -37,12 +47,12 @@ namespace Setup
             string newFixCSProj         = $"{newGameDir}\\Fix csproj.exe";
 
             /* Copy project files to new game directory */
-            if (File.Exists(gitignore) && !File.Exists(newGitignore))               { File.Copy(gitignore, newGitignore); }
-            if (File.Exists(defaultEnv) && !File.Exists(newDefaultEnv))             { File.Copy(defaultEnv, newDefaultEnv); }
-            if (File.Exists(icon) && !File.Exists(newIcon))                         { File.Copy(icon, newIcon); }
-            if (File.Exists(iconImport) && !File.Exists(newIconImport))             { File.Copy(iconImport, newIconImport); }
-            if (File.Exists(godotProjectFile) && !File.Exists(newGodotProjectFile)) { File.Copy(godotProjectFile, newGodotProjectFile); }
-            if (File.Exists(fixCSProj) && !File.Exists(newFixCSProj))               { File.Copy(fixCSProj, newFixCSProj); }
+            CopyFile(gitignore, newGitignore);
+            CopyFile(defaultEnv, newDefaultEnv);
+            CopyFile(icon, newIcon);
+            CopyFile(iconImport, newIconImport);
+            CopyFile(godotProjectFile, newGodotProjectFile);
+            CopyFile(fixCSProj, newFixCSProj);
 
             /* Copy "Game" folder*/
             CopyAll(new DirectoryInfo($"{primeDir}\\Game"), new DirectoryInfo($"{newGameDir}\\Game"));
@@ -50,21 +60,73 @@ namespace Setup
             /* Set the name of the game in project.godot */
             string text = File.ReadAllText(newGodotProjectFile);
             text = text.Replace($"config/name=\"{PrimeFrameworkProjectName}\"", $"config/name=\"{gameName}\"");
-            File.WriteAllText(newGodotProjectFile, text);
+            WriteFile(newGodotProjectFile, text);
 
-            /* Open Command Prompt and junction "Framework" folder to new game folder */
+            /* Junction "Framework" folder to new game folder */
             string cmd = $"/C mklink /J \"{newGameDir}\\Framework\" \"{primeDir}\\Framework\"";
-            System.Diagnostics.Process.Start("CMD.exe", cmd);
+            Process.Start("CMD.exe", cmd);
 
-            Console.WriteLine($"\nCreated new folder: {newGameDir}\n");
-            Console.WriteLine("To complete setup:");
-            Console.WriteLine("  1: Open your new project in Godot");
-            Console.WriteLine("  2: Run Fix CSProj.exe");
-            Console.WriteLine("\nPress any key to quit.");
+            /* Create .sln file */
+            WriteFile($"{newGameDir}\\{gameName}.sln", GetSlnText(gameName));
+
+            /* Create .csproj file by running Fix csproj.exe */
+            Process fix = new Process();
+            fix.StartInfo.UseShellExecute = true;
+            fix.StartInfo.WorkingDirectory = newGameDir;
+            fix.StartInfo.FileName = "Fix csproj.exe";
+            fix.Start();
+
+            /* Open new project in Godot */
+            Process project = new Process();
+            project.StartInfo.UseShellExecute = true;
+            project.StartInfo.WorkingDirectory = newGameDir;
+            project.StartInfo.FileName = "project.godot";
+
+            try
+            {
+                project.Start();
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+                Console.ReadKey();
+            }
+        }
+
+        private static void SetupFailed()
+        {
+            Console.WriteLine("Setup failed.");
             Console.ReadKey();
         }
 
-        public static void CopyAll(DirectoryInfo source, DirectoryInfo target)
+        private static void WriteFile(string path, string content)
+        {
+            try
+            {
+                File.WriteAllText(path, content);
+            }
+            catch (Exception exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+        }
+
+        private static void CopyFile(string source, string target)
+        {
+            if (File.Exists(source) && !File.Exists(target))
+            {
+                try
+                {
+                    File.Copy(source, target);
+                }
+                catch(Exception exception)
+                {
+                    Console.WriteLine(exception.Message);
+                }
+            }
+        }
+
+        private static void CopyAll(DirectoryInfo source, DirectoryInfo target)
         {
             if (source.FullName.ToLower() == target.FullName.ToLower())
             {
@@ -91,6 +153,30 @@ namespace Setup
                     target.CreateSubdirectory(diSourceSubDir.Name);
                 CopyAll(diSourceSubDir, nextTargetSubDir);
             }
+        }
+
+        private static string GetSlnText(string gameName)
+        {
+            return $@"Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project(""{{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}}"") = ""{gameName}"", ""{gameName}.csproj"", ""{{EF7750CA-ADAC-429F-B254-C911A85B5F35}}""
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+	Debug|Any CPU = Debug|Any CPU
+	Release|Any CPU = Release|Any CPU
+	Tools|Any CPU = Tools|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{{EF7750CA-ADAC-429F-B254-C911A85B5F35}}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{{EF7750CA-ADAC-429F-B254-C911A85B5F35}}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{{EF7750CA-ADAC-429F-B254-C911A85B5F35}}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{{EF7750CA-ADAC-429F-B254-C911A85B5F35}}.Release|Any CPU.Build.0 = Release|Any CPU
+		{{EF7750CA-ADAC-429F-B254-C911A85B5F35}}.Tools|Any CPU.ActiveCfg = Tools|Any CPU
+		{{EF7750CA-ADAC-429F-B254-C911A85B5F35}}.Tools|Any CPU.Build.0 = Tools|Any CPU
+	EndGlobalSection
+EndGlobal
+";
         }
     }
 }
