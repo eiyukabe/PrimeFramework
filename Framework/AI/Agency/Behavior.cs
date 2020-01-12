@@ -30,35 +30,54 @@ public abstract class Behavior : PrimeNode
 
     public bool IsActive() { return Active; }
 
-    public override void _Ready()
-    {
-        base._Ready();
-        if (!Disabled)
+
+    #region Initialization
+
+        public override void _Ready()
         {
-            ParentBehavior = GetParent() as Behavior;
+            base._Ready();
+            if (!Disabled)
+            {
+                ParentBehavior = GetParent() as Behavior;
+                InitializeChildBehaviors();
+            }
         }
-    }
 
-    public virtual void Setup()
-    {
-
-    }
-
-    public void Begin()
-    {
-        Active = true;
-        OnBegin();
-        if (Instantaneous)
+        private void InitializeChildBehaviors()
         {
-            StopSelf();
+            foreach (Node child in GetChildren())
+            {
+                if (child is Behavior)
+                {
+                    Behavior ChildBehavior = (Behavior)child;
+                    ChildBehaviors.Add(ChildBehavior);
+                    ChildBehavior.Setup();
+                }
+            }
         }
-    }
 
-    /// <summary> Called each time this behavior starts.virtual </summary>
-    public virtual void OnBegin()
-    {
+        public virtual void Setup()
+        {
 
-    }
+        }
+
+        public void Begin()
+        {
+            Active = true;
+            OnBegin();
+            if (Instantaneous)
+            {
+                StopSelf();
+            }
+        }
+
+        /// <summary> Called each time this behavior starts.virtual </summary>
+        public virtual void OnBegin()
+        {
+
+        }
+
+    #endregion
 
     /// <summary> Called every tick this behavior is active. </summary>
     public virtual void Process(float Delta)
@@ -155,7 +174,7 @@ public abstract class Behavior : PrimeNode
         }
 
     #endregion
-    
+
 
     #region States
 
