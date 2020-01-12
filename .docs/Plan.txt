@@ -45,6 +45,7 @@ Eiyukabe
 	   or give them a special suffix, or otherwise make them easy to find among regular behaviors so it's easy
 	   to browse what the "manager" options are without having to remember it
 	- Behavior to call a script or a function on a script.
+	- Execute Script behavior.
 - Achievements
 - Trail after image behavior
 - Grow after image behavior
@@ -71,3 +72,4 @@ Unassigned
 - Item magnetizing
 - Add READ ME to git
 - Add license to git
+- "Build Dock" for Behaviors
