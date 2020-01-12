@@ -72,34 +72,39 @@ public class Agency : PrimeNode
 
     #endregion
 
-    public virtual void Process(float delta)
-    {
-        if (Halted) { return; }
 
-        // Update child behaviors.
-        foreach (Behavior Child in ChildBehaviors)
+    #region Control
+
+        public virtual void Process(float delta)
         {
-            Child.InactiveProcess(delta);
-            if (!(Child is Event) && Child.Active)
+            if (Halted) { return; }
+
+            // Update child behaviors.
+            foreach (Behavior Child in ChildBehaviors)
             {
-                Child.Process(delta);
+                Child.InactiveProcess(delta);
+                if (!(Child is Event) && Child.Active)
+                {
+                    Child.Process(delta);
+                }
             }
         }
-    }
 
-    public virtual void End()
-    {
-    }
+        public virtual void End()
+        {
+        }
 
-    public void Halt()
-    {
-	    Halted = true;
-    }
+        public void Halt()
+        {
+            Halted = true;
+        }
 
-    public void Resume()
-    {
-	    Halted = false;
-    }
+        public void Resume()
+        {
+            Halted = false;
+        }
+
+    #endregion
 
 
     #region Durations
