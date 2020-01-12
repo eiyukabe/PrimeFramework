@@ -21,7 +21,7 @@ Veluzy
 ? Collisions
 ? Standard collision layers
 ? Walls
-- Figure out how to debug
+✓ Figure out how to debug
 ✓ Add Prime Singleton
 	✓ pause
 	✓ quit game
