@@ -15,34 +15,35 @@ public abstract class Duration : Behavior
 
     private AgencyState AssociatedState = null;
 
-    public void RegisterWithParentAgency()
-    {
 
-    }
+    #region Initialization
 
-    public override void OnBegin()
-    {
-        base.OnBegin();
-        foreach (Behavior Child in ChildBehaviors)
+        public override void OnBegin()
         {
-            if (Child is Duration)
+            base.OnBegin();
+            foreach (Behavior Child in ChildBehaviors)
             {
-                ((Duration)Child).ConsiderBeginning();
-            }
-            else if (!(Child is Event))
-            {
-                Child.Begin();
+                if (Child is Duration)
+                {
+                    ((Duration)Child).ConsiderBeginning();
+                }
+                else if (!(Child is Event))
+                {
+                    Child.Begin();
+                }
             }
         }
-    }
 
-    private void ConsiderBeginning()
-    {
-        if (IsDurationActive())
+        private void ConsiderBeginning()
         {
-            Begin();
+            if (IsDurationActive())
+            {
+                Begin();
+            }
         }
-    }
+
+    #endregion
+    
 
     private bool IsDurationActive()
     {
