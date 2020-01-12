@@ -178,6 +178,21 @@ public class Agency : PrimeNode
     #endregion
 
 
+    #region Events
+
+        public void ExecuteEvent(Type eventType)
+        {
+            if (Halted) { return; }
+
+            foreach (Behavior Child in ChildBehaviors)
+            {
+                Child.ExecuteEvent(eventType);
+            }
+        }
+
+    #endregion
+
+
     #region States
 
         private AgencyState GetStateOfType(Type stateClass)

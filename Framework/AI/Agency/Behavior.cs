@@ -107,7 +107,7 @@ public abstract class Behavior : PrimeNode
 
     #region Events
 
-        public virtual void ExecuteEvent()
+        public virtual void ExecuteEvent(Type eventType)
         {
             if (Active && !Disabled)
             {
@@ -115,7 +115,7 @@ public abstract class Behavior : PrimeNode
                 {
                     if (Child.Active)
                     {
-                        Child.ExecuteEvent();
+                        Child.ExecuteEvent(eventType);
                     }
                 }
             }
@@ -126,7 +126,7 @@ public abstract class Behavior : PrimeNode
 
     #region Durations
 
-        public virtual void StartDuration(Type DurationType)
+        public virtual void StartDuration(Type durationType)
         {
             if (Active && !Disabled)
             {
@@ -134,13 +134,13 @@ public abstract class Behavior : PrimeNode
                 {
                     if (Child.Active)
                     {
-                        Child.StartDuration(DurationType);
+                        Child.StartDuration(durationType);
                     }
                 }
             }
         }
 
-        public virtual void StopDuration(Type DurationType)
+        public virtual void StopDuration(Type durationType)
         {
             if (Active && !Disabled)
             {
@@ -148,7 +148,7 @@ public abstract class Behavior : PrimeNode
                 {
                     if (Child.Active)
                     {
-                        Child.StopDuration(DurationType);
+                        Child.StopDuration(durationType);
                     }
                 }
             }
