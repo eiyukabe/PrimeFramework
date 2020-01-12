@@ -79,49 +79,54 @@ public abstract class Behavior : PrimeNode
 
     #endregion
 
-    /// <summary> Called every tick this behavior is active. </summary>
-    public virtual void Process(float Delta)
-    {
 
-    }
+    #region Control
 
-    /// <summary> Called every tick regardless of whether or not this behavior is active. </summary>
-    public virtual void InactiveProcess(float Delta)
-    {
-        if (Active)
+        /// <summary> Called every tick this behavior is active. </summary>
+        public virtual void Process(float Delta)
         {
-            foreach (Behavior Child in ChildBehaviors)
+
+        }
+
+        /// <summary> Called every tick regardless of whether or not this behavior is active. </summary>
+        public virtual void InactiveProcess(float Delta)
+        {
+            if (Active)
             {
-                Child.InactiveProcess(Delta);
+                foreach (Behavior Child in ChildBehaviors)
+                {
+                    Child.InactiveProcess(Delta);
+                }
             }
         }
-    }
 
-    /// <summary> Called internally when the behavior determines that it needs to end. </summary>
-    /// stop() should *not* be overridden in child classes to handle behavior finalization. Override Stop() instead.
-    protected void StopSelf()
-    {
-       Stop();
-       if (ParentBehavior != null && ParentBehavior.Active)
-       {
-           ParentBehavior.OnChildStop(this);
-       }
-    }
+        /// <summary> Called internally when the behavior determines that it needs to end. </summary>
+        /// stop() should *not* be overridden in child classes to handle behavior finalization. Override Stop() instead.
+        protected void StopSelf()
+        {
+        Stop();
+        if (ParentBehavior != null && ParentBehavior.Active)
+        {
+            ParentBehavior.OnChildStop(this);
+        }
+        }
 
-    /// <summary> Called externally when this behavior ends. Do not call explicitly from within this behavior; instead, if a behavior needs
-    /// to end itself, it should call StopSelf(). </summary>
-    /// Stop() should be overridden in child classes to handle behavior finalization. Don't override StopSelf() to do this.
-    public virtual void Stop()
-    {
-        Active = false;
-    }
+        /// <summary> Called externally when this behavior ends. Do not call explicitly from within this behavior; instead, if a behavior needs
+        /// to end itself, it should call StopSelf(). </summary>
+        /// Stop() should be overridden in child classes to handle behavior finalization. Don't override StopSelf() to do this.
+        public virtual void Stop()
+        {
+            Active = false;
+        }
 
-    /// Callback from a child node that is called when it stops executing. This is ONLY called from the child's StopSelf method and will
-    /// not be called from child.Stop().
-    protected virtual void OnChildStop(Behavior Child)
-    {
+        /// Callback from a child node that is called when it stops executing. This is ONLY called from the child's StopSelf method and will
+        /// not be called from child.Stop().
+        protected virtual void OnChildStop(Behavior Child)
+        {
 
-    }
+        }
+
+    #endregion
 
 
     #region Durations
