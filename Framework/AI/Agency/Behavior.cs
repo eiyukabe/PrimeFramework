@@ -105,25 +105,6 @@ public abstract class Behavior : PrimeNode
     }
 
 
-    #region Events
-
-        public virtual void ExecuteEvent(Type eventType)
-        {
-            if (Active && !Disabled)
-            {
-                foreach (Behavior Child in ChildBehaviors)
-                {
-                    if (Child.Active)
-                    {
-                        Child.ExecuteEvent(eventType);
-                    }
-                }
-            }
-        }
-
-    #endregion
-
-
     #region Durations
 
         public virtual void StartDuration(Type durationType)
@@ -156,6 +137,25 @@ public abstract class Behavior : PrimeNode
 
     #endregion
 
+
+    #region Events
+
+        public virtual void ExecuteEvent(Type eventType)
+        {
+            if (Active && !Disabled)
+            {
+                foreach (Behavior Child in ChildBehaviors)
+                {
+                    if (Child.Active)
+                    {
+                        Child.ExecuteEvent(eventType);
+                    }
+                }
+            }
+        }
+
+    #endregion
+    
 
     #region States
 
