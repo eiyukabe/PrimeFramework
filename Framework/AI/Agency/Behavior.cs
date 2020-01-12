@@ -83,19 +83,19 @@ public abstract class Behavior : PrimeNode
     #region Control
 
         /// <summary> Called every tick this behavior is active. </summary>
-        public virtual void Process(float Delta)
+        public virtual void Process(float delta)
         {
 
         }
 
         /// <summary> Called every tick regardless of whether or not this behavior is active. </summary>
-        public virtual void InactiveProcess(float Delta)
+        public virtual void InactiveProcess(float delta)
         {
             if (Active)
             {
                 foreach (Behavior Child in ChildBehaviors)
                 {
-                    Child.InactiveProcess(Delta);
+                    Child.InactiveProcess(delta);
                 }
             }
         }
@@ -121,7 +121,7 @@ public abstract class Behavior : PrimeNode
 
         /// Callback from a child node that is called when it stops executing. This is ONLY called from the child's StopSelf method and will
         /// not be called from child.Stop().
-        protected virtual void OnChildStop(Behavior Child)
+        protected virtual void OnChildStop(Behavior child)
         {
 
         }
