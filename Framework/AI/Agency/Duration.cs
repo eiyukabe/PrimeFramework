@@ -53,11 +53,6 @@ public abstract class Duration : Behavior
         return false;
     }
 
-    public Type GetStateClass()
-    {
-        return typeof(AgencyState);
-    }
-
 
     #region States
 

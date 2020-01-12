@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 ///
-public class AgencyState : PrimeNode
+public abstract class AgencyState : PrimeNode
 {
     public bool Uninitialized = true;
     public bool Active = false;
@@ -21,5 +21,12 @@ public class AgencyState : PrimeNode
     {
         return false;
     }
+
+
+    #region Durations
+
+        public abstract Type GetDurationClass();
+
+    #endregion
     
 }

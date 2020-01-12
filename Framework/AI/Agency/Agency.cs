@@ -79,6 +79,17 @@ public class Agency : PrimeNode
         {
             if (Halted) { return; }
 
+            Node2D Agent = (Node2D)GetParent();
+
+            // Update our states.
+            foreach (AgencyState state in States)
+            {
+                if (state.UpdateState(Agent))
+                {
+                    ManageDurationFromState(state);
+                }
+            }
+
             // Update child behaviors.
             foreach (Behavior Child in ChildBehaviors)
             {
@@ -109,29 +120,29 @@ public class Agency : PrimeNode
 
     #region Durations
 
-        public void StartDuration()
+        private void StartDuration(Type durationType)
         {
             if (Halted) { return; }
 
             foreach (Behavior Child in ChildBehaviors)
             {
-                Child.StartDuration();
+                Child.StartDuration(durationType);
             }
         }
 
-        public void StopDuration()
+        private void StopDuration(Type durationType)
         {
             if (Halted) { return; }
 
             foreach (Behavior Child in ChildBehaviors)
             {
-                Child.StopDuration();
+                Child.StopDuration(durationType);
             }
         }
 
         public bool IsDurationActive(Duration duration)
         {
-            Type TheStateClass = duration.GetStateClass();
+            Type TheStateClass = duration.GetNeededState();
 
             AgencyState TheState = GetStateOfType(TheStateClass);
             
@@ -142,6 +153,25 @@ public class Agency : PrimeNode
             else
             {
                 return TheState.Active;
+            }
+        }
+
+        private void ManageDurationFromState(AgencyState state)
+        {
+            if (Halted) { return; }
+
+            Type DurationType = state.GetDurationClass();
+
+            if (DurationType != null)
+            {
+                if (state.Active)
+                {
+                    StartDuration(DurationType);
+                }
+                else
+                {
+                    StopDuration(DurationType);
+                }
             }
         }
 

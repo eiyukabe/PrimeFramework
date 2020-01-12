@@ -126,7 +126,7 @@ public abstract class Behavior : PrimeNode
 
     #region Durations
 
-        public virtual void StartDuration()
+        public virtual void StartDuration(Type DurationType)
         {
             if (Active && !Disabled)
             {
@@ -134,13 +134,13 @@ public abstract class Behavior : PrimeNode
                 {
                     if (Child.Active)
                     {
-                        Child.StartDuration();
+                        Child.StartDuration(DurationType);
                     }
                 }
             }
         }
 
-        public virtual void StopDuration()
+        public virtual void StopDuration(Type DurationType)
         {
             if (Active && !Disabled)
             {
@@ -148,7 +148,7 @@ public abstract class Behavior : PrimeNode
                 {
                     if (Child.Active)
                     {
-                        Child.StopDuration();
+                        Child.StopDuration(DurationType);
                     }
                 }
             }
