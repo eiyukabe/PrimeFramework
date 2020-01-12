@@ -3,9 +3,9 @@ using System;
 using System.Collections.Generic;
 
 /// A self-contained instruction for an agent to follow. Behaviors belong to agencies.
-public class Behavior : PrimeNode
+public abstract class Behavior : PrimeNode
 {
-    protected List<Behavior> ChildBehaviors;
+    public List<Behavior> ChildBehaviors;
     
     public bool Active { private set; get; } = false;  /// Inactive behaviors don't process.
     private bool Instantaneous = false;                /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
@@ -104,54 +104,66 @@ public class Behavior : PrimeNode
 
     }
 
-#region Events
 
-    public virtual void ExecuteEvent()
-    {
-        if (Active && !Disabled)
+    #region Events
+
+        public virtual void ExecuteEvent()
         {
-            foreach (Behavior Child in ChildBehaviors)
+            if (Active && !Disabled)
             {
-                if (Child.Active)
+                foreach (Behavior Child in ChildBehaviors)
                 {
-                    Child.ExecuteEvent();
+                    if (Child.Active)
+                    {
+                        Child.ExecuteEvent();
+                    }
                 }
             }
         }
-    }
 
-#endregion
+    #endregion
 
-#region Durations
 
-    public virtual void StartDuration()
-    {
-        if (Active && !Disabled)
+    #region Durations
+
+        public virtual void StartDuration()
         {
-            foreach (Behavior Child in ChildBehaviors)
+            if (Active && !Disabled)
             {
-                if (Child.Active)
+                foreach (Behavior Child in ChildBehaviors)
                 {
-                    Child.StartDuration();
+                    if (Child.Active)
+                    {
+                        Child.StartDuration();
+                    }
                 }
             }
         }
-    }
 
-    public virtual void StopDuration()
-    {
-        if (Active && !Disabled)
+        public virtual void StopDuration()
         {
-            foreach (Behavior Child in ChildBehaviors)
+            if (Active && !Disabled)
             {
-                if (Child.Active)
+                foreach (Behavior Child in ChildBehaviors)
                 {
-                    Child.StopDuration();
+                    if (Child.Active)
+                    {
+                        Child.StopDuration();
+                    }
                 }
             }
         }
-    }
 
-#endregion
+    #endregion
+
+
+    #region States
+
+        public virtual Type GetNeededState()
+        {
+            return null;
+        }
+
+    #endregion
 
 }

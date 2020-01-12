@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 ///
-public class Event : Behavior
+public abstract class Event : Behavior
 {
 
     public override void OnBegin()
