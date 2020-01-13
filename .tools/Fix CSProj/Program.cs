@@ -36,8 +36,7 @@ namespace Fix_CSProj
 
             /* Get filepaths to all scripts in the game */
             Console.WriteLine($"Searching for .cs files here: {pathToCurrentDir}");
-            var pathToCurrentDirRegexPattern = pathToCurrentDir.Replace(@"\", @"\\") + @"\\";       // Result example: D:\\Projects\\My Game\\
-            var scriptFilepaths = GetScriptFilepaths(pathToCurrentDir, pathToCurrentDirRegexPattern, blacklist);
+            var scriptFilepaths = GetScriptFilepaths(pathToCurrentDir, blacklist);
 
             if(scriptFilepaths.Count == 0)
             {
@@ -110,10 +109,11 @@ namespace Fix_CSProj
         }
 
         /// <summary> Returns a list of filepaths to all the .cs files in the game's folders. </summary>
-        private static List<string> GetScriptFilepaths(string path, string rootPathPattern, List<string> blacklist)
+        private static List<string> GetScriptFilepaths(string pathToGameRoot, List<string> blacklist)
         {
             List<string> results = new List<string>();
-            GetScriptFilepaths(path, rootPathPattern, blacklist, results);
+            var rootPathRegexPattern = pathToGameRoot.Replace(@"\", @"\\") + @"\\";       // Result example: D:\\Projects\\My Game\\        (Used to strip this out later)
+            GetScriptFilepaths(pathToGameRoot, rootPathRegexPattern, blacklist, results);
             return results;
         }
 
