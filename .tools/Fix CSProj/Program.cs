@@ -12,8 +12,10 @@ namespace Fix_CSProj
         {
             var pathToCurrentDir = Directory.GetCurrentDirectory();
 
-            /* Get game name from project.godot */
-            var gameName = GetGameName(pathToCurrentDir);
+            /* Get game name */
+            string gameName;
+            if (args.Length == 0) { gameName = GetGameName(pathToCurrentDir); }     // Get game name from project.godot file
+            else                  { gameName = args[0]; }
 
             if (gameName == string.Empty)
             {
