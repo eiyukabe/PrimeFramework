@@ -46,7 +46,7 @@ public class PauseMenu : GameScene
 
     public override void OnPop()
     {
-        // TODO: Play "go back" sound
+
     }
 
     public override void OnRemove()
