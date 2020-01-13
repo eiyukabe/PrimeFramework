@@ -122,21 +122,18 @@ namespace Fix_CSProj
             {
                 foreach (string dir in Directory.GetDirectories(path))
                 {
-                    if (!IsFolderBlacklisted(dir, blacklist))
+                    string dirNameWithoutRootPath = Regex.Replace(dir, rootPathPattern, string.Empty);
+                    if (!dirNameWithoutRootPath.StartsWith(".") && !IsFolderBlacklisted(dir, blacklist))
                     {
-                        string dirNameWithoutRootPath = Regex.Replace(dir, rootPathPattern, string.Empty);
-                        if(!dirNameWithoutRootPath.StartsWith("."))
+                        foreach (string file in Directory.GetFiles(dir))
                         {
-                            foreach (string file in Directory.GetFiles(dir))
+                            if (file.EndsWith(".cs"))
                             {
-                                if (file.EndsWith(".cs"))
-                                {
-                                    string fileNameWithoutRootPath = Regex.Replace(file, rootPathPattern, string.Empty);
-                                    returnList.Add(fileNameWithoutRootPath);
-                                }
+                                string fileNameWithoutRootPath = Regex.Replace(file, rootPathPattern, string.Empty);
+                                returnList.Add(fileNameWithoutRootPath);
                             }
-                            GetScriptFilepaths(dir, rootPathPattern, blacklist, returnList);
                         }
+                        GetScriptFilepaths(dir, rootPathPattern, blacklist, returnList);
                     }
                 }
             }
