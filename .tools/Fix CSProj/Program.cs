@@ -27,14 +27,9 @@ namespace Fix_CSProj
                 Console.WriteLine($"Game name: {gameName}");
             }
 
-            /* These folders will be ignored when looking for scripts that should go in the csproj file */
+            /* Create list of blacklisted folders; these folders will be ignored when looking for scripts that should go in the csproj file.
+             * Any folder that begins with . will also be ignored. */
             var blacklist = new List<string>();
-            blacklist.Add($"{pathToCurrentDir}\\.git");
-            blacklist.Add($"{pathToCurrentDir}\\.docs");
-            blacklist.Add($"{pathToCurrentDir}\\.import");
-            blacklist.Add($"{pathToCurrentDir}\\.mono");
-            blacklist.Add($"{pathToCurrentDir}\\.setup new game");
-            blacklist.Add($"{pathToCurrentDir}\\.tools");
             blacklist.Add($"{pathToCurrentDir}\\mono");
 
             /* Get filepaths to all scripts in the game */
@@ -129,15 +124,19 @@ namespace Fix_CSProj
                 {
                     if (!IsFolderBlacklisted(dir, blacklist))
                     {
-                        foreach (string file in Directory.GetFiles(dir))
+                        string dirNameWithoutRootPath = Regex.Replace(dir, rootPathPattern, string.Empty);
+                        if(!dirNameWithoutRootPath.StartsWith("."))
                         {
-                            if (file.EndsWith(".cs"))
+                            foreach (string file in Directory.GetFiles(dir))
                             {
-                                string fileNameWithoutRootPath = Regex.Replace(file, rootPathPattern, string.Empty);
-                                returnList.Add(fileNameWithoutRootPath);
+                                if (file.EndsWith(".cs"))
+                                {
+                                    string fileNameWithoutRootPath = Regex.Replace(file, rootPathPattern, string.Empty);
+                                    returnList.Add(fileNameWithoutRootPath);
+                                }
                             }
+                            GetScriptFilepaths(dir, rootPathPattern, blacklist, returnList);
                         }
-                        GetScriptFilepaths(dir, rootPathPattern, blacklist, returnList);
                     }
                 }
             }
