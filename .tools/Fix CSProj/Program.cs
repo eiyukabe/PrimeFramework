@@ -27,10 +27,12 @@ namespace Fix_CSProj
                 Console.WriteLine($"Game name: {gameName}");
             }
 
-            /* Create list of blacklisted folders; these folders will be ignored when looking for scripts that should go in the csproj file.
-             * Any folder that begins with . will also be ignored. */
+            /* Create list of blacklisted folders */
+            // These folders will be ignored when looking for scripts that should go in the csproj file.
+            // Any folder that begins with . will also be ignored.
+            // The paths are relative to the game's root folder.
             var blacklist = new List<string>();
-            blacklist.Add($"{pathToCurrentDir}\\mono");
+            blacklist.Add("mono");
 
             /* Get filepaths to all scripts in the game */
             Console.WriteLine($"Searching for .cs files here: {pathToCurrentDir}");
@@ -123,7 +125,7 @@ namespace Fix_CSProj
                 foreach (string dir in Directory.GetDirectories(path))
                 {
                     string dirNameWithoutRootPath = Regex.Replace(dir, rootPathPattern, string.Empty);
-                    if (!dirNameWithoutRootPath.StartsWith(".") && !IsFolderBlacklisted(dir, blacklist))
+                    if (!dirNameWithoutRootPath.StartsWith(".") && !IsFolderBlacklisted(dirNameWithoutRootPath, blacklist))
                     {
                         foreach (string file in Directory.GetFiles(dir))
                         {
