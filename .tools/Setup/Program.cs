@@ -74,6 +74,7 @@ namespace Setup
             fix.StartInfo.UseShellExecute = true;
             fix.StartInfo.WorkingDirectory = newGameDir;
             fix.StartInfo.FileName = "Fix csproj.exe";
+            fix.StartInfo.Arguments = "\"" + gameName + "\"";
             fix.Start();
 
             /* Open new project in Godot */
