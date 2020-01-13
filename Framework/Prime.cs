@@ -486,7 +486,7 @@ public static partial class Prime
         /// Set the game to paused or unpaused.  
         /// Set 'PauseMode' to change if an object processes or not while the game is paused.
         /// </summary>
-        public static void SetPause(bool pause) { Tree.Paused = pause; }
+        public static void SetPaused(bool pause) { Tree.Paused = pause; }
 
     #endregion
 
