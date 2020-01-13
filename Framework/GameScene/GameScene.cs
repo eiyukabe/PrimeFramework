@@ -36,7 +36,7 @@ public class GameScene : PrimeNode2D
         by going to NormalGameLaunch.cs and calling Prime.SetScene() or Prime.PushScene() in _Ready() or _EnterTree(). */
         if (Prime.StackIsEmpty)
         {
-            Prime.F6LaunchPushScene(this);
+            Prime.PushSceneForF6Launch(this);
         }
     }
 
