@@ -1,7 +1,6 @@
 ﻿using System;
 
-public static partial class Signals
+public static partial class CollisionSignals
 {
-    /* Godot default signals */
     public const string AREA_ENTERED = "area_entered";
 }

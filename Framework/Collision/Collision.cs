@@ -28,7 +28,7 @@ public class Collision<T> : Node where T : Node
         }
 
         Callback = callback;
-        collisionArea2D.Connect(Signals.AREA_ENTERED, this, nameof(OnCollision));
+        collisionArea2D.Connect(CollisionSignals.AREA_ENTERED, this, nameof(OnCollision));
         collisionArea2D.AddChild(this);
     }
 

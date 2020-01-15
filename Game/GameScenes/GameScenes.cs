@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public static partial class Scenes
+public static partial class GameScenes
 {
     public const string CREDITS = "res://Game/GameScenes/Credits/Credits.tscn";
     public const string PAUSE_MENU = "res://Game/GameScenes/PauseMenu/PauseMenu.tscn";

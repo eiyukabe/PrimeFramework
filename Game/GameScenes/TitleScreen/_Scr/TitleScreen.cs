@@ -16,12 +16,12 @@ public class TitleScreen : GameScene
 
     private void OnPlayButtonPressed()
     {
-        Prime.SetScene(Scenes.PLAY);
+        Prime.SetScene(GameScenes.PLAY);
     }
 
     private void OnCreditsButtonPressed()
     {
-        Prime.PushSubScene(Scenes.CREDITS);
+        Prime.PushSubScene(GameScenes.CREDITS);
     }
 
     private void OnQuitButtonPressed()

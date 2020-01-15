@@ -26,7 +26,7 @@ public class PauseMenu : GameScene
     
     private void OnTitleScreenButtonPressed()
     {
-        Prime.SetScene(Scenes.TITLE_SCREEN);
+        Prime.SetScene(GameScenes.TITLE_SCREEN);
     }
 
     private void OnQuitButtonPressed()
