@@ -12,8 +12,10 @@ namespace Fix_CSProj
         {
             var pathToCurrentDir = Directory.GetCurrentDirectory();
 
-            /* Get game name from project.godot */
-            var gameName = GetGameName(pathToCurrentDir);
+            /* Get game name */
+            string gameName;
+            if (args.Length == 0) { gameName = GetGameName(pathToCurrentDir); }     // Get game name from project.godot file
+            else                  { gameName = args[0]; }
 
             if (gameName == string.Empty)
             {
@@ -25,20 +27,16 @@ namespace Fix_CSProj
                 Console.WriteLine($"Game name: {gameName}");
             }
 
-            /* These folders will be ignored when looking for scripts that should go in the csproj file */
+            /* Create list of blacklisted folders */
+            // These folders will be ignored when looking for scripts that should go in the csproj file.
+            // Any folder that begins with . will also be ignored.
+            // The paths are relative to the game's root folder.
             var blacklist = new List<string>();
-            blacklist.Add($"{pathToCurrentDir}\\.git");
-            blacklist.Add($"{pathToCurrentDir}\\.docs");
-            blacklist.Add($"{pathToCurrentDir}\\.import");
-            blacklist.Add($"{pathToCurrentDir}\\.mono");
-            blacklist.Add($"{pathToCurrentDir}\\.setup new game");
-            blacklist.Add($"{pathToCurrentDir}\\.tools");
-            blacklist.Add($"{pathToCurrentDir}\\mono");
+            blacklist.Add("mono");
 
             /* Get filepaths to all scripts in the game */
             Console.WriteLine($"Searching for .cs files here: {pathToCurrentDir}");
-            var pathToCurrentDirRegexPattern = pathToCurrentDir.Replace(@"\", @"\\") + @"\\";       // Result example: D:\\Projects\\My Game\\
-            var scriptFilepaths = GetScriptFilepaths(pathToCurrentDir, pathToCurrentDirRegexPattern, blacklist);
+            var scriptFilepaths = GetScriptFilepaths(pathToCurrentDir, blacklist);
 
             if(scriptFilepaths.Count == 0)
             {
@@ -111,10 +109,11 @@ namespace Fix_CSProj
         }
 
         /// <summary> Returns a list of filepaths to all the .cs files in the game's folders. </summary>
-        private static List<string> GetScriptFilepaths(string path, string rootPathPattern, List<string> blacklist)
+        private static List<string> GetScriptFilepaths(string pathToGameRoot, List<string> blacklist)
         {
             List<string> results = new List<string>();
-            GetScriptFilepaths(path, rootPathPattern, blacklist, results);
+            var rootPathRegexPattern = pathToGameRoot.Replace(@"\", @"\\") + @"\\";       // Result example: D:\\Projects\\My Game\\        (Used to strip this out later)
+            GetScriptFilepaths(pathToGameRoot, rootPathRegexPattern, blacklist, results);
             return results;
         }
 
@@ -125,7 +124,8 @@ namespace Fix_CSProj
             {
                 foreach (string dir in Directory.GetDirectories(path))
                 {
-                    if (!IsFolderBlacklisted(dir, blacklist))
+                    string dirNameWithoutRootPath = Regex.Replace(dir, rootPathPattern, string.Empty);
+                    if (!dirNameWithoutRootPath.StartsWith(".") && !IsFolderBlacklisted(dirNameWithoutRootPath, blacklist))
                     {
                         foreach (string file in Directory.GetFiles(dir))
                         {

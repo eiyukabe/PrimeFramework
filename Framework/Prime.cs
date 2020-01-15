@@ -193,7 +193,7 @@ public static partial class Prime
         /// Push a scene that's already in the scenetree onto the stack as a main scene.  
         /// This should only be required when launching the game with F6 for debugging.
         /// </summary>
-        public static void F6LaunchPushScene(GameScene scene)
+        public static void PushSceneForF6Launch(GameScene scene)
         {
             Stack.Add(scene);
             scene.Visit(justPushed: true);
@@ -486,7 +486,7 @@ public static partial class Prime
         /// Set the game to paused or unpaused.  
         /// Set 'PauseMode' to change if an object processes or not while the game is paused.
         /// </summary>
-        public static void SetPause(bool pause) { Tree.Paused = pause; }
+        public static void SetPaused(bool pause) { Tree.Paused = pause; }
 
     #endregion
 
