@@ -118,7 +118,29 @@ public class SequentialBehavior : Behavior
                     return;
                 }
             }
+
+            CurrentBehavior = ChildBehaviors[CurrentBehaviorIndex];
+            if (CurrentBehavior != null)
+            {
+                if (CurrentBehavior.Disabled /*|| CurrentBehavior is Condition*/)
+                {
+                    ExecuteNextChild();
+                }
+                else
+                {
+                    CurrentBehavior.Begin();
+                }
+            }
+
+            ExecuteNextChildCallDepth--;
+        }
+
+        protected override void OnChildStop(Behavior child)
+        {
+            ExecuteNextChild();
         }
 
     #endregion
+
+    
 }
