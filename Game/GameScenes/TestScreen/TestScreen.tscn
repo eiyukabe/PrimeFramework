@@ -10,9 +10,19 @@ script = ExtResource( 1 )
 margin_right = 1280.0
 margin_bottom = 96.0
 
-[node name="Test" parent="Center" instance=ExtResource( 2 )]
+[node name="Title" parent="Center" instance=ExtResource( 2 )]
 margin_left = 591.0
 margin_top = 15.0
 margin_right = 689.0
 margin_bottom = 80.0
 text = "Test"
+
+[node name="Center2" type="CenterContainer" parent="."]
+margin_right = 1280.0
+margin_bottom = 720.0
+
+[node name="Menu" type="VBoxContainer" parent="Center2"]
+margin_left = 640.0
+margin_top = 360.0
+margin_right = 640.0
+margin_bottom = 360.0
