@@ -22,6 +22,7 @@ public abstract class Behavior : PrimeNode
         }
     }
     private Agency _ParentAgency = null;
+    private Node2D ParentAgent = null;
 
     private Behavior ParentBehavior = null;
 
@@ -29,6 +30,11 @@ public abstract class Behavior : PrimeNode
     [Export] public String DebugName = "";
 
     public bool IsActive() { return Active; }
+
+    public Node2D GetAgent()
+    {
+        return ParentAgency?.GetParent() as Node2D;
+    }
 
 
     #region Initialization
