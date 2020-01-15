@@ -102,7 +102,7 @@ public abstract class Behavior : PrimeNode
 
         /// <summary> Called internally when the behavior determines that it needs to end. </summary>
         /// stop() should *not* be overridden in child classes to handle behavior finalization. Override Stop() instead.
-        protected void StopSelf()
+        protected virtual void StopSelf()
         {
             Stop();
             if (ParentBehavior != null && ParentBehavior.Active)
