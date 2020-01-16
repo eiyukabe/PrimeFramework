@@ -119,16 +119,19 @@ public class SequentialBehavior : Behavior
                 }
             }
 
-            CurrentBehavior = ChildBehaviors[CurrentBehaviorIndex];
-            if (CurrentBehavior != null)
+            if (CurrentBehaviorIndex >= 0 && CurrentBehaviorIndex < ChildBehaviors.Count)
             {
-                if (CurrentBehavior.Disabled /*|| CurrentBehavior is Condition*/)
+                CurrentBehavior = ChildBehaviors[CurrentBehaviorIndex];
+                if (CurrentBehavior != null)
                 {
-                    ExecuteNextChild();
-                }
-                else
-                {
-                    CurrentBehavior.Begin();
+                    if (CurrentBehavior.Disabled /*|| CurrentBehavior is Condition*/)
+                    {
+                        ExecuteNextChild();
+                    }
+                    else
+                    {
+                        CurrentBehavior.Begin();
+                    }
                 }
             }
 
