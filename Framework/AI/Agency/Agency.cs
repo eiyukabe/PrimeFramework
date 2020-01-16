@@ -77,7 +77,7 @@ public class Agency : PrimeNode
 
     #region Control
 
-        public virtual void Process(float delta)
+        public override void _Process(float delta)
         {
             if (Halted) { return; }
 
