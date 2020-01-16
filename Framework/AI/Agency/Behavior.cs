@@ -8,7 +8,7 @@ public abstract class Behavior : PrimeNode
     public List<Behavior> ChildBehaviors = new List<Behavior>();
     
     public bool Active { private set; get; } = false;  /// Inactive behaviors don't process.
-    private bool Instantaneous = false;                /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
+    protected bool Instantaneous = false;                /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
 
     protected Agency ParentAgency 
     {
