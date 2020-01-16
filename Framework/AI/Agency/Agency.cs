@@ -38,7 +38,8 @@ public class Agency : PrimeNode
 
         private void AddNeededStates(Behavior behavior)
         {
-            AddState(behavior.GetNeededState());
+            Type StateType = behavior.GetNeededState();
+            if (StateType != null) { AddState(StateType); }
 
             if (!(behavior is Event))
             {

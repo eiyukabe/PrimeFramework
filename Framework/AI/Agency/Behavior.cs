@@ -5,7 +5,7 @@ using System.Collections.Generic;
 /// A self-contained instruction for an agent to follow. Behaviors belong to agencies.
 public abstract class Behavior : PrimeNode
 {
-    public List<Behavior> ChildBehaviors;
+    public List<Behavior> ChildBehaviors = new List<Behavior>();
     
     public bool Active { private set; get; } = false;  /// Inactive behaviors don't process.
     private bool Instantaneous = false;                /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
