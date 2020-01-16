@@ -100,22 +100,29 @@ public class SequentialBehavior : Behavior
 
             if (CurrentBehaviorIndex < ChildBehaviors.Count)
             {
-                AtomicExecutionFinished = true;
+                CurrentBehaviorIndex++;
             }
             else
             {
-                if (Loop && (CurrentLoopCount < LoopCount - 1 || LoopCount < 0))
+                if (FinishingAtomicExecution)
                 {
-                    // This is a looping behavior. Roll around to the first behavior.
-                    CurrentBehaviorIndex = 0;
-                    CurrentLoopCount++;
+                    AtomicExecutionFinished = true;
                 }
                 else
                 {
-                    // This is not a looping behavior. End after the last behavior has ended.
-                    StopSelf();
-                    ExecuteNextChildCallDepth--;
-                    return;
+                    if (Loop && (CurrentLoopCount < LoopCount - 1 || LoopCount < 0))
+                    {
+                        // This is a looping behavior. Roll around to the first behavior.
+                        CurrentBehaviorIndex = 0;
+                        CurrentLoopCount++;
+                    }
+                    else
+                    {
+                        // This is not a looping behavior. End after the last behavior has ended.
+                        StopSelf();
+                        ExecuteNextChildCallDepth--;
+                        return;
+                    }
                 }
             }
 
