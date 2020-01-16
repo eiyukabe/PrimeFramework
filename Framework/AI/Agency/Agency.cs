@@ -23,6 +23,7 @@ public class Agency : PrimeNode
                 Child.Setup();
                 AddNeededStates(Child);
             }
+            Begin();
         }
 
         public virtual void Begin()
