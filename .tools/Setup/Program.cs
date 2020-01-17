@@ -24,7 +24,7 @@ namespace Setup
             {
                 Directory.CreateDirectory(newGameDir);
             }
-            catch(Exception exception)
+            catch (Exception exception)
             {
                 Console.WriteLine(exception.Message);
                 SetupFailed();
@@ -32,19 +32,19 @@ namespace Setup
             }
 
             /* Set filepaths to the project files */
-            string gitignore        = $"{newGameSetupDir}\\.gitignore";
-            string defaultEnv       = $"{primeDir}\\default_env.tres";
-            string icon             = $"{primeDir}\\icon.png";
-            string iconImport       = $"{primeDir}\\icon.png.import";
+            string gitignore = $"{newGameSetupDir}\\.gitignore";
+            string defaultEnv = $"{primeDir}\\default_env.tres";
+            string icon = $"{primeDir}\\icon.png";
+            string iconImport = $"{primeDir}\\icon.png.import";
             string godotProjectFile = $"{primeDir}\\project.godot";
-            string fixCSProj        = $"{primeDir}\\Fix csproj.exe";
-            
-            string newGitignore         = $"{newGameDir}\\.gitignore";
-            string newDefaultEnv        = $"{newGameDir}\\default_env.tres";
-            string newIcon              = $"{newGameDir}\\icon.png";
-            string newIconImport        = $"{newGameDir}\\icon.png.import";
-            string newGodotProjectFile  = $"{newGameDir}\\project.godot";
-            string newFixCSProj         = $"{newGameDir}\\Fix csproj.exe";
+            string fixCSProj = $"{primeDir}\\Fix csproj.exe";
+
+            string newGitignore = $"{newGameDir}\\.gitignore";
+            string newDefaultEnv = $"{newGameDir}\\default_env.tres";
+            string newIcon = $"{newGameDir}\\icon.png";
+            string newIconImport = $"{newGameDir}\\icon.png.import";
+            string newGodotProjectFile = $"{newGameDir}\\project.godot";
+            string newFixCSProj = $"{newGameDir}\\Fix csproj.exe";
 
             /* Copy project files to new game directory */
             CopyFile(gitignore, newGitignore);
@@ -68,6 +68,11 @@ namespace Setup
 
             /* Create .sln file */
             WriteFile($"{newGameDir}\\{gameName}.sln", GetSlnText(gameName));
+
+            /* Create launch.json file for debugging in Visual Studio Code */
+            var pathToVSCode = $"{newGameDir}\\.vscode";
+            Directory.CreateDirectory(pathToVSCode);
+            WriteFile($"{pathToVSCode}\\launch.json", GetLaunchJsonText());
 
             /* Create .csproj file by running Fix csproj.exe */
             Process fix = new Process();
@@ -120,7 +125,7 @@ namespace Setup
                 {
                     File.Copy(source, target);
                 }
-                catch(Exception exception)
+                catch (Exception exception)
                 {
                     Console.WriteLine(exception.Message);
                 }
@@ -178,6 +183,22 @@ Global
 	EndGlobalSection
 EndGlobal
 ";
+        }
+
+        private static string GetLaunchJsonText()
+        {
+            return $@"{{
+    ""version"": ""0.2.0"",
+    ""configurations"": [
+        {{
+            ""name"": ""Attach"",
+            ""type"": ""mono"",
+            ""request"": ""attach"",
+            ""address"": ""localhost"",
+            ""port"": 23685
+        }}
+    ]
+}}";
         }
     }
 }
