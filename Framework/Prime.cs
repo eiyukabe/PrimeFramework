@@ -108,6 +108,12 @@ public static partial class Prime
             get { return Stack.Count == 0; }
         }
 
+        /// <summary> Returns the number of scenes on the stack. </summary>
+        public static int SceneCount
+        {
+            get { return Stack.Count; }
+        }
+
         /// <summary>
         /// Clear all scenes off the stack (if any) and push a new main scene.  
         /// Callbacks:
