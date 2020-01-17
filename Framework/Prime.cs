@@ -415,6 +415,13 @@ public static partial class Prime
             return null;
         }
 
+        /// <summary> Returns a GameScene from the scene stack. Index 0 is the bottom of the stack; Prime.SceneCount - 1 is the top. Returns null if index is out of range. </summary>
+        public static GameScene GetScene(int index)
+        {
+            if (index > Stack.Count - 1 || index < 0) { return null; }
+            return Stack[index];
+        }
+
         /// <summary> Print the name of all scenes on the stack for debugging. </summary>
         public static void PrintSceneStack()
         {
