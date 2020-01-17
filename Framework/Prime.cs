@@ -76,7 +76,7 @@ public static partial class Prime
             Stack.RemoveAt(Stack.Count - 1);
             scene.OnPop();
             scene.OnRemove();
-            scene.QueueFree();
+            QueueFreeScene(scene);
         }
 
         /// <summary> Pop the topmost main scene off the stack and any subscenes above it. Noop if there's no main scene on the stack. </summary>
@@ -111,7 +111,13 @@ public static partial class Prime
             var scene = TopScene;
             Stack.RemoveAt(Stack.Count - 1);
             scene.OnRemove();
-            scene.QueueFree();
+            QueueFreeScene(scene);
+        }
+
+        private static void QueueFreeScene(GameScene scene)
+        {
+            if (scene.AttachToViewport) { scene.GetParent().GetParent().QueueFree(); }
+            else                        { scene.QueueFree(); }
         }
 
     #endregion
