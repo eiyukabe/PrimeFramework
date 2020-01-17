@@ -14,20 +14,20 @@ public class TitleScreen : GameScene
 
     #region Button Callbacks
 
-    private void OnPlayButtonPressed()
-    {
-        Prime.SetScene(GameScenes.PLAY);
-    }
+        private void OnPlayButtonPressed()
+        {
+            Prime.SetScene(GameScenes.PLAY);
+        }
 
-    private void OnCreditsButtonPressed()
-    {
-        Prime.PushSubScene(GameScenes.CREDITS);
-    }
+        private void OnCreditsButtonPressed()
+        {
+            Prime.PushSubScene(GameScenes.CREDITS);
+        }
 
-    private void OnQuitButtonPressed()
-    {
-        Prime.Quit();
-    }
+        private void OnQuitButtonPressed()
+        {
+            Prime.Quit();
+        }
 
     #endregion
     
