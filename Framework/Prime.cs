@@ -402,7 +402,7 @@ public static partial class Prime
             }
         }
 
-        /// <summary> Returns a GameScene from the scene stack. The 'name' is the name of the root node in the GameScene's .tscn. Returns null if not found. </summary>
+        /// <summary> Returns a GameScene from the scene stack. 'name' is the name of the root node in the .tscn file. Returns null if not found. </summary>
         public static GameScene GetScene(string name)
         {
             foreach(var scene in Stack)
