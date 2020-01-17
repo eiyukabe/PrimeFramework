@@ -49,9 +49,13 @@ public static partial class Prime
             Stack.Add(scene);
             
             if (scene.AttachToViewport)
-            {    
+            {
                 var canvasLayer = new CanvasLayer();
+                canvasLayer.Name = $"{scene.Name} (CanvasLayer)";
+
                 var control = new Control();
+                control.Name = $"{scene.Name} (Control)";
+
                 control.AddChild(scene);
                 canvasLayer.AddChild(control);
                 TreeRoot.AddChild(canvasLayer);
