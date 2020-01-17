@@ -428,7 +428,7 @@ public static partial class Prime
             GD.Print("--- Scene Stack ---");
             foreach (var scene in Stack)
             {
-                GD.Print(scene.SceneName);
+                GD.Print(scene.DebugPrintName);
             }
         }
 

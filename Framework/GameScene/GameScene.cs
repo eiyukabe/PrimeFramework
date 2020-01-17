@@ -69,7 +69,7 @@ public class GameScene : PrimeNode2D
     }
 
     /// <summary> Get the name of this scene for debug printing. </summary>
-    public string SceneName
+    public string DebugPrintName
     {
         get { return IsMain ? $"- (Main) {Name}" : $"   - (sub) {Name}"; }
     }
