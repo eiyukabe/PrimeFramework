@@ -27,10 +27,8 @@ namespace Setup
                 SetupFailed();
                 return;
             }
-
             Directory.CreateDirectory(newGameDir);
             
-
             /* Set filepaths to the project files */
             string gitignore = $"{newGameSetupDir}\\.gitignore";
             string defaultEnv = $"{primeDir}\\default_env.tres";
@@ -51,20 +49,15 @@ namespace Setup
             CopyFile(defaultEnv, newDefaultEnv);
             CopyFile(icon, newIcon);
             CopyFile(iconImport, newIconImport);
-            CopyFile(godotProjectFile, newGodotProjectFile);
             CopyFile(fixCSProj, newFixCSProj);
 
             /* Copy "Game" folder*/
             CopyAll(new DirectoryInfo($"{primeDir}\\Game"), new DirectoryInfo($"{newGameDir}\\Game"));
 
-            /* Set the name of the game in project.godot */
-            string text = File.ReadAllText(newGodotProjectFile);
+            /* Copy project.godot file */
+            string text = File.ReadAllText(godotProjectFile);
             text = text.Replace($"config/name=\"{PrimeFrameworkProjectName}\"", $"config/name=\"{gameName}\"");
             WriteFile(newGodotProjectFile, text);
-
-            /* Junction "Framework" folder to new game folder */
-            string cmd = $"/C mklink /J \"{newGameDir}\\Framework\" \"{primeDir}\\Framework\"";
-            Process.Start("CMD.exe", cmd);
 
             /* Create .sln file */
             WriteFile($"{newGameDir}\\{gameName}.sln", GetSlnText(gameName));
@@ -73,6 +66,10 @@ namespace Setup
             var pathToVSCode = $"{newGameDir}\\.vscode";
             Directory.CreateDirectory(pathToVSCode);
             WriteFile($"{pathToVSCode}\\launch.json", GetLaunchJsonText());
+
+            /* Junction "Framework" folder to new game folder */
+            string cmd = $"/C mklink /J \"{newGameDir}\\Framework\" \"{primeDir}\\Framework\"";
+            Process.Start("CMD.exe", cmd);
 
             /* Create .csproj file by running Fix csproj.exe */
             Process fix = new Process();
