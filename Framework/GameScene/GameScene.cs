@@ -17,9 +17,6 @@ public class GameScene : PrimeNode2D
 {
     public bool Active = false;
     public bool IsMain = true;
-    public bool ShowWhileSuspended = false;
-    public bool ProcessWhileSuspended = false;
-    public bool ProcessInputWhileSuspended = false;
     
     public virtual void OnFirstVisit() {}   // Called the first time this scene is pushed onto the stack.
     public virtual void OnVisit() {}        // Called every time this scene becomes the topmost scene on the stack.
@@ -62,10 +59,10 @@ public class GameScene : PrimeNode2D
     {
         if (!Active) { return; }
 
-        SetVisible(ShowWhileSuspended);
-        SetProcess(ProcessWhileSuspended);
-        SetPhysicsProcess(ProcessWhileSuspended);
-        SetProcessInput(ProcessInputWhileSuspended);
+        SetVisible(false);
+        SetProcess(false);
+        SetPhysicsProcess(false);
+        SetProcessInput(false);
         Active = false;
         
         OnSuspend();
