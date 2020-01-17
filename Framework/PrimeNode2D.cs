@@ -7,7 +7,6 @@ public class PrimeNode2D : Node2D
     public List<T> GetChildren<T>() where T : Node
     {
         var results = new List<T>();
-
         foreach (Node node in GetChildren())
         {
             if (node is T)
@@ -15,7 +14,6 @@ public class PrimeNode2D : Node2D
                 results.Add((T)node);
             }
         }
-
         return results;
     }
 
