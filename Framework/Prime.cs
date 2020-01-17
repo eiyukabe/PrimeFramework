@@ -47,7 +47,20 @@ public static partial class Prime
         {
             TopScene?.Suspend();
             Stack.Add(scene);
-            TreeRoot.AddChild(scene);
+            
+            if (scene.AttachToViewport)
+            {    
+                var canvasLayer = new CanvasLayer();
+                var control = new Control();
+                control.AddChild(scene);
+                canvasLayer.AddChild(control);
+                TreeRoot.AddChild(canvasLayer);
+            }
+            else
+            {
+                TreeRoot.AddChild(scene);
+            }
+            
             scene.Visit(justPushed: true);
         }
 

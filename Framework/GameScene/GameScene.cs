@@ -15,6 +15,8 @@ using System;
 /// </summary>
 public class GameScene : PrimeNode2D
 {
+    [Export] public bool AttachToViewport = true;      // Set if this game scene will be attached to the viewport.
+
     public bool Active = false;
     public bool IsMain = true;
     
@@ -42,7 +44,7 @@ public class GameScene : PrimeNode2D
     {
         if (Active) { return; }
         
-        if (!Visible) { Show(); }
+        SetSceneVisibility(true);
         GetTree().SetInputAsHandled();      // Clear input when activating a new scene so input doesn't carry over from one scene to another.
         SetProcess(true);
         SetProcessInput(true);
@@ -59,13 +61,30 @@ public class GameScene : PrimeNode2D
     {
         if (!Active) { return; }
 
-        SetVisible(false);
+        SetSceneVisibility(false);
         SetProcess(false);
         SetPhysicsProcess(false);
         SetProcessInput(false);
         Active = false;
         
         OnSuspend();
+    }
+
+    private void SetSceneVisibility(bool isVisible)
+    {
+        if (AttachToViewport)
+        {
+            var parent = GetParent();
+            if (parent is Control)
+            {
+                var control = (Control) parent;
+                control.Visible = isVisible;
+            }
+        }
+        else
+        {
+            SetVisible(isVisible);
+        }
     }
 
     /// <summary> Get the name of this scene for debug printing. </summary>
