@@ -20,16 +20,16 @@ namespace Setup
             string newGameDir = $"{Directory.GetParent(primeDir).FullName}\\{gameName}\\";      // <path>\New Game Name\
 
             /* Create new game directory */
-            try
+            if (Directory.Exists(newGameDir))
             {
-                Directory.CreateDirectory(newGameDir);
-            }
-            catch (Exception exception)
-            {
-                Console.WriteLine(exception.Message);
+                Console.WriteLine();
+                Console.WriteLine($@"Directory ""{newGameDir}"" already exists. Setting up a new game in a directory that already exists could accidentally override files you didn't want overriden. To be safe setup will abort.");
                 SetupFailed();
                 return;
             }
+
+            Directory.CreateDirectory(newGameDir);
+            
 
             /* Set filepaths to the project files */
             string gitignore = $"{newGameSetupDir}\\.gitignore";
@@ -101,7 +101,8 @@ namespace Setup
 
         private static void SetupFailed()
         {
-            Console.WriteLine("Setup failed.");
+            Console.WriteLine();
+            Console.WriteLine("Press any key to exit.");
             Console.ReadKey();
         }
 
