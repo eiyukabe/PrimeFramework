@@ -13,7 +13,9 @@ public static partial class Prime
 
     private static List<GameScene> Stack = new List<GameScene>();
 
+
     #region Game Scenes
+
 
         #region Getters
 
@@ -127,11 +129,11 @@ public static partial class Prime
             /// - scene.OnFirstVisit()
             /// - scene.OnVisit()
             /// </summary>
-            public static void PushScene(GameScene scene)
+            public static void PushScene(GameScene scene, bool hideSceneBelow = true)
             {
                 if (scene == null) { return; }
                 scene.IsMain = true;
-                BasePush(scene);
+                BasePush(scene, hideSceneBelow);
             }
 
             /// <summary>
@@ -141,9 +143,9 @@ public static partial class Prime
             /// - scene.OnFirstVisit()
             /// - scene.OnVisit()
             /// </summary>
-            public static void PushScene(string filepath)
+            public static void PushScene(string filepath, bool hideSceneBelow = true)
             {
-                PushScene(GetSceneInstance<GameScene>(filepath));
+                PushScene(GetSceneInstance<GameScene>(filepath), hideSceneBelow);
             }
 
             /// <summary>
@@ -153,11 +155,11 @@ public static partial class Prime
             /// - scene.OnFirstVisit()
             /// - scene.OnVisit()
             /// </summary>
-            public static void PushSubScene(GameScene scene)
+            public static void PushSubScene(GameScene scene, bool hideSceneBelow = true)
             {
                 if (scene == null) { return; }
                 scene.IsMain = false;
-                BasePush(scene);
+                BasePush(scene, hideSceneBelow);
             }
 
             /// <summary>
@@ -167,9 +169,9 @@ public static partial class Prime
             /// - scene.OnFirstVisit()
             /// - scene.OnVisit()
             /// </summary>
-            public static void PushSubScene(string filepath)
+            public static void PushSubScene(string filepath, bool hideSceneBelow = true)
             {
-                PushSubScene(GetSceneInstance<GameScene>(filepath));
+                PushSubScene(GetSceneInstance<GameScene>(filepath), hideSceneBelow);
             }
 
             /// <summary>
@@ -183,9 +185,9 @@ public static partial class Prime
             }
 
             /// <summary> Push a scene onto the stack. </summary>
-            private static void BasePush(GameScene scene)
+            private static void BasePush(GameScene scene, bool hideSceneBelow)
             {
-                SuspendTopScene();
+                SuspendTopScene(hideSceneBelow);
                 Stack.Add(scene);
                 
                 if (scene.AttachToViewport)
@@ -404,7 +406,7 @@ public static partial class Prime
 
                 var sceneFilepaths = new List<string>();
                 var sceneTypes = new List<bool>();
-
+                
                 foreach (var scene in Stack)
                 {
                     sceneFilepaths.Add(scene.Filename);
@@ -446,13 +448,16 @@ public static partial class Prime
             }
 
             /// <summary> Called on the topmost game scene when another game scene is pushed on top of it. </summary>
-            private static void SuspendTopScene()
+            private static void SuspendTopScene(bool hide)
             {
                 var scene = TopScene;
                 if (scene == null) { return; }
                 if (!scene.Active) { return; }
 
-                SetSceneVisibility(scene, false);
+                if (hide)
+                {
+                    SetSceneVisibility(scene, false);
+                }
                 scene.SetProcess(false);
                 scene.SetPhysicsProcess(false);
                 scene.SetProcessInput(false);
@@ -494,6 +499,7 @@ public static partial class Prime
             }
 
         #endregion
+
 
     #endregion
 
