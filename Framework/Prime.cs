@@ -479,7 +479,7 @@ public static partial class Prime
                 }
                 else
                 {
-                    scene.SetVisible(isVisible);
+                    scene.Visible = isVisible;
                 }
             }
 
