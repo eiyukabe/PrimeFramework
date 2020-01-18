@@ -316,67 +316,6 @@ public static partial class Prime
         #endregion
 
 
-        #region Swap
-
-            /// <summary>
-            /// Swap the topmost main scene for a new one. (Shortcut for PopScene(); PushScene())  
-            /// Callbacks:
-            /// - oldSubs.OnRemove()
-            /// - oldMain.OnPop()
-            /// - oldMain.OnRemove()
-            /// - scene.OnFirstVisit()
-            /// - scene.OnVisit()
-            /// </summary>
-            public static void SwapScene(GameScene scene)
-            {
-                BasePopMain();
-                PushScene(scene);
-            }
-
-            /// <summary>
-            /// Swap the topmost main scene for a new one. (Shortcut for PopScene(); PushScene())  
-            /// Callbacks:
-            /// - oldSubs.OnRemove()
-            /// - oldMain.OnPop()
-            /// - oldMain.OnRemove()
-            /// - scene.OnFirstVisit()
-            /// - scene.OnVisit()
-            /// </summary>
-            public static void SwapScene(string filepath)
-            {
-                SwapScene(GetSceneInstance<GameScene>(filepath));
-            }
-
-            /// <summary>
-            /// Swap topmost subscene for a new one. (Shortcut for PopSubScene(); PushSubScene())  
-            /// Callbacks:
-            /// - oldSub.OnPop()
-            /// - oldSub.OnRemove()
-            /// - scene.OnFirstVisit()
-            /// - scene.OnVisit()
-            /// </summary>
-            public static void SwapSubScene(GameScene scene)
-            {
-                PopSubScene();
-                PushSubScene(scene);
-            }
-
-            /// <summary>
-            /// Swap topmost subscene for a new one. (Shortcut for PopSubScene(); PushSubScene())  
-            /// Callbacks:
-            /// - oldSub.OnPop()
-            /// - oldSub.OnRemove()
-            /// - scene.OnFirstVisit()
-            /// - scene.OnVisit()
-            /// </summary>
-            public static void SwapSubScene(string filepath)
-            {
-                SwapSubScene(GetSceneInstance<GameScene>(filepath));
-            }
-
-        #endregion
-
-
         #region Clear
 
             /// <summary>
