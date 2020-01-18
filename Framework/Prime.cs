@@ -486,6 +486,20 @@ public static partial class Prime
         #endregion
 
 
+        #region Stack Control
+            
+            /// <summary> Show or hide the entire scene stack. </summary>
+            public static void SetStackVisibility(bool isVisible)
+            {
+                foreach(var scene in Stack)
+                {
+                    scene.SetVisible(isVisible);
+                }
+            }
+            
+        #endregion
+
+
         #region Debug
         
             /// <summary> Print the name of all scenes on the stack for debugging. </summary>
