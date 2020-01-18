@@ -3,18 +3,28 @@ using System;
 
 public class PauseMenu : GameScene
 {
-    public override void _EnterTree()
-    {
-        PauseMode = PauseModeEnum.Process;
-    }
 
-    public override void _Input(InputEvent ev)
-    {
-        if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
+    #region Initialization
+
+        public override void _EnterTree()
         {
-            Prime.PopTop();
+            PauseMode = PauseModeEnum.Process;
         }
-    }
+
+    #endregion
+
+
+    #region Input
+
+        public override void _Input(InputEvent ev)
+        {
+            if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
+            {
+                Prime.PopTop();
+            }
+        }
+
+    #endregion
 
 
     #region Button Callbacks
@@ -42,7 +52,7 @@ public class PauseMenu : GameScene
     #endregion
 
 
-    #region GameScene Callbacks
+    #region Game Scene Callbacks
 
         public override void OnVisit()
         {
@@ -55,4 +65,5 @@ public class PauseMenu : GameScene
         }
 
     #endregion
+
 }
