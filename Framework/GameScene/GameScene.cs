@@ -39,54 +39,6 @@ public class GameScene : PrimeNode2D
         }
     }
 
-    /// <summary> Called externally by the Prime class when this scene becomes the topmost scene on the stack. </summary>
-    public void Visit(bool justPushed = false)
-    {
-        if (Active) { return; }
-        
-        SetSceneVisibility(true);
-        GetTree().SetInputAsHandled();      // Clear input when activating a new scene so input doesn't carry over from one scene to another.
-        SetProcess(true);
-        SetProcessInput(true);
-        SetPhysicsProcess(true);
-        Active = true;
-        
-        if (justPushed) { OnFirstVisit(); }
-        else            { OnRevisit(); }
-        OnVisit();
-    }
-
-    /// <summary> Called externally by the Prime class when another game scene is pushed on top of this one. </summary>
-    public void Suspend()
-    {
-        if (!Active) { return; }
-
-        SetSceneVisibility(false);
-        SetProcess(false);
-        SetPhysicsProcess(false);
-        SetProcessInput(false);
-        Active = false;
-        
-        OnSuspend();
-    }
-
-    private void SetSceneVisibility(bool isVisible)
-    {
-        if (AttachToViewport)
-        {
-            var parent = GetParent();
-            if (parent is Control)
-            {
-                var control = (Control) parent;
-                control.Visible = isVisible;
-            }
-        }
-        else
-        {
-            SetVisible(isVisible);
-        }
-    }
-
     /// <summary> Get the name of this scene for debug printing. </summary>
     public string DebugPrintName
     {

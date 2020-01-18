@@ -45,7 +45,7 @@ public static partial class Prime
         /// <summary> Push a scene onto the stack. </summary>
         private static void BasePush(GameScene scene)
         {
-            TopScene?.Suspend();
+            SuspendTopScene();
             Stack.Add(scene);
             
             if (scene.AttachToViewport)
@@ -65,7 +65,7 @@ public static partial class Prime
                 TreeRoot.AddChild(scene);
             }
             
-            scene.Visit(justPushed: true);
+            VisitTopScene(justPushed: true);
         }
 
         /// <summary> Pop the topmost scene off the stack. Noop if the stack is empty. </summary>
@@ -119,6 +119,59 @@ public static partial class Prime
             if (scene.AttachToViewport) { scene.GetParent().GetParent().QueueFree(); }
             else                        { scene.QueueFree(); }
         }
+
+        /// <summary> Called on a game scene when it becomes the topmost game scene on the stack. </summary>
+        private static void VisitTopScene(bool justPushed = false)
+        {
+            var scene = TopScene;
+            if (scene == null) { return; }
+            if (scene.Active)  { return; }
+            
+            SetSceneVisibility(scene, true);
+            Tree.SetInputAsHandled();           // Clear input when activating a new scene so input doesn't carry over from one scene to another.
+            scene.SetProcess(true);
+            scene.SetProcessInput(true);
+            scene.SetPhysicsProcess(true);
+            scene.Active = true;
+            
+            if (justPushed) { scene.OnFirstVisit(); }
+            else            { scene.OnRevisit(); }
+            scene.OnVisit();
+        }
+
+        /// <summary> Called on the topmost game scene when another game scene is pushed on top of it. </summary>
+        private static void SuspendTopScene()
+        {
+            var scene = TopScene;
+            if (scene == null) { return; }
+            if (!scene.Active) { return; }
+
+            SetSceneVisibility(scene, false);
+            scene.SetProcess(false);
+            scene.SetPhysicsProcess(false);
+            scene.SetProcessInput(false);
+            scene.Active = false;
+
+            scene.OnSuspend();
+        }
+
+        private static void SetSceneVisibility(GameScene scene, bool isVisible)
+        {
+            if (scene.AttachToViewport)
+            {
+                var parent = scene.GetParent();
+                if (parent is Control)
+                {
+                    var control = (Control) parent;
+                    control.Visible = isVisible;
+                }
+            }
+            else
+            {
+                scene.SetVisible(isVisible);
+            }
+        }
+
 
     #endregion
 
@@ -225,7 +278,7 @@ public static partial class Prime
         public static void PushSceneForF6Launch(GameScene scene)
         {
             Stack.Add(scene);
-            scene.Visit(justPushed: true);
+            VisitTopScene(justPushed: true);
         }
 
         /// <summary>
@@ -239,7 +292,7 @@ public static partial class Prime
         public static void PopTop()
         {
             BasePop();
-            TopScene?.Visit();
+            VisitTopScene();
         }
 
         /// <summary>
@@ -254,7 +307,7 @@ public static partial class Prime
         public static void PopScene()
         {
             BasePopMain();
-            TopScene?.Visit();
+            VisitTopScene();
         }
 
         /// <summary>
@@ -268,7 +321,7 @@ public static partial class Prime
         public static void PopSubScene()
         {
             if (!StackIsEmpty && !TopScene.IsMain) { BasePop(); }
-            TopScene?.Visit();
+            VisitTopScene();
         }
 
         /// <summary>
@@ -297,7 +350,7 @@ public static partial class Prime
             {
                 BaseRemoveTop();
             }
-            TopScene?.Visit();
+            VisitTopScene();
         }
 
         /// <summary>
