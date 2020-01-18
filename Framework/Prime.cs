@@ -406,11 +406,13 @@ public static partial class Prime
 
                 var sceneFilepaths = new List<string>();
                 var sceneTypes = new List<bool>();
-                
+                var showSceneBelow = new List<bool>();
+
                 foreach (var scene in Stack)
                 {
                     sceneFilepaths.Add(scene.Filename);
                     sceneTypes.Add(scene.IsMain);
+                    showSceneBelow.Add(scene.IsShowingSceneBelow);
                 }
 
                 ClearScenes();
@@ -418,8 +420,8 @@ public static partial class Prime
                 for (int i = 0; i < sceneFilepaths.Count; i++)
                 {
                     var scene = GetSceneInstance<GameScene>(sceneFilepaths[i]);
-                    if (sceneTypes[i]) { PushScene(scene); }
-                    else               { PushSubScene(scene); }
+                    if (sceneTypes[i]) { PushScene(scene, showSceneBelow[i]); }
+                    else               { PushSubScene(scene, showSceneBelow[i]); }
                 }
             }
 

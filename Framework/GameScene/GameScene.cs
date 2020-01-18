@@ -19,6 +19,7 @@ public class GameScene : PrimeNode2D
 
     public bool Active = false;
     public bool IsMain = true;
+    public bool IsShowingSceneBelow;        // This will be set by the Prime class depending on how this scene is pushed. It is used when reloading the entire scene stack.
     
     public virtual void OnFirstVisit() {}   // Called the first time this scene is pushed onto the stack.
     public virtual void OnVisit() {}        // Called every time this scene becomes the topmost scene on the stack.
