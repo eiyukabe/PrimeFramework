@@ -3,11 +3,17 @@ using System;
 
 public class Play : GameScene
 {
-    public override void _Input(InputEvent ev)
-    {
-        if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
+
+    #region Input
+
+        public override void _Input(InputEvent ev)
         {
-            Prime.PushSubScene(GameScenes.PAUSE_MENU);
+            if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
+            {
+                Prime.PushSubScene(GameScenes.PAUSE_MENU, false);
+            }
         }
-    }
+
+    #endregion
+    
 }
