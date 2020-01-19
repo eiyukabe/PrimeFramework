@@ -8,7 +8,7 @@ public abstract class Behavior : PrimeNode
     public List<Behavior> ChildBehaviors = new List<Behavior>();
     
     public bool Active { private set; get; } = false;  /// Inactive behaviors don't process.
-    protected bool Instantaneous = false;                /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
+    protected bool Instantaneous = false;              /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
 
     protected Agency ParentAgency 
     {
@@ -75,15 +75,54 @@ public abstract class Behavior : PrimeNode
 
         private void InitializeChildBehaviors()
         {
-            foreach (Node child in GetChildren())
+            int BoolParameterCount = 0;
+            int IntParameterCount = 0;
+            int FloatParameterCount = 0;
+            foreach (Node Child in GetChildren())
             {
-                if (child is Behavior)
+                if (Child is Behavior)
                 {
-                    Behavior ChildBehavior = (Behavior)child;
+                    Behavior ChildBehavior = (Behavior)Child;
                     ChildBehaviors.Add(ChildBehavior);
                     ChildBehavior.Setup();
                 }
+                else if (Child is BoolParameter)
+                {
+                    BoolParameterCount++;
+                    ReceiveBoolParameter(Child as BoolParameter, BoolParameterCount);
+                }
+                else if (Child is IntParameter)
+                {
+                    IntParameterCount++;
+                    ReceiveIntParameter(Child as IntParameter, IntParameterCount);
+                }
+                else if (Child is FloatParameter)
+                {
+                    FloatParameterCount++;
+                    ReceiveFloatParameter(Child as FloatParameter, FloatParameterCount);
+                }
             }
+        }
+
+        /// <summary> Called when a bool parameter is detected. Override to assign to the proper variable. </summary>
+        /// count tells how many bool parameters have been identified so far and can be used to identify them.
+        protected virtual void ReceiveBoolParameter(BoolParameter boolParameter, int count)
+        {
+
+        }
+
+        /// <summary> Called when an int parameter is detected. Override to assign to the proper variable. </summary>
+        /// count tells how many int parameters have been identified so far and can be used to identify them.
+        protected virtual void ReceiveIntParameter(IntParameter intParameter, int count)
+        {
+
+        }
+
+        /// <summary> Called when a float parameter is detected. Override to assign to the proper variable. </summary>
+        /// count tells how many float parameters have been identified so far and can be used to identify them.
+        protected virtual void ReceiveFloatParameter(FloatParameter floatParameter, int count)
+        {
+
         }
 
         public virtual void Setup()
