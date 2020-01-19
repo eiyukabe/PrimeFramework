@@ -65,6 +65,10 @@ public abstract class Behavior : PrimeNode
                 if (ParentAgency == null)
                 {
                     ProcessSelf = true;
+                    if (ParentBehavior == null)
+                    {
+                        Setup();
+                    }
                 }
             }
         }
@@ -111,7 +115,10 @@ public abstract class Behavior : PrimeNode
         public override void _Process(float delta)
         {
             base._Process(delta);
-            if (ProcessSelf) { Process(delta); }
+            if (ProcessSelf) 
+            { 
+                Process(delta);
+            }
         }
 
         /// <summary> Called every tick this behavior is active. </summary>
