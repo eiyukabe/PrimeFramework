@@ -3,11 +3,6 @@ using System;
 
 public class DestroySelf : Behavior
 {
-    [Export] private float WaitDuration = 1.0f;
-
-    private float WaitTimer = 0.0f;
-
-
     #region Initialization
 
         public override void Setup()
