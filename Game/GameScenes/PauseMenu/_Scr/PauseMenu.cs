@@ -38,11 +38,6 @@ public class PauseMenu : GameScene
         {
             Prime.SetScene(GameScenes.TITLE_SCREEN);
         }
-        
-        private void OnTestButtonPressed()
-        {
-            Prime.SetScene(GameScenes.TEST_SCREEN);
-        }
 
         private void OnQuitButtonPressed()
         {
