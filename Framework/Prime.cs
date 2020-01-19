@@ -602,4 +602,35 @@ public static partial class Prime
 
     #endregion
 
+
+    #region Random
+
+        private static Random RandomNumberGenerator = new Random((int)DateTime.Now.Ticks);
+
+        /// <summary> Returns a random int n where 0 <= n < max </summary>
+        public static int GetRandomInt(int max)
+        {
+            return RandomNumberGenerator.Next(max);
+        }
+
+        /// <summary> Returns a random int n where min <= n < max </summary>
+        public static int GetRandomInt(int min, int max)
+        {
+            return RandomNumberGenerator.Next(min, max);
+        }
+
+        /// <summary> Returns a random float n where 0.0f <= n < max </summary>
+        public static float GetRandomFloat(float max)
+        {
+            return (float)RandomNumberGenerator.NextDouble() * max;
+        }
+
+        /// <summary> Returns a random float n where min <= n < max </summary>
+        public static float GetRandomFloat(float min, float max)
+        {
+            return min + (float)RandomNumberGenerator.NextDouble() * (max - min);
+        }
+
+    #endregion
+
 }

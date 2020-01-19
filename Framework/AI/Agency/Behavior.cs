@@ -8,7 +8,7 @@ public abstract class Behavior : PrimeNode
     public List<Behavior> ChildBehaviors = new List<Behavior>();
     
     public bool Active { private set; get; } = false;  /// Inactive behaviors don't process.
-    protected bool Instantaneous = false;                /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
+    protected bool Instantaneous = false;              /// Instantaneous behaviors yield to the next behavior immediately, on the same frame.
 
     protected Agency ParentAgency 
     {
@@ -22,19 +22,34 @@ public abstract class Behavior : PrimeNode
         }
     }
     private Agency _ParentAgency = null;
-    private Node2D ParentAgent = null;
+
+    public Node2D ParentAgent
+    {
+        get
+        {
+            if (_ParentAgent == null)
+            {
+                _ParentAgent = ParentAgency?.GetParent() as Node2D;
+                if (_ParentAgent == null)
+                {
+                    Node Parent = GetParent();
+                    if (Parent is Node2D)        { _ParentAgent = Parent as Node2D; }
+                    else if (Parent is Behavior) { _ParentAgent = ((Behavior)Parent).ParentAgent; }
+                }
+            }
+            return _ParentAgent;
+        }
+    }
+    private Node2D _ParentAgent = null;
 
     private Behavior ParentBehavior = null;
 
-    [Export] public bool Disabled = false;             /// Can disable a behavior (and its children) without removing them. They won't be processed.
+    private bool ProcessSelf = false; ///<summary>Will be set to true for behaviors with no agencies ancestors so they can process themselves.</summary>
+
+    [Export] public bool Disabled = false; /// <summary>Can disable a behavior (and its children) without removing them. They won't be processed.</summary>
     [Export] public String DebugName = "";
 
     public bool IsActive() { return Active; }
-
-    public Node2D GetAgent()
-    {
-        return ParentAgency?.GetParent() as Node2D;
-    }
 
 
     #region Initialization
@@ -46,20 +61,68 @@ public abstract class Behavior : PrimeNode
             {
                 ParentBehavior = GetParent() as Behavior;
                 InitializeChildBehaviors();
+
+                if (ParentAgency == null)
+                {
+                    ProcessSelf = true;
+                    if (ParentBehavior == null)
+                    {
+                        Setup();
+                    }
+                }
             }
         }
 
         private void InitializeChildBehaviors()
         {
-            foreach (Node child in GetChildren())
+            int BoolParameterCount = 0;
+            int IntParameterCount = 0;
+            int FloatParameterCount = 0;
+            foreach (Node Child in GetChildren())
             {
-                if (child is Behavior)
+                if (Child is Behavior)
                 {
-                    Behavior ChildBehavior = (Behavior)child;
+                    Behavior ChildBehavior = (Behavior)Child;
                     ChildBehaviors.Add(ChildBehavior);
                     ChildBehavior.Setup();
                 }
+                else if (Child is BoolParameter)
+                {
+                    BoolParameterCount++;
+                    ReceiveBoolParameter(Child as BoolParameter, BoolParameterCount);
+                }
+                else if (Child is IntParameter)
+                {
+                    IntParameterCount++;
+                    ReceiveIntParameter(Child as IntParameter, IntParameterCount);
+                }
+                else if (Child is FloatParameter)
+                {
+                    FloatParameterCount++;
+                    ReceiveFloatParameter(Child as FloatParameter, FloatParameterCount);
+                }
             }
+        }
+
+        /// <summary> Called when a bool parameter is detected. Override to assign to the proper variable. </summary>
+        /// count tells how many bool parameters have been identified so far and can be used to identify them.
+        protected virtual void ReceiveBoolParameter(BoolParameter boolParameter, int count)
+        {
+
+        }
+
+        /// <summary> Called when an int parameter is detected. Override to assign to the proper variable. </summary>
+        /// count tells how many int parameters have been identified so far and can be used to identify them.
+        protected virtual void ReceiveIntParameter(IntParameter intParameter, int count)
+        {
+
+        }
+
+        /// <summary> Called when a float parameter is detected. Override to assign to the proper variable. </summary>
+        /// count tells how many float parameters have been identified so far and can be used to identify them.
+        protected virtual void ReceiveFloatParameter(FloatParameter floatParameter, int count)
+        {
+
         }
 
         public virtual void Setup()
@@ -87,6 +150,15 @@ public abstract class Behavior : PrimeNode
 
 
     #region Control
+
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+            if (ProcessSelf) 
+            { 
+                Process(delta);
+            }
+        }
 
         /// <summary> Called every tick this behavior is active. </summary>
         public virtual void Process(float delta)

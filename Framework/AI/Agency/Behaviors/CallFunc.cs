@@ -17,12 +17,7 @@ public class CallFunc : Behavior
         public override void OnBegin()
         {
             base.OnBegin();
-
-            Node2D Agent = GetAgent();
-            if (Agent != null)
-            {
-                Agent.Call(FunctionName);
-            }
+            ParentAgent?.Call(FunctionName);
         }
 
     #endregion
