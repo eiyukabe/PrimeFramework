@@ -97,6 +97,7 @@ public static partial class Prime
             /// </summary>
             public static void SetScene(GameScene scene)
             {
+                Prime.Unpause();
                 if (!StackIsEmpty)
                 {
                     ClearScenes();
