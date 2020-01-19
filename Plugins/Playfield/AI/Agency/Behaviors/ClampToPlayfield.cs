@@ -17,18 +17,17 @@ public class ClampToPlayfield : Behavior
         {
             base._Process(delta);
 
-            Node2D Agent = GetAgent();
-            if (Agent != null)
+            if (ParentAgent != null)
             {
                 float LeftEdge = Game.PlayfieldX + LeftEdgeOffset;
                 float RightEdge = LeftEdge + Game.PlayfieldWidth + RightEdgeOffset;
                 float TopEdge = Game.PlayfieldY + TopEdgeOffset;
                 float BottomEdge = TopEdge + Game.PlayfieldHeight + BottomEdgeOffset;
 
-                float AgentX = Mathf.Clamp(Agent.GlobalPosition.x, LeftEdge, RightEdge);
-                float AgentY = Mathf.Clamp(Agent.GlobalPosition.y, TopEdge, BottomEdge);
+                float AgentX = Mathf.Clamp(ParentAgent.GlobalPosition.x, LeftEdge, RightEdge);
+                float AgentY = Mathf.Clamp(ParentAgent.GlobalPosition.y, TopEdge, BottomEdge);
 
-                Agent.SetGlobalPosition(new Vector2(AgentX, AgentY));
+                ParentAgent.SetGlobalPosition(new Vector2(AgentX, AgentY));
             }
         }
 
