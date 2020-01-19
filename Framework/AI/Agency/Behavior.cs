@@ -44,7 +44,9 @@ public abstract class Behavior : PrimeNode
 
     private Behavior ParentBehavior = null;
 
-    [Export] public bool Disabled = false;             /// Can disable a behavior (and its children) without removing them. They won't be processed.
+    private bool ProcessSelf = false; ///<summary>Will be set to true for behaviors with no agencies ancestors so they can process themselves.</summary>
+
+    [Export] public bool Disabled = false; /// <summary>Can disable a behavior (and its children) without removing them. They won't be processed.</summary>
     [Export] public String DebugName = "";
 
     public bool IsActive() { return Active; }
@@ -59,6 +61,11 @@ public abstract class Behavior : PrimeNode
             {
                 ParentBehavior = GetParent() as Behavior;
                 InitializeChildBehaviors();
+
+                if (ParentAgency == null)
+                {
+                    ProcessSelf = true;
+                }
             }
         }
 
@@ -100,6 +107,12 @@ public abstract class Behavior : PrimeNode
 
 
     #region Control
+
+        public override void _Process(float delta)
+        {
+            base._Process(delta);
+            if (ProcessSelf) { Process(delta); }
+        }
 
         /// <summary> Called every tick this behavior is active. </summary>
         public virtual void Process(float delta)
