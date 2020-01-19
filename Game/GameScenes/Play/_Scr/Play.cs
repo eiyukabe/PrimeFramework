@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Play : GameScene
+public partial class Play : GameScene
 {
 
     #region Input
