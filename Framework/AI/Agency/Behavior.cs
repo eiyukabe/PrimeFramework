@@ -22,7 +22,25 @@ public abstract class Behavior : PrimeNode
         }
     }
     private Agency _ParentAgency = null;
-    private Node2D ParentAgent = null;
+
+    public Node2D ParentAgent
+    {
+        get
+        {
+            if (_ParentAgent == null)
+            {
+                _ParentAgent = ParentAgency?.GetParent() as Node2D;
+                if (_ParentAgent == null)
+                {
+                    Node Parent = GetParent();
+                    if (Parent is Node2D)        { _ParentAgent = Parent as Node2D; }
+                    else if (Parent is Behavior) { _ParentAgent = ((Behavior)Parent).ParentAgent; }
+                }
+            }
+            return _ParentAgent;
+        }
+    }
+    private Node2D _ParentAgent = null;
 
     private Behavior ParentBehavior = null;
 
@@ -30,11 +48,6 @@ public abstract class Behavior : PrimeNode
     [Export] public String DebugName = "";
 
     public bool IsActive() { return Active; }
-
-    public Node2D GetAgent()
-    {
-        return ParentAgency?.GetParent() as Node2D;
-    }
 
 
     #region Initialization

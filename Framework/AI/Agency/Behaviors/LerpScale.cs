@@ -21,22 +21,20 @@ public class LerpScale : Behavior
         {
             if (Duration <= 0.0f)
             {
-                Node2D Agent = GetAgent();
-                if (Agent != null)
+                if (ParentAgent != null)
                 {
-                    Vector2 NewScale = new Vector2(Agent.Scale.x, Agent.Scale.y);
+                    Vector2 NewScale = new Vector2(ParentAgent.Scale.x, ParentAgent.Scale.y);
                     if (ScaleWidth) { NewScale.x = Scale; }
                     if (ScaleHeight) { NewScale.y = Scale; }
-                    Agent.SetScale(NewScale);
+                    ParentAgent.SetScale(NewScale);
                 }
                 StopSelf();
             }
             else
             {
-                Node2D Agent = GetAgent();
-                if (Agent != null)
+                if (ParentAgent != null)
                 {
-                    StartingScale = Agent.Scale;
+                    StartingScale = ParentAgent.Scale;
                     TargetScale = new Vector2(Scale, Scale);
                     Timer = Duration;
                 }
@@ -52,16 +50,15 @@ public class LerpScale : Behavior
         {
             base.Process(delta);
             
-            Node2D Agent = GetAgent();
-            if (Agent != null)
+            if (ParentAgent != null)
             {
                 float ChangeFactor = delta/Duration;
                 ChangeFactor = Mathf.Clamp(ChangeFactor, ChangeFactor, 1.0f);
                 Vector2 ChangeAmount = (TargetScale - StartingScale) * ChangeFactor;
-                Vector2 NewScale = new Vector2(Agent.Scale.x, Agent.Scale.y);
-                if (ScaleWidth) { NewScale.x = Agent.Scale.x + ChangeAmount.x; }
-                if (ScaleHeight) { NewScale.y = Agent.Scale.y + ChangeAmount.y; }
-                Agent.SetScale(NewScale);
+                Vector2 NewScale = new Vector2(ParentAgent.Scale.x, ParentAgent.Scale.y);
+                if (ScaleWidth) { NewScale.x = ParentAgent.Scale.x + ChangeAmount.x; }
+                if (ScaleHeight) { NewScale.y = ParentAgent.Scale.y + ChangeAmount.y; }
+                ParentAgent.SetScale(NewScale);
             }
         }
 

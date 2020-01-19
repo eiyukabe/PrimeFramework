@@ -20,8 +20,7 @@ public class DestroySelf : Behavior
         {
             base.OnBegin();
 
-            Node2D Agent = GetAgent();
-            Agent?.QueueFree();
+            ParentAgent?.QueueFree();
         }
 
     #endregion

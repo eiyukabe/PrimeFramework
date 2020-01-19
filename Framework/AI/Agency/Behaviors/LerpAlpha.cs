@@ -24,16 +24,14 @@ public class LerpAlpha : Behavior
             if (Duration <= 0.0f)
             {
                 // No Duration, just set the alpha immediately.
-                Node2D Agent = GetAgent();
-                Agent?.SetModulate(new Color(Agent.Modulate.r, Agent.Modulate.g, Agent.Modulate.b, Alpha));
+                ParentAgent?.SetModulate(new Color(ParentAgent.Modulate.r, ParentAgent.Modulate.g, ParentAgent.Modulate.b, Alpha));
                 StopSelf();
             }
             else
             {
-                Node2D Agent = GetAgent();
-                if (Agent != null)
+                if (ParentAgent != null)
                 {
-                    StartingAlpha = Agent.Modulate.a;
+                    StartingAlpha = ParentAgent.Modulate.a;
                     Timer = Duration;
                 }
             }
@@ -48,35 +46,34 @@ public class LerpAlpha : Behavior
         {
             base.Process(delta);
             
-            Node2D Agent = GetAgent();
-            if (Agent != null)
+            if (ParentAgent != null)
             {
                 switch(InterpType)
                 {
                     case 0: // Linear Interpolation
                     {
-                        Color NewColor = Agent.Modulate;
+                        Color NewColor = ParentAgent.Modulate;
                         float ChangeFactor = delta/Duration;
                         ChangeFactor = Mathf.Clamp(ChangeFactor, ChangeFactor, 1.0f);
                         float ChangeAmount = (Alpha - StartingAlpha) * ChangeFactor;
                         NewColor.a += ChangeAmount;
-                        Agent.SetModulate(NewColor);
+                        ParentAgent.SetModulate(NewColor);
                         break;
                     }
                     case 1: // Sine Interpolation
                     {
                         float AlphaRange = StartingAlpha - Alpha;
-                        Color NewColor = Agent.Modulate;
+                        Color NewColor = ParentAgent.Modulate;
                         NewColor.a = StartingAlpha - AlphaRange/2 + AlphaRange/2 * Mathf.Sin((Duration - Timer) * 2 * Mathf.Pi/Duration);
-                        Agent.SetModulate(NewColor);
+                        ParentAgent.SetModulate(NewColor);
                         break;
                     }
                     case 2: // Cosine Interpolation
                     {
                         float AlphaRange = StartingAlpha - Alpha;
-                        Color NewColor = Agent.Modulate;
+                        Color NewColor = ParentAgent.Modulate;
                         NewColor.a = StartingAlpha - AlphaRange/2 + AlphaRange/2 * Mathf.Cos((Duration - Timer) * 2 * Mathf.Pi/Duration);
-                        Agent.SetModulate(NewColor);
+                        ParentAgent.SetModulate(NewColor);
                         break;
                     }
                 }
@@ -97,12 +94,11 @@ public class LerpAlpha : Behavior
             {
                 case 1: // Sine Interpolation
                 case 2: // Cosine Interpolation
-                    Node2D Agent = GetAgent();
-                    if (Agent != null)
+                    if (ParentAgent != null)
                     {
-                        Color NewColor = Agent.Modulate;
+                        Color NewColor = ParentAgent.Modulate;
                         NewColor.a = StartingAlpha;
-                        Agent.SetModulate(NewColor);
+                        ParentAgent.SetModulate(NewColor);
                     }
                     break;
             }
