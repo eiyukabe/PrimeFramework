@@ -13,9 +13,7 @@ public static partial class Prime
 
     private static List<GameScene> Stack = new List<GameScene>();
 
-
     #region Game Scenes
-
 
         #region Getters
 
@@ -85,7 +83,6 @@ public static partial class Prime
 
         #endregion
 
-        
         #region Set
 
             /// <summary>
@@ -119,7 +116,6 @@ public static partial class Prime
             }
 
         #endregion
-
 
         #region Push
         
@@ -213,7 +209,6 @@ public static partial class Prime
 
         #endregion
 
-
         #region Pop
 
             /// <summary>
@@ -286,7 +281,6 @@ public static partial class Prime
 
         #endregion
 
-
         #region Remove
 
             /// <summary> Remove the topmost scene on the stack. </summary>
@@ -317,7 +311,6 @@ public static partial class Prime
             }
 
         #endregion
-
 
         #region Clear
 
@@ -351,7 +344,6 @@ public static partial class Prime
             }
 
         #endregion
-
 
         #region Reload
 
@@ -428,7 +420,6 @@ public static partial class Prime
 
         #endregion
 
-
         #region Visit/Suspend
 
             /// <summary> Called on a game scene when it becomes the topmost game scene on the stack. </summary>
@@ -488,7 +479,6 @@ public static partial class Prime
 
         #endregion
 
-
         #region Stack Control
             
             /// <summary> Show or hide the entire scene stack. </summary>
@@ -501,7 +491,6 @@ public static partial class Prime
             }
             
         #endregion
-
 
         #region Debug
         
@@ -517,9 +506,7 @@ public static partial class Prime
 
         #endregion
 
-
     #endregion
-
 
     #region Pausing
 
@@ -542,7 +529,6 @@ public static partial class Prime
         public static void SetPaused(bool pause) { Tree.Paused = pause; }
 
     #endregion
-
 
     #region Resource Loading
 
@@ -601,7 +587,6 @@ public static partial class Prime
         }
 
     #endregion
-
 
     #region Random
 
