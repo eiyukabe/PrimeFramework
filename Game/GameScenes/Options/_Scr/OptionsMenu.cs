@@ -3,6 +3,7 @@ using System;
 
 public class OptionsMenu : GameScene
 {
+    private CheckButton FullScreenButton = null;
     private Slider MusicSlider = null;
     private Slider SFXSlider = null;
 
@@ -11,7 +12,12 @@ public class OptionsMenu : GameScene
         public override void _Ready()
         {
             base._Ready();
-            MusicSlider = GetNode<Slider>("canvas_layer/music_slider");
+            FullScreenButton = GetNode<CheckButton>("Center2/Menu/FullScreenButton");
+            if (FullScreenButton != null)
+            {
+                FullScreenButton.SetPressed(OS.IsWindowFullscreen());
+                FullScreenButton.Connect("pressed", this, nameof(OnFullScreenButtonPressed));
+            }
             MusicSlider = GetNode<Slider>("Center2/Menu/MusicSlider");
             if (MusicSlider != null)
             {
@@ -49,6 +55,11 @@ public class OptionsMenu : GameScene
         private void OnBackButtonPressed()
         {
             Prime.PopScene();
+        }
+
+        private void OnFullScreenButtonPressed()
+        {
+            Prime.ToggleFullScreen();
         }
 
         private void OnMusicSliderChanged(float value)

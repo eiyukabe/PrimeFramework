@@ -369,6 +369,27 @@ public static partial class Prime
 
     #endregion
 
+    #region Graphics
+
+        public static int ResolutionX = 1280;
+        public static int ResolutionY = 720;
+
+        public static void ToggleFullScreen()
+        {
+            if (OS.IsWindowFullscreen())
+            {
+                OS.SetWindowFullscreen(false);
+                OS.SetWindowSize(new Vector2(ResolutionX, ResolutionY));
+                OS.CenterWindow();
+            }
+            else
+            {
+                OS.SetWindowFullscreen(true);
+            }
+        }
+
+    #endregion
+
     #region Pausing
 
         /// <summary>
@@ -478,5 +499,6 @@ public static partial class Prime
         }
 
     #endregion
+    
 
 }
