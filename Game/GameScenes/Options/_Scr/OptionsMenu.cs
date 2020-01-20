@@ -22,15 +22,15 @@ public class OptionsMenu : GameScene
             if (MusicSlider != null)
             {
                 MusicSlider.MinValue = Audio.MinVolumeDb;
-                MusicSlider.MinValue = Audio.MaxVolumeDb;
+                MusicSlider.MaxValue = Audio.MaxVolumeDb;
 	            MusicSlider.SetValue(Audio.GetMusicVolume());
                 MusicSlider.Connect("value_changed", this, nameof(OnMusicSliderChanged));
             }
-            SFXSlider = GetNode<Slider>("Center2/Menu/SoundSlider");
+            SFXSlider = GetNode<Slider>("Center2/Menu/SFXSlider");
             if (SFXSlider != null)
             {
                 SFXSlider.MinValue = Audio.MinVolumeDb;
-                SFXSlider.MinValue = Audio.MaxVolumeDb;
+                SFXSlider.MaxValue = Audio.MaxVolumeDb;
 	            SFXSlider.SetValue(Audio.GetSFXVolume());
                 SFXSlider.Connect("value_changed", this, nameof(OnSFXSliderChanged));
             }
@@ -64,12 +64,16 @@ public class OptionsMenu : GameScene
 
         private void OnMusicSliderChanged(float value)
         {
+            GD.Print("New Music Volume: " + value);
             Audio.SetBusVolume(Audio.MUSIC_BUS_NAME, value);
+            GetNode<AudioStreamPlayer>("MusicDing").Play();
         }
 
         private void OnSFXSliderChanged(float value)
         {
+            GD.Print("New SFX Volume: " + value);
             Audio.SetBusVolume(Audio.SFX_BUS_NAME, value);
+            GetNode<AudioStreamPlayer>("SFXDing").Play();
         }
 
     #endregion
