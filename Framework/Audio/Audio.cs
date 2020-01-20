@@ -1,13 +1,13 @@
 using Godot;
 
-/// <summary> Static class for audio-related functionality.static </summary>
+/// <summary> Static class for audio-related functionality. </summary>
 public static class Audio
 {
     public const string MUSIC_BUS_NAME = "Music"; 
     public const string SFX_BUS_NAME = "Sfx"; 
 
-    public static int MinVolumeDb = -60; /// <summary> Min volume (in decibals) an audio slider can reach.static </summary>
-    public static int MaxVolumeDb = 0; /// <summary> Max volume (in decibals) an audio slider can reach.static </summary>
+    public static int MinVolumeDb = -60; /// <summary> Min volume (in decibals) an audio slider can reach. </summary>
+    public static int MaxVolumeDb = 0; /// <summary> Max volume (in decibals) an audio slider can reach. </summary>
 
     public static float GetMusicVolume()
     {
