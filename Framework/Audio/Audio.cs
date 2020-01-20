@@ -7,7 +7,7 @@ public static class Audio
     public const string SFX_BUS_NAME = "Sfx"; 
 
     public static int MinVolumeDb = -60; /// <summary> Min volume (in decibals) an audio slider can reach.static </summary>
-    public static int MaxVolumeDb = -0; /// <summary> Max volume (in decibals) an audio slider can reach.static </summary>
+    public static int MaxVolumeDb = 0; /// <summary> Max volume (in decibals) an audio slider can reach.static </summary>
 
     public static float GetMusicVolume()
     {
