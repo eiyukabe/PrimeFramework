@@ -11,6 +11,11 @@ public partial class Play : GameScene
             Score += score;
         }
 
+        public int GetScore()
+        {
+            return Score;
+        }
+
         /// <summary> Call this when you want to commit the player's current score for high score tracking. Note that this can be
         /// successfully done only once per play session. You will have to initialize a new Play scene to commit a new high score.
         /// </summary>
