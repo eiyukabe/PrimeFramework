@@ -18,16 +18,15 @@ public static partial class Prime
         #region Getters
 
             /// <summary>
-            /// Returns a GameScene from the scene stack. 'name' is the name of the root node in the .tscn file.
-            /// Returns null if not found.
+            /// Returns a scene from the stack that matches the given type. Returns null if not found.
             /// </summary>
-            public static GameScene GetScene(string name)
+            public static T GetScene<T>() where T : GameScene
             {
                 foreach(var scene in Stack)
                 {
-                    if (scene.Name == name)
+                    if (scene is T)
                     {
-                        return scene;
+                        return (T) scene;
                     }
                 }
                 return null;
