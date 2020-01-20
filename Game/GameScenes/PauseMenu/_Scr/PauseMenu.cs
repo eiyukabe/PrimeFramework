@@ -19,7 +19,7 @@ public class PauseMenu : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Prime.Leave();
+                Prime.PopScene();
             }
         }
 
@@ -29,7 +29,7 @@ public class PauseMenu : GameScene
 
         private void OnResumeButtonPressed()
         {
-            Prime.Leave();
+            Prime.PopScene();
         }
         
         private void OnTitleScreenButtonPressed()
@@ -51,9 +51,19 @@ public class PauseMenu : GameScene
 
     #region Game Scene Callbacks
 
-        public override void OnVisit()
+        public override void OnPushed()
         {
             Prime.Pause();
+        }
+
+        public override void OnPopped()
+        {
+            Prime.Unpause();
+        }
+
+        public override void OnCleared()
+        {
+            Prime.Unpause();
         }
 
     #endregion

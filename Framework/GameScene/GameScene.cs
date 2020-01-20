@@ -12,14 +12,13 @@ public class GameScene : PrimeNode2D
 {
     [Export] public bool AttachToViewport = true;   // Set if this game scene will be attached to the viewport.
 
-    public bool Active = false;
-    public bool IsMain = true;
+    public bool IsMain = false;
     public bool IsShowingSceneBelow;        // This will be set by the Prime class depending on how this scene is pushed. It is used when reloading the entire scene stack.
     
-    public virtual void OnVisit() {}        // Called the first time this scene is pushed onto the stack.
-    public virtual void OnSuspend() {}      // Called right before another scene is pushed on top of this one.
-    public virtual void OnLeave() {}        // Called right before this scene is popped from the stack. Will not be called when this scene is cleared from the stack.
-    public virtual void OnClear() {}        // Called every time this scene is cleared from the stack.
+    public virtual void OnPushed() {}       // Called the first time this scene is pushed onto the stack.
+    public virtual void OnSuspended() {}    // Called right before another scene is pushed on top of this one.
+    public virtual void OnPopped() {}       // Called right before this scene is popped from the stack. Will not be called when this scene is cleared from the stack.
+    public virtual void OnCleared() {}      // Called every time this scene is cleared from the stack.
 
     public override void _Ready()
     {
@@ -29,7 +28,7 @@ public class GameScene : PrimeNode2D
         by going to NormalGameLaunch.cs and calling Prime.SetScene() or Prime.PushScene() in _Ready() or _EnterTree(). */
         if (Prime.StackIsEmpty)
         {
-            Prime.VisitSceneForF6Launch(this);
+            Prime.PushSceneForF6Launch(this);
         }
     }
 

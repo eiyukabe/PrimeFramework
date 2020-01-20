@@ -3,6 +3,14 @@ using System;
 
 public class Play : GameScene
 {
+    #region Initialization
+
+        public Play()
+        {
+            IsMain = true;
+        }
+
+    #endregion
 
     #region Input
 
@@ -10,7 +18,7 @@ public class Play : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Prime.VisitScene(GameScenes.PAUSE_MENU, isMain: true, hideSceneBelow: false);
+                Prime.PushScene(GameScenes.PAUSE_MENU, hideSceneBelow: false);
             }
         }
 

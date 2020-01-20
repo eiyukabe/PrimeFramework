@@ -25,7 +25,7 @@ public class GlobalGameLaunch : Node
 
         if (ev.IsActionPressed(InputActions.RELOAD_SCENE))
         {
-            Prime.ReloadScene();
+            Prime.ReloadMainScene();
         }
     }
 }

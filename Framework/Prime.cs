@@ -89,12 +89,14 @@ public static partial class Prime
             public static void SetScene(GameScene scene)
             {
                 Prime.Unpause();
+                Tree.SetInputAsHandled();
+
                 if (!StackIsEmpty)
                 {
                     ClearScenes();
                 }
 
-                VisitScene(scene, true);
+                PushScene(scene, true);
             }
 
             /// <summary> Clear all scenes off the stack (if any) and push a new main scene. </summary>
@@ -105,14 +107,13 @@ public static partial class Prime
 
         #endregion
 
-        #region Visit
+        #region Push
 
             /// <summary> Push a scene onto the stack. </summary>
-            public static void VisitScene(GameScene scene, bool isMainScene, bool hideSceneBelow = true)
+            public static void PushScene(GameScene scene, bool hideSceneBelow = true)
             {
                 if (scene == null) { return; }
                 SuspendTopScene(hideSceneBelow);
-                scene.IsMain = isMainScene;
                 Stack.Add(scene);
                 
                 if (scene.AttachToViewport)
@@ -132,90 +133,61 @@ public static partial class Prime
                     TreeRoot.AddChild(scene);
                 }
                 
-                Tree.SetInputAsHandled();   // Clear input so it doesn't carry over from one scene to another.
-                scene.OnVisit();
+                Tree.SetInputAsHandled();
+                scene.OnPushed();
             }
 
-            public static void VisitScene(string filepath, bool isMain, bool hideSceneBelow = true)
+            /// <summary> Push a scene onto the stack. </summary>
+            public static void PushScene(string filepath, bool hideSceneBelow = true)
             {
-                VisitScene(GetSceneInstance<GameScene>(filepath), isMain, hideSceneBelow);
+                PushScene(GetSceneInstance<GameScene>(filepath), hideSceneBelow);
             }
 
             /// <summary>
             /// Push a scene that's already in the scenetree onto the stack as a main scene.  
             /// This should only be required when launching the game with F6 for debugging.
             /// </summary>
-            public static void VisitSceneForF6Launch(GameScene scene)
+            public static void PushSceneForF6Launch(GameScene scene)
             {
                 Stack.Add(scene);
             }
 
         #endregion
 
-        #region Leave
+        #region Pop
         
-            /// <summary> Pop the topmost scene off the stack. Noop if the stack is empty. </summary>
-            public static void Leave()
+            /// <summary> Pop the topmost scene off the stack whether it's a main scene or subscene. Noop if the stack is empty. </summary>
+            public static void PopScene()
             {
                 if (StackIsEmpty) { return; }
                 var scene = TopScene;
                 Stack.RemoveAt(Stack.Count - 1);
-                scene.OnLeave();
+                scene.OnPopped();
                 QueueFreeScene(scene);
+                Tree.SetInputAsHandled();
                 ResumeTopScene();
             }
 
             /// <summary> Pop the topmost main scene off the stack and any subscenes above it. Noop if there's no main scene on the stack. </summary>
-            public static void LeaveScene()
+            public static void PopMainScene()
             {
                 int j = TopMainSceneIndex;
                 if (j == -1) { return; }    // No main scene to pop
 
                 for (int i = Stack.Count - 1; i > j; i--)
                 {
-                    BaseRemoveTop();        // Remove all subscenes above the main scene
+                    RemoveTopmostScene();        // Remove all subscenes above the main scene
                 }
 
-                Leave();                    // Pop main scene
+                PopScene();                  // Pop main scene
                 ResumeTopScene();
             }
 
             /// <summary> Pop the topmost subscene off the stack. Noop if the top scene is a main scene. </summary>
-            public static void LeaveSubScene()
+            public static void PopSubScene()
             {
-                if (!StackIsEmpty && !TopScene.IsMain) { Leave(); }
+                if (!StackIsEmpty && !TopScene.IsMain) { PopScene(); }
                 ResumeTopScene();
-            }
-
-        #endregion
-
-        #region Remove
-
-            /// <summary> Remove the topmost scene on the stack. </summary>
-            private static void BaseRemoveTop()
-            {
-                var scene = TopScene;
-                Stack.RemoveAt(Stack.Count - 1);
-                scene.OnClear();
-                QueueFreeScene(scene);
-            }
-            
-            /// <summary> Remove the topmost main scene on the stack and any subscenes above it. Noop if there's no main scene on the stack. </summary>
-            private static void BaseRemoveMain()
-            {
-                int j = TopMainSceneIndex;
-                if (j == -1) { return; }    // No main scene to remove
-
-                for (int i = Stack.Count - 1; i >= j; i--)
-                {
-                    BaseRemoveTop();        // Remove all subscenes and then the main scene
-                }
-            }
-
-            private static void QueueFreeScene(GameScene scene)
-            {
-                if (scene.AttachToViewport) { scene.GetParent().GetParent().QueueFree(); }
-                else                        { scene.QueueFree(); }
             }
 
         #endregion
@@ -227,7 +199,7 @@ public static partial class Prime
             {
                 while(TopScene != null)
                 {
-                    BaseRemoveTop();
+                    RemoveTopmostScene();
                 }
             }
 
@@ -236,8 +208,36 @@ public static partial class Prime
             {
                 while(!StackIsEmpty && !TopScene.IsMain)
                 {
-                    BaseRemoveTop();
+                    RemoveTopmostScene();
                 }
+            }
+
+
+            /// <summary> Remove the topmost scene on the stack. </summary>
+            private static void RemoveTopmostScene()
+            {
+                var scene = TopScene;
+                Stack.RemoveAt(Stack.Count - 1);
+                scene.OnCleared();
+                QueueFreeScene(scene);
+            }
+            
+            /// <summary> Remove the topmost main scene on the stack and any subscenes above it. Noop if there's no main scene on the stack. </summary>
+            private static void RemoveMainScene()
+            {
+                int j = TopMainSceneIndex;
+                if (j == -1) { return; }    // No main scene to remove
+
+                for (int i = Stack.Count - 1; i >= j; i--)
+                {
+                    RemoveTopmostScene();        // Remove all subscenes and then the main scene
+                }
+            }
+
+            private static void QueueFreeScene(GameScene scene)
+            {
+                if (scene.AttachToViewport) { scene.GetParent().GetParent().QueueFree(); }
+                else                        { scene.QueueFree(); }
             }
 
         #endregion
@@ -245,14 +245,14 @@ public static partial class Prime
         #region Reload
 
             /// <summary> Reload the topmost main scene on the stack. </summary>
-            public static void ReloadScene()
+            public static void ReloadMainScene()
             {
                 var i = TopMainSceneIndex;
                 if (i == -1) { return; }    // No main scene to reload.
                 
                 var mainFilepath = Stack[i].Filename;
-                BaseRemoveMain();
-                VisitScene(GetSceneInstance<GameScene>(mainFilepath));
+                RemoveMainScene();
+                PushScene(GetSceneInstance<GameScene>(mainFilepath), true);
             }
 
             /// <summary> Reload the topmost subscene on the stack. Noop if the topmost scene is a main scene. </summary>
@@ -261,8 +261,8 @@ public static partial class Prime
                 if (!StackIsEmpty && !TopScene.IsMain)
                 {
                     var filepath = TopScene.Filename;
-                    BaseRemoveTop();
-                    VisitSubScene(GetSceneInstance<GameScene>(filepath));
+                    RemoveTopmostScene();
+                    PushScene(GetSceneInstance<GameScene>(filepath), false);
                 }
             }
 
@@ -272,13 +272,11 @@ public static partial class Prime
                 if (StackIsEmpty) { return; }
 
                 var sceneFilepaths = new List<string>();
-                var sceneTypes = new List<bool>();
                 var showSceneBelow = new List<bool>();
 
                 foreach (var scene in Stack)
                 {
                     sceneFilepaths.Add(scene.Filename);
-                    sceneTypes.Add(scene.IsMain);
                     showSceneBelow.Add(scene.IsShowingSceneBelow);
                 }
 
@@ -287,8 +285,7 @@ public static partial class Prime
                 for (int i = 0; i < sceneFilepaths.Count; i++)
                 {
                     var scene = GetSceneInstance<GameScene>(sceneFilepaths[i]);
-                    if (sceneTypes[i]) { VisitScene(scene, showSceneBelow[i]); }
-                    else               { VisitSubScene(scene, showSceneBelow[i]); }
+                    PushScene(scene, showSceneBelow[i]);
                 }
             }
 
@@ -301,13 +298,11 @@ public static partial class Prime
             {
                 var scene = TopScene;
                 if (scene == null) { return; }
-                if (scene.Active)  { return; }
                 
                 SetSceneVisibility(scene, true);
                 scene.SetProcess(true);
                 scene.SetProcessInput(true);
                 scene.SetPhysicsProcess(true);
-                scene.Active = true;
             }
 
             /// <summary> Called on the topmost game scene when another game scene is pushed on top of it. </summary>
@@ -315,7 +310,6 @@ public static partial class Prime
             {
                 var scene = TopScene;
                 if (scene == null) { return; }
-                if (!scene.Active) { return; }
 
                 if (hide)
                 {
@@ -324,9 +318,8 @@ public static partial class Prime
                 scene.SetProcess(false);
                 scene.SetPhysicsProcess(false);
                 scene.SetProcessInput(false);
-                scene.Active = false;
 
-                scene.OnSuspend();
+                scene.OnSuspended();
             }
 
             private static void SetSceneVisibility(GameScene scene, bool isVisible)
