@@ -36,6 +36,7 @@ namespace Setup
             string iconImport = $"{primeDir}\\icon.png.import";
             string godotProjectFile = $"{primeDir}\\project.godot";
             string fixCSProj = $"{primeDir}\\Fix csproj.exe";
+            string busLayout = $"{primeDir}\\default_bus_layout.tres";
 
             string newGitignore = $"{newGameDir}\\.gitignore";
             string newDefaultEnv = $"{newGameDir}\\default_env.tres";
@@ -43,6 +44,7 @@ namespace Setup
             string newIconImport = $"{newGameDir}\\icon.png.import";
             string newGodotProjectFile = $"{newGameDir}\\project.godot";
             string newFixCSProj = $"{newGameDir}\\Fix csproj.exe";
+            string newBusLayout = $"{newGameDir}\\default_bus_layout.tres";
 
             /* Copy project files to new game directory */
             CopyFile(gitignore, newGitignore);
@@ -50,6 +52,7 @@ namespace Setup
             CopyFile(icon, newIcon);
             CopyFile(iconImport, newIconImport);
             CopyFile(fixCSProj, newFixCSProj);
+            CopyFile(busLayout, newBusLayout);
 
             /* Copy "Game" folder*/
             CopyAll(new DirectoryInfo($"{primeDir}\\Game"), new DirectoryInfo($"{newGameDir}\\Game"));
