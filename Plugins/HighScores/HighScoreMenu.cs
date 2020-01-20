@@ -4,7 +4,7 @@ public class HighScoreMenu : GameScene
 {
     #region Initialization
 
-        public override void OnVisit()
+        public override void OnPushed()
         {
             for (int i = 0; i < Game.MAX_SCORES; i++)
             {
@@ -21,7 +21,7 @@ public class HighScoreMenu : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Prime.PopTop();
+                Prime.PopScene();
             }
         }
 
