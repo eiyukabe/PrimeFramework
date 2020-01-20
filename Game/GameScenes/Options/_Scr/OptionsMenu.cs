@@ -12,6 +12,7 @@ public class OptionsMenu : GameScene
         {
             base._Ready();
             MusicSlider = GetNode<Slider>("canvas_layer/music_slider");
+            MusicSlider = GetNode<Slider>("Center2/Menu/MusicSlider");
             if (MusicSlider != null)
             {
                 MusicSlider.MinValue = Audio.MinVolumeDb;
@@ -19,7 +20,7 @@ public class OptionsMenu : GameScene
 	            MusicSlider.SetValue(Audio.GetMusicVolume());
                 MusicSlider.Connect("value_changed", this, nameof(OnMusicSliderChanged));
             }
-            SFXSlider = GetNode<Slider>("canvas_layer/sound_slider");
+            SFXSlider = GetNode<Slider>("Center2/Menu/SoundSlider");
             if (SFXSlider != null)
             {
                 SFXSlider.MinValue = Audio.MinVolumeDb;
