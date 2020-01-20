@@ -31,6 +31,11 @@ public class TitleScreen : GameScene
             Prime.SetScene(GameScenes.PLAY);
         }
 
+        private void OnOptionsButtonPressed()
+        {
+            Prime.PushScene(GameScenes.OPTIONS);
+        }
+
         private void OnCreditsButtonPressed()
         {
             Prime.PushScene(GameScenes.CREDITS);
