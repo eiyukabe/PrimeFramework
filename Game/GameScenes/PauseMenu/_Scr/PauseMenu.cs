@@ -13,7 +13,6 @@ public class PauseMenu : GameScene
 
     #endregion
 
-
     #region Input
 
         public override void _Input(InputEvent ev)
@@ -25,7 +24,6 @@ public class PauseMenu : GameScene
         }
 
     #endregion
-
 
     #region Button Callbacks
 
@@ -51,17 +49,11 @@ public class PauseMenu : GameScene
 
     #endregion
 
-
     #region Game Scene Callbacks
 
         public override void OnVisit()
         {
             Prime.Pause();
-        }
-
-        public override void OnClear()
-        {
-            Prime.Unpause();
         }
 
     #endregion

@@ -21,7 +21,7 @@ public class TitleScreen : GameScene
 
         private void OnCreditsButtonPressed()
         {
-            Prime.VisitSubScene(GameScenes.CREDITS);
+            Prime.VisitScene(GameScenes.CREDITS, isMain: false);
         }
 
         private void OnQuitButtonPressed()

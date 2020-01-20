@@ -10,7 +10,7 @@ public class Play : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Prime.VisitSubScene(GameScenes.PAUSE_MENU, hideSceneBelow: false);
+                Prime.VisitScene(GameScenes.PAUSE_MENU, isMain: true, hideSceneBelow: false);
             }
         }
 
