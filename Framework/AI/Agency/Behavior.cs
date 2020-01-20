@@ -50,7 +50,7 @@ public abstract class Behavior : PrimeNode
     [Export] public String DebugName = "";
 
     public bool IsActive() { return Active; }
-
+    
 
     #region Initialization
 
@@ -148,7 +148,6 @@ public abstract class Behavior : PrimeNode
 
     #endregion
 
-
     #region Control
 
         public override void _Process(float delta)
@@ -206,7 +205,6 @@ public abstract class Behavior : PrimeNode
 
     #endregion
 
-
     #region Durations
 
         public virtual void StartDuration(Type durationType)
@@ -238,7 +236,7 @@ public abstract class Behavior : PrimeNode
         }
 
     #endregion
-
+    
 
     #region Events
 
@@ -257,7 +255,6 @@ public abstract class Behavior : PrimeNode
         }
 
     #endregion
-
 
     #region States
 

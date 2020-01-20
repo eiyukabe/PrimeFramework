@@ -15,14 +15,8 @@ public class Rotate : Behavior
         public override void Setup()
         {
             base.Setup();
-            if (_Clockwise == null)
-            {
-                _Clockwise = new BoolLiteral(Clockwise);
-            }
-            if (_DegreesPerSecond == null)
-            {
-                _DegreesPerSecond = new FloatLiteral(DegreesPerSecond);
-            }
+            if (_Clockwise == null)         { _Clockwise = new BoolLiteral(Clockwise); }
+            if (_DegreesPerSecond == null)  { _DegreesPerSecond = new FloatLiteral(DegreesPerSecond); }
         }
 
         /// <summary> Called when a bool parameter is detected. Override to assign to the proper variable. </summary>
@@ -34,7 +28,7 @@ public class Rotate : Behavior
                 case 1:
                     _Clockwise = boolParameter;
                     break;
-                case 2:
+                default:
                     break;
             }
         }
