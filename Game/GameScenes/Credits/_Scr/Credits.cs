@@ -7,12 +7,12 @@ public class Credits : GameScene
     {
         if (ev.IsActionPressed(InputActions.UI_CANCEL))
         {
-            Prime.PopTop();
+            Prime.Leave();
         }
     }
 
     private void OnBackButtonPressed()
     {
-        Prime.PopTop();
+        Prime.Leave();
     }
 }

@@ -18,6 +18,6 @@ public class NormalGameLaunch : Node
    private void GoToFirstScene()
    {
        // Prime.PushScene(GameScenes.TITLE_SCREEN);
-       Prime.PushScene(GameScenes.PLAY);
+       Prime.VisitScene(GameScenes.PLAY);
    }
 }
