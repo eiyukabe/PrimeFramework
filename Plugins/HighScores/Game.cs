@@ -1,9 +1,13 @@
+using Godot;
 using System.Collections.Generic;
 
 public static partial class Game
 {
     public const int MAX_SCORES = 10;
+    private const string HIGHSCORE_PASS = "a1b2c3"; // TODO: Make this unique for your project.
     public static List<int> HighScores = new List<int>();
+
+    private const string HIGH_SCORE_FILE_PATH = "scores";
 
     /// <summary> Loads user high scores from disk, defaulting any empty slots to low scores. <summary>
     public static void InitializeHighScores()
@@ -13,7 +17,7 @@ public static partial class Game
             HighScores.Add(100 * (MAX_SCORES - i));
         }
 
-        //TODO: Read from disk.
+        LoadHighScores();
     }
 
     public static void InsertHighScore(int newScore)
@@ -32,7 +36,40 @@ public static partial class Game
         if (ScoreInserted)
         {
             HighScores.Remove(HighScores.Count - 1);
+            SaveHighScores();
         }
     }
+
+    #region Saving/Loading
+
+        private static void LoadHighScores()
+        {
+            File f = new File();
+            Error e = f.OpenEncryptedWithPass(HIGH_SCORE_FILE_PATH, (int)File.ModeFlags.Read, HIGHSCORE_PASS);
+            if (e == Error.Ok)
+            {
+                for (int i = 0; i < MAX_SCORES; i++)
+                {
+                    HighScores[i] = f.Get32();
+                }
+            }
+            f.Close();
+        }
+
+        private static void SaveHighScores()
+        {
+            File f = new File();
+            Error e = f.OpenEncryptedWithPass(HIGH_SCORE_FILE_PATH, (int)File.ModeFlags.Write, HIGHSCORE_PASS);
+            if (e == Error.Ok)
+            {
+                for (int i = 0; i < MAX_SCORES; i++)
+                {
+                    f.Store32(HighScores[i]);
+                }
+            }
+            f.Close();
+        }
+
+    #endregion
 
 }
