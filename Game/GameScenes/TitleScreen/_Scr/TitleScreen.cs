@@ -3,14 +3,26 @@ using System;
 
 public class TitleScreen : GameScene
 {
-    public override void _Input(InputEvent ev)
-    {
-        if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
+    #region Initialization
+        
+        public TitleScreen()
         {
-            Prime.Quit();
+            IsMain = true;
         }
-    }
 
+    #endregion
+
+    #region Input
+    
+        public override void _Input(InputEvent ev)
+        {
+            if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
+            {
+                Prime.Quit();
+            }
+        }
+
+    #endregion
 
     #region Button Callbacks
 
@@ -21,7 +33,7 @@ public class TitleScreen : GameScene
 
         private void OnCreditsButtonPressed()
         {
-            Prime.PushSubScene(GameScenes.CREDITS);
+            Prime.PushScene(GameScenes.CREDITS);
         }
 
         private void OnQuitButtonPressed()

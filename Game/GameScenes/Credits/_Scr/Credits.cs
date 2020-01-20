@@ -3,16 +3,24 @@ using System;
 
 public class Credits : GameScene
 {
-    public override void _Input(InputEvent ev)
-    {
-        if (ev.IsActionPressed(InputActions.UI_CANCEL))
-        {
-            Prime.PopTop();
-        }
-    }
+    #region Input
 
-    private void OnBackButtonPressed()
-    {
-        Prime.PopTop();
-    }
+        public override void _Input(InputEvent ev)
+        {
+            if (ev.IsActionPressed(InputActions.UI_CANCEL))
+            {
+                Prime.PopScene();
+            }
+        }
+
+    #endregion
+
+    #region Button Callbacks
+        
+        private void OnBackButtonPressed()
+        {
+            Prime.PopScene();
+        }
+
+    #endregion
 }
