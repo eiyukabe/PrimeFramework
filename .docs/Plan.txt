@@ -12,7 +12,7 @@ Veluzy
 - UI Templates
 	✓ Title Screen
 	✓ Credits
-	? Options Screen
+	✓ Options Screen
 	? Level Complete screen
 - Paths
 ? Player
@@ -44,7 +44,7 @@ Eiyukabe
 	- (Request) Put behavior "managers" like "sequential_behavior" and "decorated_behavior" in their own folder
 	   or give them a special suffix, or otherwise make them easy to find among regular behaviors so it's easy
 	   to browse what the "manager" options are without having to remember it
-	- Behavior to call a script or a function on a script.
+	✓ Behavior to call a script or a function on a script.
 	- Execute Script behavior.
 - Achievements
 - Trail after image behavior
