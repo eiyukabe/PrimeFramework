@@ -9,6 +9,11 @@ public class OptionsMenu : GameScene
 
     #region Initialization
 
+        public override void _EnterTree()
+        {
+            PauseMode = PauseModeEnum.Process;
+        }
+
         public override void _Ready()
         {
             base._Ready();
