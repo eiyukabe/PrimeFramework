@@ -8,9 +8,9 @@ using System;
 /// </summary>
 public class GlobalGameLaunch : Node
 {
-    public override void _EnterTree()
+    public GlobalGameLaunch()
     {
-        /* Global init game */
+        /* Game initialization */
         PauseMode = PauseModeEnum.Process;
         Bind.BindCommonDebugKeys();
         Bind.BindUIWASDKeys();

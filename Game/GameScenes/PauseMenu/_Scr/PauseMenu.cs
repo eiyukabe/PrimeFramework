@@ -5,7 +5,7 @@ public class PauseMenu : GameScene
 {
     #region Initialization
 
-        public override void _EnterTree()
+        public PauseMenu()
         {
             PauseMode = PauseModeEnum.Process;
         }
