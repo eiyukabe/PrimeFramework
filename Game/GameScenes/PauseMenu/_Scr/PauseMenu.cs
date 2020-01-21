@@ -31,6 +31,11 @@ public class PauseMenu : GameScene
         {
             Prime.PopScene();
         }
+
+        private void OnOptionsButtonPressed()
+        {
+            Prime.PushScene(GameScenes.OPTIONS);
+        }
         
         private void OnTitleScreenButtonPressed()
         {
