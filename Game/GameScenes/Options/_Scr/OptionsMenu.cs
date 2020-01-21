@@ -49,7 +49,7 @@ public class OptionsMenu : GameScene
         {
             if (ev.IsActionPressed(InputActions.UI_CANCEL))
             {
-                Prime.PopScene();
+                Scene.PopSub();
             }
         }
 
@@ -59,7 +59,7 @@ public class OptionsMenu : GameScene
         
         private void OnBackButtonPressed()
         {
-            Prime.PopScene();
+            Scene.PopSub();
         }
 
         private void OnFullScreenButtonPressed()

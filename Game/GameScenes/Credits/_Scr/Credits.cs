@@ -9,7 +9,7 @@ public class Credits : GameScene
         {
             if (ev.IsActionPressed(InputActions.UI_CANCEL))
             {
-                Prime.PopScene();
+                Scene.PopSub();
             }
         }
 
@@ -19,7 +19,7 @@ public class Credits : GameScene
         
         private void OnBackButtonPressed()
         {
-            Prime.PopScene();
+            Scene.PopSub();
         }
 
     #endregion

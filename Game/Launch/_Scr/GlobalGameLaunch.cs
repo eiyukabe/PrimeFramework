@@ -20,12 +20,12 @@ public class GlobalGameLaunch : Node
     {
         if (ev.IsActionPressed(InputActions.PRINT_SCENE_STACK))
         {
-            Prime.PrintSceneStack();
+            Scene.PrintSceneStack();
         }
 
         if (ev.IsActionPressed(InputActions.RELOAD_SCENE))
         {
-            Prime.ReloadMainScene();
+            Scene.Reload();
         }
     }
 }

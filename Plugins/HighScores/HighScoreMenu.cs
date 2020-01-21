@@ -21,7 +21,7 @@ public class HighScoreMenu : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Prime.PopScene();
+                Scene.PopSub();
             }
         }
 
@@ -31,7 +31,7 @@ public class HighScoreMenu : GameScene
 
         private void OnBackButtonPressed()
         {
-            Prime.SetScene(GameScenes.TITLE_SCREEN);
+            Scene.Set(GameScenes.TITLE_SCREEN);
         }
 
     #endregion
