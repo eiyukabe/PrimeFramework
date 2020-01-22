@@ -18,10 +18,9 @@ public partial class Play : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Prime.PushScene(GameScenes.PAUSE_MENU, hideSceneBelow: false);
+                Scene.Push(GameScenes.PAUSE_MENU, hideSceneBelow: false);
             }
         }
 
     #endregion
-    
 }

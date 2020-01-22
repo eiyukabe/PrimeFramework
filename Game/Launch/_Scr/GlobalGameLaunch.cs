@@ -8,9 +8,9 @@ using System;
 /// </summary>
 public class GlobalGameLaunch : Node
 {
-    public override void _EnterTree()
+    public GlobalGameLaunch()
     {
-        /* Global init game */
+        /* Game initialization */
         PauseMode = PauseModeEnum.Process;
         Bind.BindCommonDebugKeys();
         Bind.BindUIWASDKeys();
@@ -20,12 +20,12 @@ public class GlobalGameLaunch : Node
     {
         if (ev.IsActionPressed(InputActions.PRINT_SCENE_STACK))
         {
-            Prime.PrintSceneStack();
+            Scene.PrintSceneStack();
         }
 
         if (ev.IsActionPressed(InputActions.RELOAD_SCENE))
         {
-            Prime.ReloadMainScene();
+            Scene.Reload();
         }
     }
 }

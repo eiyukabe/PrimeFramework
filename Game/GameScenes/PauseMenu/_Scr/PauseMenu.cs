@@ -3,10 +3,9 @@ using System;
 
 public class PauseMenu : GameScene
 {
-
     #region Initialization
 
-        public override void _EnterTree()
+        public PauseMenu()
         {
             PauseMode = PauseModeEnum.Process;
         }
@@ -19,7 +18,7 @@ public class PauseMenu : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Prime.PopScene();
+                Scene.PopSub();
             }
         }
 
@@ -29,12 +28,17 @@ public class PauseMenu : GameScene
 
         private void OnResumeButtonPressed()
         {
-            Prime.PopScene();
+            Scene.PopSub();
+        }
+
+        private void OnOptionsButtonPressed()
+        {
+            Scene.Push(GameScenes.OPTIONS);
         }
         
         private void OnTitleScreenButtonPressed()
         {
-            Prime.SetScene(GameScenes.TITLE_SCREEN);
+            Scene.Set(GameScenes.TITLE_SCREEN);
         }
 
         private void OnQuitButtonPressed()

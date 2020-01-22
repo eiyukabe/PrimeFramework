@@ -1,16 +1,15 @@
 using Godot;
 using System;
 
-/// <summary>
-/// TreeMonitor is an autoloaded node that sends information about the scene tree to the Prime class.
-/// <summary>
+/// <summary> TreeMonitor is an autoloaded node that sends information about the scene tree to other classes. <summary>
 public class TreeMonitor : Node
 {
     public override void _EnterTree()
     {
         var tree = GetTree();
         Prime.Tree = tree;
-        Prime.TreeRoot = tree.GetRoot();
+        Scene.Tree = tree;
+        Scene.TreeRoot = tree.GetRoot();
         tree.SetAutoAcceptQuit(false);  // We'll handle quitting manually in Game/Prime
     }
 
