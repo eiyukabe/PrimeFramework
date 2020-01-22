@@ -69,14 +69,12 @@ public class OptionsMenu : GameScene
 
         private void OnMusicSliderChanged(float value)
         {
-            GD.Print("New Music Volume: " + value);
             Audio.SetBusVolume(Audio.MUSIC_BUS_NAME, value);
             GetNode<AudioStreamPlayer>("MusicDing").Play();
         }
 
         private void OnSFXSliderChanged(float value)
         {
-            GD.Print("New SFX Volume: " + value);
             Audio.SetBusVolume(Audio.SFX_BUS_NAME, value);
             GetNode<AudioStreamPlayer>("SFXDing").Play();
         }
