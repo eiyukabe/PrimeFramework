@@ -5,21 +5,22 @@ using System;
 /// A duration less than 0 will last forever. </summary>
 public class MoveInDirection : Behavior
 {
-    [Export] private Vector2 Direction;
+    [Export] private float Direction;
     [Export] private float Speed = 100.0f;
     [Export] private float Duration = 5.0f;
 
+    private Vector2 DirectionVector;
     private float Timer = -1.0f;
 
     #region Initialization
 
         public override void OnBegin()
         {
+            DirectionVector = new Vector2(Mathf.Cos(Direction), Mathf.Sin(Direction));
             Timer = Duration;
         }
 
     #endregion
-
 
     #region Control
 
@@ -29,7 +30,7 @@ public class MoveInDirection : Behavior
             
             if (ParentAgent != null)
             {
-                ParentAgent.GlobalPosition += Direction * Speed * delta;
+                ParentAgent.GlobalPosition += DirectionVector * Speed * delta;
             }
 
             if (Timer > 0.0f)
