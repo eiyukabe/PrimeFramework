@@ -1,11 +1,11 @@
 using Godot;
 using System;
 
-/// <summary> Moves the owning agent in the defined direction for the specified amount of time.
+/// <summary> Moves the owning agent in the defined direction (in degrees) for the specified amount of time.
 /// A duration less than 0 will last forever. </summary>
 public class MoveInDirection : Behavior
 {
-    [Export] private float Direction;
+    [Export] private float Direction; // In degrees.
     [Export] private float Speed = 100.0f;
     [Export] private float Duration = 5.0f;
 
@@ -16,7 +16,7 @@ public class MoveInDirection : Behavior
 
         public override void OnBegin()
         {
-            DirectionVector = new Vector2(Mathf.Cos(Direction), Mathf.Sin(Direction));
+            DirectionVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad(Direction)), Mathf.Deg2Rad(Mathf.Sin(Direction)));
             Timer = Duration;
         }
 
