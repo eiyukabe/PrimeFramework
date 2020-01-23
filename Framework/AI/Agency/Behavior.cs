@@ -68,6 +68,7 @@ public abstract class Behavior : PrimeNode
                     if (ParentBehavior == null)
                     {
                         Setup();
+                        Begin();
                     }
                 }
             }
