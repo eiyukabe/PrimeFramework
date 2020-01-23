@@ -41,8 +41,9 @@ public class MoveInDirection : Behavior
 
         public override void OnBegin()
         {
-            DirectionVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad(Direction)), Mathf.Deg2Rad(Mathf.Sin(Direction)));
-            Timer = Duration;
+            float Dir = _Direction.Evaluate();
+            DirectionVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad(Dir)), Mathf.Deg2Rad(Dir));
+            Timer = _Duration.Evaluate();
         }
 
     #endregion
@@ -55,7 +56,7 @@ public class MoveInDirection : Behavior
             
             if (ParentAgent != null)
             {
-                ParentAgent.GlobalPosition += DirectionVector * Speed * delta;
+                ParentAgent.GlobalPosition += DirectionVector * _Speed.Evaluate() * delta;
             }
 
             if (Timer > 0.0f)
