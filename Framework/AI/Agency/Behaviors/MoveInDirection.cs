@@ -9,10 +9,35 @@ public class MoveInDirection : Behavior
     [Export] private float Speed = 100.0f;
     [Export] private float Duration = 5.0f;
 
+    private FloatParameter _Direction;
+    private FloatParameter _Speed;
+    private FloatParameter _Duration;
+
     private Vector2 DirectionVector;
     private float Timer = -1.0f;
 
     #region Initialization
+
+        public override void Setup()
+        {
+            base.Setup();
+            if (_Direction == null) { _Direction = new FloatLiteral(Direction); }
+            if (_Speed == null)     { _Speed     = new FloatLiteral(Speed); }
+            if (_Duration == null)  { _Duration  = new FloatLiteral(Duration); }
+        }
+
+        /// <summary> Called when a float parameter is detected. Override to assign to the proper variable. </summary>
+        /// count tells how many float parameters have been identified so far and can be used to identify them.
+        protected override void ReceiveFloatParameter(FloatParameter floatParameter, int count)
+        {
+            switch(count)
+            {
+                case 1: _Direction = floatParameter; break;
+                case 2: _Speed     = floatParameter; break;
+                case 3: _Duration  = floatParameter; break;
+                default:                             break;
+            }
+        }
 
         public override void OnBegin()
         {
