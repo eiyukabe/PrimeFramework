@@ -42,7 +42,7 @@ public class MoveInDirection : Behavior
         public override void OnBegin()
         {
             float Dir = _Direction.Evaluate();
-            DirectionVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad(Dir)), Mathf.Deg2Rad(Dir));
+            DirectionVector = new Vector2(Mathf.Cos(Mathf.Deg2Rad(Dir)), Mathf.Sin(Mathf.Deg2Rad(Dir)));
             Timer = _Duration.Evaluate();
         }
 
