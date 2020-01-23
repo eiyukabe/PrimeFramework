@@ -7,3 +7,5 @@
 
 4.) Whenever the player dies or quits the play scene (closing the app, returning to the title screen), you should call Play.CommitScore().
 	* Note that by base design, you can only commit the score _once_ per play session. This is to protect against bugs that commit the same score multiple times, or let the player commit a sequence of scores from one play session.
+	
+5.) Add "Game.InitializeHighScores();" To the GlobalGameLaunch constructor.
