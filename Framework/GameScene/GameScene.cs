@@ -15,10 +15,11 @@ public class GameScene : PrimeNode2D
     public bool IsMain = false;
     public bool IsHidingSceneBelow;         // Used by the Scene class; there's no need to set this manually.
     
+    public virtual void OnCurrent() {}      // Called every time this scene becomes the topmost scene on the stack (by push or something above it being popped or cleared.)
     public virtual void OnPushed() {}       // Called the first time this scene is pushed onto the stack.
     public virtual void OnSuspended() {}    // Called right before another scene is pushed on top of this one.
     public virtual void OnPopped() {}       // Called right before this scene is popped from the stack. Will not be called when this scene is cleared from the stack.
-    public virtual void OnCleared() {}      // Called every time this scene is cleared from the stack.
+    public virtual void OnCleared() {}      // Called when this scene is removed from the stack, no matter how it's removed.
 
     #region Initialization
 
