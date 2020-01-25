@@ -31,7 +31,7 @@ public class HighScoreMenu : GameScene
 
         private void OnBackButtonPressed()
         {
-            Scene.Set(GameScenes.TITLE_SCREEN);
+            Scene.PopSub();
         }
 
     #endregion
