@@ -19,7 +19,7 @@ public static partial class Bind
     public static void BindKey(KeyList key, string actionName)
     {
         var inputEvent = new InputEventKey();
-        inputEvent.Scancode = (int) key;
+        inputEvent.Scancode = (uint) key;
         if (!InputMap.HasAction(actionName)) { InputMap.AddAction(actionName); }
         InputMap.ActionAddEvent(actionName, inputEvent);
     }

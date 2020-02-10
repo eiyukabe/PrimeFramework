@@ -55,7 +55,7 @@ public class CameraShakeAddon : Node
         if (GetParent() is Camera2D) { Parent = (Camera2D) GetParent(); }
         else                         { QueueFree(); return; }
 
-        Parent.SetRotating(true);
+        Parent.Rotating = true;
     }
 
     public override void _Input(InputEvent ev)

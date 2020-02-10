@@ -26,7 +26,7 @@ public class LerpScale : Behavior
                     Vector2 NewScale = new Vector2(ParentAgent.Scale.x, ParentAgent.Scale.y);
                     if (ScaleWidth) { NewScale.x = Scale; }
                     if (ScaleHeight) { NewScale.y = Scale; }
-                    ParentAgent.SetScale(NewScale);
+                    ParentAgent.Scale = NewScale;
                 }
                 StopSelf();
             }
@@ -58,7 +58,7 @@ public class LerpScale : Behavior
                 Vector2 NewScale = new Vector2(ParentAgent.Scale.x, ParentAgent.Scale.y);
                 if (ScaleWidth) { NewScale.x = ParentAgent.Scale.x + ChangeAmount.x; }
                 if (ScaleHeight) { NewScale.y = ParentAgent.Scale.y + ChangeAmount.y; }
-                ParentAgent.SetScale(NewScale);
+                ParentAgent.Scale = NewScale;
             }
         }
 

@@ -24,7 +24,10 @@ public class LerpAlpha : Behavior
             if (Duration <= 0.0f)
             {
                 // No Duration, just set the alpha immediately.
-                ParentAgent?.SetModulate(new Color(ParentAgent.Modulate.r, ParentAgent.Modulate.g, ParentAgent.Modulate.b, Alpha));
+                if (ParentAgent != null)
+                {
+                    ParentAgent.Modulate = new Color(ParentAgent.Modulate.r, ParentAgent.Modulate.g, ParentAgent.Modulate.b, Alpha);
+                }
                 StopSelf();
             }
             else

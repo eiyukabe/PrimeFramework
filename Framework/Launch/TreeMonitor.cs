@@ -9,7 +9,7 @@ public class TreeMonitor : Node
         var tree = GetTree();
         Prime.Tree = tree;
         Scene.Tree = tree;
-        Scene.TreeRoot = tree.GetRoot();
+        Scene.TreeRoot = tree.Root;
         tree.SetAutoAcceptQuit(false);  // We'll handle quitting manually in Game/Prime
     }
 

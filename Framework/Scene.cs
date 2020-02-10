@@ -335,7 +335,7 @@ public static class Scene
         {
             foreach(var scene in Stack)
             {
-                scene.SetVisible(isVisible);
+                scene.Visible = isVisible;
             }
         }
         

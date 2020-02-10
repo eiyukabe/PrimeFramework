@@ -14,15 +14,15 @@ public static partial class Prime
 
         public static void ToggleFullScreen()
         {
-            if (OS.IsWindowFullscreen())
+            if (OS.WindowFullscreen)
             {
-                OS.SetWindowFullscreen(false);
-                OS.SetWindowSize(new Vector2(ResolutionX, ResolutionY));
+                OS.WindowFullscreen = false;
+                OS.WindowSize = new Vector2(ResolutionX, ResolutionY);
                 OS.CenterWindow();
             }
             else
             {
-                OS.SetWindowFullscreen(true);
+                OS.WindowFullscreen = true;
             }
         }
 
