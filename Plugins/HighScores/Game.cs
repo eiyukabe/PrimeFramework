@@ -45,12 +45,12 @@ public static partial class Game
         private static void LoadHighScores()
         {
             File f = new File();
-            Error e = f.OpenEncryptedWithPass(HIGH_SCORE_FILE_PATH, (int)File.ModeFlags.Read, HIGHSCORE_PASS);
+            Error e = f.OpenEncryptedWithPass(HIGH_SCORE_FILE_PATH, Godot.File.ModeFlags.Read, HIGHSCORE_PASS);
             if (e == Error.Ok)
             {
                 for (int i = 0; i < MAX_SCORES; i++)
                 {
-                    HighScores[i] = f.Get32();
+                    HighScores[i] = (int) f.Get32();
                 }
             }
             f.Close();
@@ -59,12 +59,12 @@ public static partial class Game
         private static void SaveHighScores()
         {
             File f = new File();
-            Error e = f.OpenEncryptedWithPass(HIGH_SCORE_FILE_PATH, (int)File.ModeFlags.Write, HIGHSCORE_PASS);
+            Error e = f.OpenEncryptedWithPass(HIGH_SCORE_FILE_PATH, Godot.File.ModeFlags.Write, HIGHSCORE_PASS);
             if (e == Error.Ok)
             {
                 for (int i = 0; i < MAX_SCORES; i++)
                 {
-                    f.Store32(HighScores[i]);
+                    f.Store32((uint) HighScores[i]);
                 }
             }
             f.Close();
