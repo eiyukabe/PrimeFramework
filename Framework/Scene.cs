@@ -74,7 +74,7 @@ public static class Scene
         /// <summary> Clear all scenes off the stack (if any) and push a new scene. </summary>
         public static void Set(string filepath)
         {
-            Set(Prime.GetSceneInstance<PrimeScene>(filepath));
+            Set(Prime.GetNewInstance<PrimeScene>(filepath));
         }
 
     #endregion
@@ -114,7 +114,7 @@ public static class Scene
         /// <summary> Push a new scene onto the stack. </summary>
         public static void Push(string filepath, bool hideSceneBelow = true)
         {
-            Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
+            Push(Prime.GetNewInstance<PrimeScene>(filepath), hideSceneBelow);
         }
 
         /// <summary> Push a scene that's already in the scenetree onto the stack. This should only be required when launching the game with F6 for debugging. </summary>
@@ -224,7 +224,7 @@ public static class Scene
                 var filepath = TopScene.Filename;
                 var hideSceneBelow = TopScene.IsHidingSceneBelow;
                 Clear();
-                Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
+                Push(Prime.GetNewInstance<PrimeScene>(filepath), hideSceneBelow);
             }
         }
 
@@ -246,7 +246,7 @@ public static class Scene
 
                 for (int i = 0; i < sceneFilepaths.Count; i++)
                 {
-                    var scene = Prime.GetSceneInstance<PrimeScene>(sceneFilepaths[i]);
+                    var scene = Prime.GetNewInstance<PrimeScene>(sceneFilepaths[i]);
                     Push(scene, hideSceneBelow[i]);
                 }
             }
@@ -266,7 +266,7 @@ public static class Scene
                 Clear();                // Remove all subscenes and then the main scene.
             }
             
-            Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
+            Push(Prime.GetNewInstance<PrimeScene>(filepath), hideSceneBelow);
         }
 
         /// <summary> Reload the topmost subscene on the stack. Noop if the topmost scene is a main scene. </summary>
@@ -277,7 +277,7 @@ public static class Scene
                 var filepath = TopScene.Filename;
                 var hideSceneBelow = TopScene.IsHidingSceneBelow;
                 Clear();
-                Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
+                Push(Prime.GetNewInstance<PrimeScene>(filepath), hideSceneBelow);
             }
         }
 

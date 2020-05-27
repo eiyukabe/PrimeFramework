@@ -54,6 +54,8 @@ public static partial class Prime
 
         /// <summary>
         /// Loads and returns a resource. Returns null if a resource cannot be found from the given filepath.
+        /// If GetResource<PackedScene>() is used the PackedScene will still need to be instanced by the caller.
+        /// Use GetNew() to load and instance a PackedScene.
         ///</summary>
         public static T GetResource<T>(string filepath) where T : Resource
         {
@@ -69,10 +71,10 @@ public static partial class Prime
         }
 
         /// <summary>
-        /// Loads a PackedScene and then returns an instance of it. Returns null if an instance of the specified type cannot
+        /// Loads a PackedScene and then returns a new instance of it. Returns null if an instance of the specified type cannot
         /// be created with the given filepath. Use GetResource<PackedScene>() to load a PackedScene without instancing it yet.
         /// </summary>
-        public static T GetSceneInstance<T>(string filepath) where T : Node
+        public static T GetNewInstance<T>(string filepath) where T : Node
         {
             Resource resource = ResourceLoader.Load(filepath);
 
