@@ -7,12 +7,12 @@ public static class Scene
     public static SceneTree Tree;   // Set by TreeMonitor
     public static Node TreeRoot;    // Set by TreeMonitor
 
-    private static List<GameScene> Stack = new List<GameScene>();
+    private static List<PrimeScene> Stack = new List<PrimeScene>();
 
     #region Getters
 
         /// <summary> Returns a scene from the stack that matches the given type. Returns null if not found. </summary>
-        public static T GetScene<T>() where T : GameScene
+        public static T GetScene<T>() where T : PrimeScene
         {
             foreach(var scene in Stack)
             {
@@ -37,7 +37,7 @@ public static class Scene
         }
 
         /// <summary> Get the topmost scene on the stack. Check Stack.Count > 0 before calling this. </summary>
-        private static GameScene TopScene
+        private static PrimeScene TopScene
         {
             get { return Stack[Stack.Count - 1]; }
         }
@@ -63,7 +63,7 @@ public static class Scene
     #region Set
 
         /// <summary> Clear all scenes off the stack (if any) and push a new scene. </summary>
-        public static void Set(GameScene scene)
+        public static void Set(PrimeScene scene)
         {
             Prime.Unpause();
             Tree.SetInputAsHandled();
@@ -74,7 +74,7 @@ public static class Scene
         /// <summary> Clear all scenes off the stack (if any) and push a new scene. </summary>
         public static void Set(string filepath)
         {
-            Set(Prime.GetSceneInstance<GameScene>(filepath));
+            Set(Prime.GetSceneInstance<PrimeScene>(filepath));
         }
 
     #endregion
@@ -82,7 +82,7 @@ public static class Scene
     #region Push
 
         /// <summary> Push a new scene onto the stack. </summary>
-        public static void Push(GameScene scene, bool hideSceneBelow = true)
+        public static void Push(PrimeScene scene, bool hideSceneBelow = true)
         {
             if (scene == null) { return; }
             scene.IsHidingSceneBelow = hideSceneBelow;
@@ -114,11 +114,11 @@ public static class Scene
         /// <summary> Push a new scene onto the stack. </summary>
         public static void Push(string filepath, bool hideSceneBelow = true)
         {
-            Push(Prime.GetSceneInstance<GameScene>(filepath), hideSceneBelow);
+            Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
         }
 
         /// <summary> Push a scene that's already in the scenetree onto the stack. This should only be required when launching the game with F6 for debugging. </summary>
-        public static void PushForF6Launch(GameScene scene)
+        public static void PushForF6Launch(PrimeScene scene)
         {
             Stack.Add(scene);
             scene.OnPushed();
@@ -224,7 +224,7 @@ public static class Scene
                 var filepath = TopScene.Filename;
                 var hideSceneBelow = TopScene.IsHidingSceneBelow;
                 Clear();
-                Push(Prime.GetSceneInstance<GameScene>(filepath), hideSceneBelow);
+                Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
             }
         }
 
@@ -246,7 +246,7 @@ public static class Scene
 
                 for (int i = 0; i < sceneFilepaths.Count; i++)
                 {
-                    var scene = Prime.GetSceneInstance<GameScene>(sceneFilepaths[i]);
+                    var scene = Prime.GetSceneInstance<PrimeScene>(sceneFilepaths[i]);
                     Push(scene, hideSceneBelow[i]);
                 }
             }
@@ -266,7 +266,7 @@ public static class Scene
                 Clear();                // Remove all subscenes and then the main scene.
             }
             
-            Push(Prime.GetSceneInstance<GameScene>(filepath), hideSceneBelow);
+            Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
         }
 
         /// <summary> Reload the topmost subscene on the stack. Noop if the topmost scene is a main scene. </summary>
@@ -277,7 +277,7 @@ public static class Scene
                 var filepath = TopScene.Filename;
                 var hideSceneBelow = TopScene.IsHidingSceneBelow;
                 Clear();
-                Push(Prime.GetSceneInstance<GameScene>(filepath), hideSceneBelow);
+                Push(Prime.GetSceneInstance<PrimeScene>(filepath), hideSceneBelow);
             }
         }
 
@@ -285,7 +285,7 @@ public static class Scene
 
     #region Resume/Suspend
 
-        /// <summary> Called on a game scene when the scene above it is popped. </summary>
+        /// <summary> Called on a PrimeScene when the scene above it is popped. </summary>
         private static void ResumeTopScene()
         {
             if (Stack.Count > 0)
@@ -299,7 +299,7 @@ public static class Scene
             }
         }
 
-        /// <summary> Called on the topmost game scene when another game scene is pushed on top of it. </summary>
+        /// <summary> Called on the topmost PrimeScene when another PrimeScene is pushed on top of it. </summary>
         private static void SuspendTopScene(bool hide)
         {
             if (Stack.Count > 0)
@@ -316,7 +316,7 @@ public static class Scene
             }
         }
 
-        private static void SetSceneVisibility(GameScene scene, bool isVisible)
+        private static void SetSceneVisibility(PrimeScene scene, bool isVisible)
         {
             if (scene.AttachToViewport)
             {
@@ -355,7 +355,7 @@ public static class Scene
 
     #endregion
     
-    private static void QueueFreeScene(GameScene scene)
+    private static void QueueFreeScene(PrimeScene scene)
     {
         if (scene.AttachToViewport) { scene.GetParent().GetParent().QueueFree(); }
         else                        { scene.QueueFree(); }
