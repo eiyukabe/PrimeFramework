@@ -7,8 +7,8 @@ using System;
 /// </summary>
 public static partial class InputActions
 {
-     /* Note: for the Godot default actions it might be important to keep using snake_case in the strings to make sure they
-        continue to work with some of Godot's default behavior; for everything else the strings just need to be unique. */
+    /* Note: for the Godot default actions it might be important to keep using snake_case in the strings to make sure they
+       continue to work with some of Godot's default behavior; for everything else the strings just need to be unique. */
 
     /* Godot defaults */
     public const string UI_ACCEPT = "ui_accept";
