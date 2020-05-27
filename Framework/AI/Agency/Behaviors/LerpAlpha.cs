@@ -60,7 +60,7 @@ public class LerpAlpha : Behavior
                         ChangeFactor = Mathf.Clamp(ChangeFactor, ChangeFactor, 1.0f);
                         float ChangeAmount = (Alpha - StartingAlpha) * ChangeFactor;
                         NewColor.a += ChangeAmount;
-                        ParentAgent.SetModulate(NewColor);
+                        ParentAgent.Modulate = NewColor;
                         break;
                     }
                     case 1: // Sine Interpolation
@@ -68,7 +68,7 @@ public class LerpAlpha : Behavior
                         float AlphaRange = StartingAlpha - Alpha;
                         Color NewColor = ParentAgent.Modulate;
                         NewColor.a = StartingAlpha - AlphaRange/2 + AlphaRange/2 * Mathf.Sin((Duration - Timer) * 2 * Mathf.Pi/Duration);
-                        ParentAgent.SetModulate(NewColor);
+                        ParentAgent.Modulate = NewColor;
                         break;
                     }
                     case 2: // Cosine Interpolation
@@ -76,7 +76,7 @@ public class LerpAlpha : Behavior
                         float AlphaRange = StartingAlpha - Alpha;
                         Color NewColor = ParentAgent.Modulate;
                         NewColor.a = StartingAlpha - AlphaRange/2 + AlphaRange/2 * Mathf.Cos((Duration - Timer) * 2 * Mathf.Pi/Duration);
-                        ParentAgent.SetModulate(NewColor);
+                        ParentAgent.Modulate = NewColor;
                         break;
                     }
                 }
@@ -101,7 +101,7 @@ public class LerpAlpha : Behavior
                     {
                         Color NewColor = ParentAgent.Modulate;
                         NewColor.a = StartingAlpha;
-                        ParentAgent.SetModulate(NewColor);
+                        ParentAgent.Modulate = NewColor;
                     }
                     break;
             }

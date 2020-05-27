@@ -27,7 +27,7 @@ public class ClampToPlayfield : Behavior
                 float AgentX = Mathf.Clamp(ParentAgent.GlobalPosition.x, LeftEdge, RightEdge);
                 float AgentY = Mathf.Clamp(ParentAgent.GlobalPosition.y, TopEdge, BottomEdge);
 
-                ParentAgent.SetGlobalPosition(new Vector2(AgentX, AgentY));
+                ParentAgent.GlobalPosition = new Vector2(AgentX, AgentY);
             }
         }
 

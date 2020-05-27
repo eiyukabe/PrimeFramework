@@ -20,7 +20,7 @@ public class OptionsMenu : PrimeScene
             FullScreenButton = GetNode<CheckButton>("Center2/Menu/FullScreenButton");
             if (FullScreenButton != null)
             {
-                FullScreenButton.SetPressed(OS.IsWindowFullscreen());
+                FullScreenButton.Pressed = OS.WindowFullscreen;
                 FullScreenButton.Connect("pressed", this, nameof(OnFullScreenButtonPressed));
             }
             MusicSlider = GetNode<Slider>("Center2/Menu/MusicSlider");
@@ -28,7 +28,7 @@ public class OptionsMenu : PrimeScene
             {
                 MusicSlider.MinValue = Audio.MinVolumeDb;
                 MusicSlider.MaxValue = Audio.MaxVolumeDb;
-	            MusicSlider.SetValue(Audio.GetMusicVolume());
+	            MusicSlider.Value = Audio.GetMusicVolume();
                 MusicSlider.Connect("value_changed", this, nameof(OnMusicSliderChanged));
             }
             SFXSlider = GetNode<Slider>("Center2/Menu/SFXSlider");
@@ -36,7 +36,7 @@ public class OptionsMenu : PrimeScene
             {
                 SFXSlider.MinValue = Audio.MinVolumeDb;
                 SFXSlider.MaxValue = Audio.MaxVolumeDb;
-	            SFXSlider.SetValue(Audio.GetSFXVolume());
+	            SFXSlider.Value = Audio.GetSFXVolume();
                 SFXSlider.Connect("value_changed", this, nameof(OnSFXSliderChanged));
             }
         }

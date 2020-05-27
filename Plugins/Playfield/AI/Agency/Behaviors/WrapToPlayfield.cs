@@ -38,7 +38,7 @@ public class WrapToPlayfield : Behavior
                 while (AgentY < TopEdge) { AgentY += WrapHeight; }
                 while (AgentY >= BottomEdge) { AgentY += WrapHeight; }
 
-                ParentAgent.SetGlobalPosition(new Vector2(AgentX, AgentY));
+                ParentAgent.GlobalPosition = new Vector2(AgentX, AgentY);
             }
         }
 
