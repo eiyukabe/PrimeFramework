@@ -1,7 +1,7 @@
 1.) (Optional) In Game.cs, set HIGHSCORE_PASS to something unique.
 	* This is really only important for live games so the passcode is not predictable. It doesn't matter for game jams.
 	
-2.) Add a button to get to the High Scores Menu (GameScenes.HIGH_SCORES) to your title screen (or wherever you want it to go.)
+2.) Add a button to get to the High Scores Menu (PrimeScenes.HIGH_SCORES) to your title screen (or wherever you want it to go.)
 
 3.) Add calls to Play.GainScore(int) any time the player does something that should give score.
 

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class OptionsMenu : GameScene
+public class OptionsMenu : PrimeScene
 {
     private CheckButton FullScreenButton = null;
     private Slider MusicSlider = null;

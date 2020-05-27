@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class Play : GameScene
+public partial class Play : PrimeScene
 {
     #region Initialization
 
@@ -18,7 +18,7 @@ public partial class Play : GameScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Scene.Push(GameScenes.PAUSE_MENU, hideSceneBelow: false);
+                Scene.Push(PrimeScenes.PAUSE_MENU, hideSceneBelow: false);
             }
         }
 

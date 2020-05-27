@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class TitleScreen : GameScene
+public class TitleScreen : PrimeScene
 {
     #region Initialization
         
@@ -28,17 +28,17 @@ public class TitleScreen : GameScene
 
         private void OnPlayButtonPressed()
         {
-            Scene.Set(GameScenes.PLAY);
+            Scene.Set(PrimeScenes.PLAY);
         }
 
         private void OnOptionsButtonPressed()
         {
-            Scene.Push(GameScenes.OPTIONS);
+            Scene.Push(PrimeScenes.OPTIONS);
         }
 
         private void OnCreditsButtonPressed()
         {
-            Scene.Push(GameScenes.CREDITS);
+            Scene.Push(PrimeScenes.CREDITS);
         }
 
         private void OnQuitButtonPressed()

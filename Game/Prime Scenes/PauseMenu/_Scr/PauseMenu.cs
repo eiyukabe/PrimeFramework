@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class PauseMenu : GameScene
+public class PauseMenu : PrimeScene
 {
     #region Initialization
 
@@ -33,12 +33,12 @@ public class PauseMenu : GameScene
 
         private void OnOptionsButtonPressed()
         {
-            Scene.Push(GameScenes.OPTIONS);
+            Scene.Push(PrimeScenes.OPTIONS);
         }
         
         private void OnTitleScreenButtonPressed()
         {
-            Scene.Set(GameScenes.TITLE_SCREEN);
+            Scene.Set(PrimeScenes.TITLE_SCREEN);
         }
 
         private void OnQuitButtonPressed()

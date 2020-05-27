@@ -1,6 +1,6 @@
 Veluzy
 =============
-✓ GameScenes
+✓ PrimeScenes
 ✓ Launch
 - Troops (Actor)
 - Build dock

@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public class Credits : GameScene
+public class Credits : PrimeScene
 {
     #region Input
 

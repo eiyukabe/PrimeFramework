@@ -17,7 +17,7 @@ public class NormalGameLaunch : Node
 
    private void GoToFirstScene()
    {
-       // Scene.Push(GameScenes.TITLE_SCREEN);
-       Scene.Push(GameScenes.PLAY);
+       // Scene.Push(PrimeScenes.TITLE_SCREEN);
+       Scene.Push(PrimeScenes.PLAY);
    }
 }

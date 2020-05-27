@@ -1,5 +1,5 @@
 
-public partial class Play : GameScene
+public partial class Play : PrimeScene
 {
     #region Score
 

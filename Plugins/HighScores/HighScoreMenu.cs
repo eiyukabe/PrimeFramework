@@ -1,6 +1,6 @@
 using Godot;
 
-public class HighScoreMenu : GameScene
+public class HighScoreMenu : PrimeScene
 {
     #region Initialization
 
