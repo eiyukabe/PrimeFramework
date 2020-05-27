@@ -18,18 +18,24 @@ public static partial class Bind
     /// <summary> Bind a key to fire an action. </summary>
     public static void BindKey(KeyList key, string actionName)
     {
-        var inputEvent = new InputEventKey();
+        InputEventKey inputEvent = new InputEventKey();
         inputEvent.Scancode = (uint) key;
-        if (!InputMap.HasAction(actionName)) { InputMap.AddAction(actionName); }
+        if (!InputMap.HasAction(actionName))
+        {
+            InputMap.AddAction(actionName);
+        }
         InputMap.ActionAddEvent(actionName, inputEvent);
     }
 
     /// <summary> Bind a mouse button to fire an action. </summary>
     public static void BindMouseButton(ButtonList mouseButton, string actionName)
     {
-        var inputEvent = new InputEventMouseButton();
+        InputEventMouseButton inputEvent = new InputEventMouseButton();
         inputEvent.ButtonIndex = (int) mouseButton;
-        if (!InputMap.HasAction(actionName)) { InputMap.AddAction(actionName); }
+        if (!InputMap.HasAction(actionName))
+        {
+            InputMap.AddAction(actionName);
+        }
         InputMap.ActionAddEvent(actionName, inputEvent);
     }
 
@@ -42,7 +48,7 @@ public static partial class Bind
             {
                 if (inputEvent is InputEventKey)    // It could also be an InputEventMouseButton
                 {
-                    var keyEvent = (InputEventKey) inputEvent;
+                    InputEventKey keyEvent = (InputEventKey) inputEvent;
                     if (keyEvent.Scancode == (int) key)
                     {
                         InputMap.ActionEraseEvent(actionName, inputEvent);
@@ -62,7 +68,7 @@ public static partial class Bind
             {
                 if (inputEvent is InputEventMouseButton)    // It could also be an InputEventKey
                 {
-                    var mbEvent = (InputEventMouseButton) inputEvent;
+                    InputEventMouseButton mbEvent = (InputEventMouseButton) inputEvent;
                     if (mbEvent.ButtonIndex == (int) mouseButton)
                     {
                         InputMap.ActionEraseEvent(actionName, inputEvent);
