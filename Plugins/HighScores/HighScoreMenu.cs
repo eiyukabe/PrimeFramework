@@ -8,8 +8,11 @@ public class HighScoreMenu : PrimeScene
         {
             for (int i = 0; i < Game.MAX_SCORES; i++)
             {
-                Label ScoreLabel = GetNode<Label>("CanvasLayer/Center2/Menu/Score" + (i+1));
-                ScoreLabel?.SetText("" + Game.HighScores[i]);
+                Label ScoreLabel = GetNodeOrNull<Label>("CanvasLayer/Center2/Menu/Score" + (i+1));
+                if (ScoreLabel != null)
+                {
+                    ScoreLabel.Text = ("" + Game.HighScores[i]);
+                }
             }
         }
 
