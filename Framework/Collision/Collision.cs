@@ -5,7 +5,7 @@ using System;
 /// Use Collision<T> to say when 'caller' collides with 'T' call 'this method' on 'caller' with 'T' as a parameter.
 /// When instantiated, nodes of this class will be added as a child of the caller's Area2D node.
 /// 
-/// Example usage: new Collision<Enemy>(this, "Area2D", OnEnemyCollision);
+/// Example usage: new Collision<Enemy>(this, OnEnemyCollision, "Area2D", "../../");
 /// The caller must then have this method defined: OnEnemyCollision(Enemy enemy)
 /// </summary>
 public class Collision<T> : Node where T : Node
@@ -15,31 +15,33 @@ public class Collision<T> : Node where T : Node
     /// <summary>
     /// Parameters:
     /// - caller: The node creating this Collision.
-    /// - area2DPath: Path to an Area2D node that will detect this collision.
     /// - callback: Method that will be called when the caller detects a collision with the given type. This method must have
-    /// one parameter with type <T>. 
+    ///   one parameter with type <T>. 
+    /// - area2DPath: Path to the caller's Area2D node that's detecting this collision.
     /// </summary>
-    public Collision(Node caller, string area2DPath, Action<T> callback)
+    public Collision(Node caller, Action<T> callback, string area2DPath = "Area2D")
     {
-        var collisionArea2D = caller.GetNodeOrNull<Area2D>(area2DPath);
-        if (collisionArea2D == null)
+        Area2D area2D = caller.GetNodeOrNull<Area2D>(area2DPath);
+        if (area2D == null)
         {
             return;
         }
 
         Callback = callback;
-        collisionArea2D.Connect(CollisionSignals.AREA_ENTERED, this, nameof(OnCollision));
-        collisionArea2D.AddChild(this);
+        area2D.Connect(CollisionSignals.AREA_ENTERED, this, nameof(OnCollision));
+        area2D.AddChild(this);
     }
 
     private void OnCollision(Area2D otherArea)
     {
-        var other = otherArea.GetParentOrNull<T>();
-        if (other == null)
+        T thingWeCollidedWith = Prime.GetAncestorOfType<T>(otherArea);
+        if (thingWeCollidedWith == null)
         {
             return;
         }
-
-        Callback?.Invoke(other);
+        else
+        {
+            Callback?.Invoke(thingWeCollidedWith);
+        }
     }
 }
