@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public static partial class PrimeScenes
+public static partial class Scenes
 {
     public const string CREDITS = "res://Game/Prime Scenes/Credits/Credits.tscn";
     public const string OPTIONS = "res://Game/Prime Scenes/Options/OptionsMenu.tscn";

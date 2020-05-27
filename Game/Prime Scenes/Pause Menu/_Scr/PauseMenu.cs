@@ -33,12 +33,12 @@ public class PauseMenu : PrimeScene
 
         private void OnOptionsButtonPressed()
         {
-            Scene.Push(PrimeScenes.OPTIONS);
+            Scene.Push(Scenes.OPTIONS);
         }
         
         private void OnTitleScreenButtonPressed()
         {
-            Scene.Set(PrimeScenes.TITLE_SCREEN);
+            Scene.Set(Scenes.TITLE_SCREEN);
         }
 
         private void OnQuitButtonPressed()

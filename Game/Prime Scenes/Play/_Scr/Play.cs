@@ -18,7 +18,7 @@ public partial class Play : PrimeScene
         {
             if (Input.IsActionJustPressed(InputActions.UI_CANCEL))
             {
-                Scene.Push(PrimeScenes.PAUSE_MENU, hideSceneBelow: false);
+                Scene.Push(Scenes.PAUSE_MENU, hideSceneBelow: false);
             }
         }
 

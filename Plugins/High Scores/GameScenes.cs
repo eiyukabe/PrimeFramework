@@ -1,5 +1,5 @@
 
-public static partial class PrimeScenes
+public static partial class Scenes
 {
-    public const string HIGH_SCORES = "res://Plugins/HighScores/HighScoreMenu.tscn";
+    public const string HIGH_SCORES = "res://Plugins/High Scores/HighScoreMenu.tscn";
 }

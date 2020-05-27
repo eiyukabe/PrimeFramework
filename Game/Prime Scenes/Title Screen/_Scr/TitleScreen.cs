@@ -28,17 +28,17 @@ public class TitleScreen : PrimeScene
 
         private void OnPlayButtonPressed()
         {
-            Scene.Set(PrimeScenes.PLAY);
+            Scene.Set(Scenes.PLAY);
         }
 
         private void OnOptionsButtonPressed()
         {
-            Scene.Push(PrimeScenes.OPTIONS);
+            Scene.Push(Scenes.OPTIONS);
         }
 
         private void OnCreditsButtonPressed()
         {
-            Scene.Push(PrimeScenes.CREDITS);
+            Scene.Push(Scenes.CREDITS);
         }
 
         private void OnQuitButtonPressed()
