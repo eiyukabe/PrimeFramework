@@ -29,7 +29,7 @@ public class PrimeScene : PrimeNode2D
             This is a special case that should only happen while debugging. We'll handle it by just pushing this scene as a main scene.
             If this is happening during a normal game launch it means no initial scenes are being pushed when the game starts. You can fix this
             by going to NormalGameLaunch.cs and calling Scene.Push() in _Ready(). */
-            if (Scene.IsStackEmpty)
+            if (Scene.SceneCount == 0)
             {
                 Scene.PushForF6Launch(this);
             }

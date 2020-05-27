@@ -24,12 +24,6 @@ public static class Scene
             return null;
         }
 
-        /// <summary> Returns true if the scene stack is empty. </summary>
-        public static bool IsStackEmpty
-        {
-            get { return Stack.Count == 0; }
-        }
-
         /// <summary> Returns the number of scenes on the stack. </summary>
         public static int SceneCount
         {
