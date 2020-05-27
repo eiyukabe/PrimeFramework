@@ -53,34 +53,33 @@ public static partial class Prime
     #region Resource Loading
 
         /// <summary>
-        /// Loads and returns a PackedScene. Returns null if a PackedScene cannot be found from the given filepath.
-        /// See also GetSceneInstance() to get an instance of a PackedScene.
+        /// Loads and returns a resource. Returns null if a resource cannot be found from the given filepath.
         ///</summary>
-        public static PackedScene GetPackedScene(string filepath)
+        public static T GetResource<T>(string filepath) where T : Resource
         {
-            var scene = ResourceLoader.Load(filepath);
-            if (scene == null) { return null; }
-            
-            if (scene is PackedScene)
+            Resource resource = ResourceLoader.Load(filepath);
+            if (resource != null && resource is T)
             {
-                return (PackedScene) scene;
+                return (T) resource;
             }
-            return null;
+            else
+            {
+                return null;
+            }
         }
 
         /// <summary>
-        /// Loads a PackedScene and then returns an instance of it. Returns null if an instance of the specified type cannot be found
-        /// from the given filepath. See also Prime.GetPackedScene() to load a scene without instancing it yet.
+        /// Loads a PackedScene and then returns an instance of it. Returns null if an instance of the specified type cannot
+        /// be created with the given filepath. Use GetResource<PackedScene>() to load a PackedScene without instancing it yet.
         /// </summary>
         public static T GetSceneInstance<T>(string filepath) where T : Node
         {
-            var scene = ResourceLoader.Load(filepath);
-            if (scene == null) { return null; }
+            Resource resource = ResourceLoader.Load(filepath);
 
-            if (scene is PackedScene)
+            if (resource != null && resource is PackedScene)
             {
-                var packedScene = (PackedScene) scene;
-                var instance = packedScene.Instance();
+                PackedScene packedScene = (PackedScene) resource;
+                Node instance = packedScene.Instance();
                 if (instance is T)
                 {
                     return (T) instance;
