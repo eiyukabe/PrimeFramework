@@ -5,7 +5,7 @@ using System;
 /// Use Collision<T> to say when 'caller' collides with 'T' call 'this method' on 'caller' with 'T' as a parameter.
 /// When instantiated, nodes of this class will be added as a child of the caller's Area2D node.
 /// 
-/// Example usage: new Collision<Enemy>(this, OnEnemyCollision, "Area2D", "../../");
+/// Example usage: new Collision<Enemy>(this, OnEnemyCollision, "Area2D");
 /// The caller must then have this method defined: OnEnemyCollision(Enemy enemy)
 /// </summary>
 public class Collision<T> : Node where T : Node
@@ -28,7 +28,7 @@ public class Collision<T> : Node where T : Node
         }
 
         Callback = callback;
-        area2D.Connect(CollisionSignals.AREA_ENTERED, this, nameof(OnCollision));
+        area2D.Connect("area_entered", this, nameof(OnCollision));
         area2D.AddChild(this);
     }
 
