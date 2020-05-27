@@ -6,7 +6,6 @@ public static class Scene
 {
     public static SceneTree Tree;   // Set by TreeMonitor
     public static Node TreeRoot;    // Set by TreeMonitor
-
     private static List<PrimeScene> Stack = new List<PrimeScene>();
 
     #region Getters
@@ -28,6 +27,22 @@ public static class Scene
         public static int SceneCount
         {
             get { return Stack.Count; }
+        }
+
+
+        private static Node stackRoot;
+        private static Node StackRoot
+        {
+            get
+            {
+                if (stackRoot == null)
+                {
+                    stackRoot = new Node();
+                    stackRoot.Name = "Scene Stack";
+                    TreeRoot.AddChild(stackRoot);
+                }
+                return stackRoot;
+            }
         }
 
         /// <summary> Get the topmost scene on the stack. Check Stack.Count > 0 before calling this. </summary>
@@ -78,26 +93,25 @@ public static class Scene
         /// <summary> Push a new scene onto the stack. </summary>
         public static void Push(PrimeScene scene, bool hideSceneBelow = true)
         {
-            if (scene == null) { return; }
+            if (scene == null)
+            {
+                return;
+            }
+
             scene.IsHidingSceneBelow = hideSceneBelow;
             SuspendTopScene(hideSceneBelow);
             Stack.Add(scene);
             
             if (scene.AttachToViewport)
             {
-                var canvasLayer = new CanvasLayer();
-                canvasLayer.Name = $"{scene.Name} (CanvasLayer)";
-
-                var control = new Control();
-                control.Name = $"{scene.Name} (Control)";
-
-                control.AddChild(scene);
-                canvasLayer.AddChild(control);
-                TreeRoot.AddChild(canvasLayer);
+                CanvasLayer canvasLayer = new CanvasLayer();
+                canvasLayer.Name = $"{scene.Name}";
+                canvasLayer.AddChild(scene);
+                StackRoot.AddChild(canvasLayer);
             }
             else
             {
-                TreeRoot.AddChild(scene);
+                StackRoot.AddChild(scene);
             }
             
             Tree.SetInputAsHandled();
@@ -206,6 +220,12 @@ public static class Scene
             ResumeTopScene();
         }
 
+        private static void QueueFreeScene(PrimeScene scene)
+        {
+            if (scene.AttachToViewport) { scene.GetParent().QueueFree(); }
+            else                        { scene.QueueFree(); }
+        }
+
     #endregion
 
     #region Reload
@@ -285,7 +305,7 @@ public static class Scene
             if (Stack.Count > 0)
             {
                 var scene = TopScene;
-                SetSceneVisibility(scene, true);
+                scene.Visible = true;
                 scene.SetProcess(true);
                 scene.SetProcessInput(true);
                 scene.SetPhysicsProcess(true);
@@ -298,11 +318,8 @@ public static class Scene
         {
             if (Stack.Count > 0)
             {
-                var scene = TopScene;
-                if (hide)
-                {
-                    SetSceneVisibility(scene, false);
-                }
+                PrimeScene scene = TopScene;
+                scene.Visible = !hide;
                 scene.SetProcess(false);
                 scene.SetPhysicsProcess(false);
                 scene.SetProcessInput(false);
@@ -310,29 +327,6 @@ public static class Scene
             }
         }
 
-        private static void SetSceneVisibility(PrimeScene scene, bool isVisible)
-        {
-            if (scene.AttachToViewport)
-            {
-                var parent = (CanvasItem) scene.GetParent();
-                parent.Visible = isVisible;
-            }
-            scene.Visible = isVisible;
-        }
-
-    #endregion
-
-    #region Stack Control
-
-        /// <summary> Show or hide the entire scene stack. </summary>
-        public static void SetAllVisibility(bool isVisible)
-        {
-            foreach(var scene in Stack)
-            {
-                scene.Visible = isVisible;
-            }
-        }
-        
     #endregion
 
     #region Debug
@@ -341,17 +335,12 @@ public static class Scene
         public static void PrintSceneStack()
         {
             GD.Print("--- Scene Stack ---");
-            foreach (var scene in Stack)
+            foreach (PrimeScene scene in Stack)
             {
                 GD.Print(scene.DebugPrintName);
             }
         }
 
     #endregion
-    
-    private static void QueueFreeScene(PrimeScene scene)
-    {
-        if (scene.AttachToViewport) { scene.GetParent().GetParent().QueueFree(); }
-        else                        { scene.QueueFree(); }
-    }
+
 }
