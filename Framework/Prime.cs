@@ -121,4 +121,22 @@ public static partial class Prime
         }
 
     #endregion
+
+    #region Nodes
+
+    public static T GetAncestorOfType<T>(Node node) where T : Node
+    {
+        Node ancestor = node.GetParent();
+        while (ancestor != null)
+        {
+            if (ancestor is T)
+            {
+                return (T) ancestor;
+            }
+            ancestor = ancestor.GetParent();
+        }
+        return null;
+    }
+
+    #endregion
 }
