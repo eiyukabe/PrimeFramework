@@ -1,9 +1,11 @@
 [gd_scene load_steps=5 format=2]
 
-[ext_resource path="res://Game/Prime Scenes/Pause Menu/_Scr/PauseMenu.cs" type="Script" id=1]
+[ext_resource path="res://Game/PrimeScenes/PauseMenu/_Scr/PauseMenu.cs" type="Script" id=1]
 [ext_resource path="res://Framework/Art/rectangle.png" type="Texture" id=2]
 [ext_resource path="res://Game/UI/DefaultHeader.tscn" type="PackedScene" id=3]
 [ext_resource path="res://Game/UI/Buttons/DefaultButton.tscn" type="PackedScene" id=4]
+
+
 
 
 

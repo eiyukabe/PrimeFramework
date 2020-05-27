@@ -1,16 +1,16 @@
 [gd_scene load_steps=3 format=2]
 
-[ext_resource path="res://Game/Prime Scenes/Play/_Scr/Play.cs" type="Script" id=1]
-[ext_resource path="res://Game/UI/DefaultHeader.tscn" type="PackedScene" id=2]
+[ext_resource path="res://Game/UI/DefaultHeader.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Game/PrimeScenes/Play/_Scr/Play.cs" type="Script" id=2]
 
 [node name="Play" type="Node2D"]
-script = ExtResource( 1 )
+script = ExtResource( 2 )
 
 [node name="Center" type="CenterContainer" parent="."]
 margin_right = 1280.0
 margin_bottom = 96.0
 
-[node name="Play" parent="Center" instance=ExtResource( 2 )]
+[node name="Play" parent="Center" instance=ExtResource( 1 )]
 margin_left = 591.0
 margin_top = 15.0
 margin_right = 688.0
