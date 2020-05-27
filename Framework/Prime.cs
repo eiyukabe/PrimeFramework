@@ -88,23 +88,6 @@ public static partial class Prime
             return null;
         }
 
-        /// <summary>
-        /// Loads a PackedScene and then returns an instance of it. Returns null if a PackedScene cannot be found
-        /// from the given filepath. See also Prime.GetPackedScene() to load a scene without instancing it yet.
-        /// </summary>
-        public static Node GetSceneInstance(string filepath)
-        {
-            var scene = ResourceLoader.Load(filepath);
-            if (scene == null) { return null; }
-
-            if (scene is PackedScene)
-            {
-                var packedScene = (PackedScene) scene;
-                return packedScene.Instance();
-            }
-            return null;
-        }
-
     #endregion
 
     #region Random
